@@ -1,82 +1,126 @@
 import React, { useEffect, useState} from "react";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
-
-export default function LoginPage(){
-const navigate = useNavigate();
-const [requestResult, setRequestResult] = useState("");
-const [value, setValue] = useState("");
-const [id, setId] = useState("");
-const [password, setPassword] = useState("");
-
+import {useCookies} from "react-cookie";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 
 
-        // 빈칸에 값이 입력될때마다, useState()를 이용해 해당값 저장
+
+export default function SignIn() {
+    const navigate = useNavigate();
+    const [requestResult, setRequestResult] = useState("");
+    const [value, setValue] = useState("");
+    const [id, setId] = useState("");
+    const [password, setPassword] = useState("");
+    const [cookies, setCookies] = useCookies();
+
     const onChange = (event) =>{
-            const {target: {name, value}} = event;
-            if(name === "id"){
-                setId(value);
-            }else if(name === "password"){
-                setPassword(value);
-            }
-        };
+        const {target: {name, value}} = event;
+        if(name === "id"){
+            setId(value);
+        }else if(name === "password"){
+            setPassword(value);
+        }
+    };
 
-        // (임시) 아이디랑 패스워드를 스프링부트 포트로 넘겨 값이 맞는지 확인하고, 일치하면 ok를 반환 받고, 불일치하면 fail을 반환받음
-        // jwt 토큰 이용해서 조만간 고칠 예정입니다.
-       const logInHandler = () => {
+    const logInHandler = () => {
+        if(id.length === 0 || password.length === 0){
+            alert('아이디와 비밀번호를 입력하세요.');
+            return;
+        }
        const data = {
             id : id,
-            password : password
+            pwd : password
        }
             axios.post('http://localhost:8080/api/auth/signIn', data)
                     .then((response) =>{
                     console.log(response.data);
+                    const responseData = response.data;
                         setRequestResult('Success!!');
-                        if(response.data == "ok"){
+                        
+                        if(!responseData.result){
+                            alert("아이디랑 비밀번호를 확인하세요.");
+                            return;
+                        }
+
+                            
+                            const {token, exprTime, user} = responseData.data;
+                            const expires = new Date();
+                            expires.setMilliseconds(expires.getMilliseconds + exprTime);
+
+                            setCookies('token', token, {expires});
+                            console.log(cookies.token);
+                            //setUser(user);
                             navigate('/mainPage');
-                        }
-                        else{
-                            alert("아이디랑 비밀번호를 확인하세요.")
-                        }
+                        
+
+
+                        
                     })
                     .catch((error) => {
                     console.log("no");
+                    alert('로그인에 실패했습니다.');
                         setRequestResult('Failed!!');
                     })
             console.log(requestResult);
        };
 
-
-
-
-
-
-
-    return(
-    <div>
-                <form>
-                <input name = "id"
-                type = "text"
-                placeholder="Id"
-                required
-                value = {id}
-                onChange={onChange}
-                className="authInput"/>
-                <input name = "password"
-                type = "password"
-                placeholder="Password"
-                required
-                value = {password}
-                onChange={onChange}/>
-
-                </form>
-                <button onClick={() => logInHandler()}>로그인</button>
-                <button onClick={() => navigate('/MainPage')}>메인페이지로</button>
-                <button onClick={() => navigate('/BuyPage')}>판매페이지로</button>
-                <button onClick={() => navigate('/SellPage')}>구매페이지로</button>
-
-    </div>
-    );
-
+  return (
+    <>
+    <Box
+          sx={{
+            marginTop: 14,
+            width: 300,
+            height: 300,
+            mx: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+                    >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="id"
+              label="ID"
+              name="id"
+              autoComplete="id"
+              autoFocus
+              onChange={onChange}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="password"
+              onChange={onChange}
+            />
+            
+            <Button
+            onClick={() => logInHandler()}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              로그인
+            </Button>
+            
+              <Grid item>
+                <Link href="/AuthCreatePage" variant="body2">
+                  {"아이디가 없으신가요? 회원가입하기"}
+                </Link>
+              </Grid>
+              </Box>
+      </>      
+  );
 }

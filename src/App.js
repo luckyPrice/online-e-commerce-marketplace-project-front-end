@@ -18,7 +18,7 @@ function App() {
   <BrowserRouter>
     <Routes>
       <Route exact path="/" element={<LoginPage />}></Route>
-      <Route exact path="/SignUp" element={<AuthCreatePage />}></Route>
+      <Route exact path="/AuthCreatePage" element={<AuthCreatePage />}></Route>
       <Route exact path="/MainPage" element={<MainPage />}></Route>
       <Route exact path="/MyPage" element={<MyPage />}></Route>
       <Route exact path="/SellPage" element={<SellPage />}></Route>
