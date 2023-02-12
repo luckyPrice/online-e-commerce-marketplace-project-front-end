@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import {useStore1} from "./Stores/useStore";
 
 
 
@@ -18,6 +19,7 @@ export default function SignIn() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookies] = useCookies();
+    const {user, setUser} = useStore1();
 
     const onChange = (event) =>{
         const {target: {name, value}} = event;
@@ -27,6 +29,12 @@ export default function SignIn() {
             setPassword(value);
         }
     };
+
+    useEffect(() => {
+        if(user != null){
+            console.log(user.userNickName);
+        }
+    },[])
 
     const logInHandler = () => {
         if(id.length === 0 || password.length === 0){
@@ -55,7 +63,8 @@ export default function SignIn() {
 
                             setCookies('token', token, {expires});
                             console.log(cookies.token);
-                            //setUser(user);
+                            setUser(user);
+                            
                             navigate('/mainPage');
                         
 
@@ -120,6 +129,7 @@ export default function SignIn() {
                   {"아이디가 없으신가요? 회원가입하기"}
                 </Link>
               </Grid>
+            
               </Box>
       </>      
   );
