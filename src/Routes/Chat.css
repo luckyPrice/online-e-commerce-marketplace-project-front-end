@@ -1,0 +1,21 @@
+.messageBox {
+    border-radius: 20px;
+    padding: 5px 20px;
+    max-width: 100%;
+    
+  }
+
+  .justifyStart {
+    background-color: aqua;
+    justify-content: flex-start;
+    padding: 10px;
+    margin-right:500px;
+}
+
+.justifyEnd {
+    background-color: aqua;
+    text-align: right;
+    justify-content: flex-end;
+    padding: 10px;
+    margin-left:500px;
+}

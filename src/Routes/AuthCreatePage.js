@@ -5,6 +5,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Checkbox from '@mui/material/Checkbox';
 
 
 export default function AuthCreatePage(){
@@ -15,11 +20,17 @@ const [password, setPassword] = useState("");
 const [passwordcheck, setPasswordCheck] = useState("");
 const [nickname, setNickname] = useState("");
 const [phonenumber, setPhonenumber] = useState("");
-const [sex, setSex] = useState("");
+const [sex, setSex] = React.useState('female');
 const [address, setAddress] = useState("");
 const navigate = useNavigate();
+const [favor, setFavor] = React.useState({
+    clothes: true,
+    elect: false,
+    hobby: false,
+  });
 
 
+  const { clothes, elect, hobby } = favor;
 
         // 임시(회원가입), jwt 토큰을 이용해 만들 예정입니다.
     const signUpHandler = () => {
@@ -50,6 +61,20 @@ const navigate = useNavigate();
         })
     }
 
+    const handleChange = (event) => {
+        setSex({
+          ...sex,
+          [event.target.name]: event.target.checked,
+        });
+      };
+
+      const favorChange = (event) => {
+        setFavor({
+          ...favor,
+          [event.target.name]: event.target.checked,
+        });
+      };
+
    
       
 
@@ -79,10 +104,42 @@ const navigate = useNavigate();
             )}/>
             <TextField fullWidth label = "핸드폰 번호" type="phonenumber" variant="standard" onChange={(event) => setPhonenumber(event.target.value
             )}/>
-            <TextField fullWidth label = "성별" type="sex" variant="standard" onChange={(event) => setSex(event.target.value
-            )}/>
+            
+            <RadioGroup
+            row
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="female"
+            name="radio-buttons-group"
+            value={sex}
+            onChange={handleChange}
+            >
+               
+    <FormControlLabel value="female" control={<Radio />} label="여자" />
+    <FormControlLabel value="male" control={<Radio />} label="남자" />
+  </RadioGroup>
             <TextField fullWidth label = "주소" type="address" variant="standard" onChange={(event) => setAddress(event.target.value
             )}/>
+
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox checked={clothes} onChange={favorChange} name="clothes" />
+            }
+            label="의류"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox checked={elect} onChange={favorChange} name="elect" />
+            }
+            label="가전제품"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox checked={hobby} onChange={favorChange} name="hobby" />
+            }
+            label="취미"
+          />
+        </FormGroup> 
         
         
         <Button component="span" onClick={() => signUpHandler()}

@@ -1,11 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { useEffect, useState } from "react";
 import AuthCreatePage from "./Routes/AuthCreatePage";
 import LoginPage from "./Routes/LoginPage";
 import MainPage from "./Routes/MainPage";
 import MyPage from "./Routes/MyPage";
 import BuyPage from "./Routes/BuyPage";
 import SellPage from "./Routes/SellPage";
+import ChatPage from "./Routes/ChatPage";
+import MyChat from "./Routes/MyChat";
+import DetailPage from "./Routes/DetailPage";
+import Products from "./Routes/data";
+import Layout from './Components/Layout';
+import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.css';
+import UploadPage from "./Routes/UploadPage";
 import {
     BrowserRouter,
     HashRouter as Router,
@@ -15,6 +24,8 @@ import {
   
 
 function App() {
+
+  let [Product] = useState(Products);
   return (
   <BrowserRouter>
     <Routes>
@@ -24,6 +35,10 @@ function App() {
       <Route exact path="/MyPage" element={<MyPage />}></Route>
       <Route exact path="/SellPage" element={<SellPage />}></Route>
       <Route exact path="/BuyPage" element={<BuyPage />}></Route>
+      <Route exact path="/ChatPage" element={<ChatPage />}></Route>
+      <Route exact path="/MyChat" element ={<MyChat />}></Route>
+      <Route path="/DetailPage/:id" element={<DetailPage Product ={ Product }/>} />
+      <Route exact path="/UploadPage" element={<UploadPage />}></Route>
     </Routes>
     </BrowserRouter>
 
