@@ -1,13 +1,16 @@
-import React, { useEffect, useState} from "react";
-import axios from "axios";
+import React from 'react';
+import Header from '../Components/header/Header';
+import ItemList from '../Components/item/itemList';
+import Navbar from '../Components/navbar/Navbar';
 
-function MainPage() {
-
-
-
-return(
-    <h3>MainPage</h3>
-)
-}
+const MainPage = (props) => {
+  return (
+    <>
+      <Header />
+      <Navbar />
+      <ItemList />
+    </>
+  )    
+};
 
 export default MainPage;
