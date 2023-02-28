@@ -1,21 +1,121 @@
 .messageBox {
-    border-radius: 20px;
-    padding: 5px 20px;
-    max-width: 100%;
+    display: flex;
+        flex-direction: column;
+        margin: 0 0 16px;
+        gap: 16px;
+        background-color: aqua;
+        max-width: 700px;
+        margin: 50px auto;
+
+
     
   }
 
-  .justifyStart {
-    background-color: aqua;
-    justify-content: flex-start;
-    padding: 10px;
-    margin-right:500px;
+  .empty{
+    flex-shrink: 0;/*아이콘 영역의 너비 만큰 말풍선이 넘지 않게 하기위해 48px 로 고정합니다. */
+    width: 48px;
 }
 
-.justifyEnd {
-    background-color: aqua;
-    text-align: right;
-    justify-content: flex-end;
-    padding: 10px;
-    margin-left:500px;
+  .receiverChat {
+    display: flex;
+        flex-wrap: nowrap;/*줄바꿈(개항)하지 않음*/
+        flex-direction: row;
+        gap: 16px;
+         justify-content: flex-start;
+         padding: 16px 40px;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+        border-radius: 8px 40px 40px 40px;
+        margin: 0 0 5px;
+        /* flex-grow:1; */ /*주석을 제거해 보세요.*/
+}
+
+.senderChat {
+    display: flex;
+        flex-wrap: nowrap;/*줄바꿈(개항)하지 않음*/
+        flex-direction: row;
+        gap: 16px;
+         justify-content: flex-end;
+         padding: 16px 40px;
+        
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+        border-radius: 40px 8px 40px 40px;
+        margin: 0 0 5px;
+}
+
+.container1{
+  display: flex;
+  flex-direction: column;
+  margin-left : 350px;
+  width: 800px;
+  height: 700px;
+  justify-content: flex-end;
+  
+ 
+  
+  
+}
+.container1 h1{
+  text-align:center;
+  margin:50px;
+  
+}
+.chat_wr {
+  
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: scroll;
+  
+}
+
+.chat_row {
+  display: flex;
+  flex-wrap: nowrap;/*줄바꿈(개항)하지 않음*/
+  flex-direction: row;
+  gap: 16px;
+
+}
+
+.chat_ic {
+  flex-shrink: 0;/*아이콘 영역의 너비를 48px 로 고정합니다. */
+  width: 48px;
+}
+
+.chat_ic span {
+  font-size: 48px;/*아이콘의 크기*/
+  color:gray;
+}
+
+.chat_left {
+  padding: 16px 40px;
+  background: skyblue;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+  border-radius: 8px 40px 40px 40px;
+  margin: 0 0 5px;
+  /* flex-grow:1; */ /*주석을 제거해 보세요.*/
+}
+
+.chat_empty {
+  flex-shrink: 0;/*아이콘 영역의 너비 만큰 말풍선이 넘지 않게 하기위해 48px 로 고정합니다. */
+  width: 48px;
+}
+
+.chat_right {
+  padding: 16px 40px;
+  background: orange;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+  border-radius: 40px 8px 40px 40px;
+  margin: 0 0 5px;
+}
+.right{
+  justify-content: flex-end; /*오른쪽 끝으로 정렬합니다.*/
+}
+
+.chatRoom{
+  background-color:skyblue;
+  font-size : 30px;
+  
+}
+
+.chatbottom{
+  bottom:0px;
 }

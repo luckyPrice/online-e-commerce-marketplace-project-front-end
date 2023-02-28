@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
@@ -12,23 +13,53 @@ function DetailPage(props) {
     return product.id == id;
   });
 
+  const [itemId, setitemId] = useState({
+    itemid : id
+});
+  const [itemDetail, setitemDetail] = useState(null);
+  
+  useEffect(() => {
+    axios.post('http://localhost:8080/api/load/showDetail', itemId)
+    .then((response) =>{
+                      
+      console.log("good");    
+      console.log(response.data); 
+      setitemDetail(response.data); 
+         
+      console.log(itemDetail);     
+      
+    })
+    .catch((error) => {
+    console.log(error.message);
+    
+    
+    })
+
+
+  }, [])
+
+
+  
+
+
   const ImgUrl = "/images/img" + setProduct.id + ".jpg";
 
   return (
+    
     <div className="container" >
         <div className="row">
         <div className="col-md-6">
       <br/><br/>
      
       <img src={ImgUrl} width="500px" height="500px"/>
+      <br/>
+      <b>상품설명:{itemDetail && itemDetail.maintext}</b>
       </div>
       <div className="col-md-6">
-      <h4 className="pt-5">상품명:{setProduct.name}</h4><br/>
-      <h5>판매자: {setProduct.seller}</h5><br/>
-      <li><b>가격:{setProduct.price}</b>원<br/></li>
-      <li><b>배송비:{setProduct.deliverycharge}</b><br/></li>
-      <li><b>제품상태:{setProduct.condition}</b><br/></li>
-      <li><b>상품설명:{setProduct.content}</b><br/></li>
+      <h4 className="pt-5">상품명:{itemDetail && itemDetail.itemname}</h4><br/>
+      <h5>판매자: {itemDetail && itemDetail.memberid}</h5><br/>
+      <li><b>가격:{itemDetail && itemDetail.itemprice}</b>원<br/></li>
+   
     
       <Button
         variant="success"
@@ -36,13 +67,16 @@ function DetailPage(props) {
       >
         장바구니
       </Button>
-      <Button variant="info" onClick={() => navigate("/BuyPage")}>
+      <Button variant="info" onClick={() => navigate(`/ChatPage?receiveuser=${itemDetail.memberid}&chattitle=${itemDetail.title}`)}>
         바로구매
       </Button>
       <Button variant="warning">찜</Button>
+      <br/><br/>
+      <Button onClick={() => navigate('/SellerPage/'+setProduct.seller)}><img src="/icon/person-circle.svg"/>판매자{setProduct.seller}</Button>
     </div>
     </div>
     </div>
+    
   
   );
 }

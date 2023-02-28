@@ -4,16 +4,19 @@ import styled from 'styled-components';
 import {useCookies} from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import {useStore1} from "../../Routes/Stores/useStore";
+import jwt_decode from "jwt-decode"
 
 const Header = (props) => {
     const [cookies, setCookies] = useCookies();
     const {user, removeUser} = useStore1();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const token = cookies.token;
+    var userinfo = ""
+    let nickname = "";
+    if(cookies.token){
+      nickname = jwt_decode(cookies.token).sub;
+    }
+    
         
-    },[])
 
     const logOutHandler = () => {
         setCookies('token', '', {expires: new Date()});
@@ -21,16 +24,30 @@ const Header = (props) => {
         navigate('/');
     }
 
+    useEffect(() => {
+        
+      if(!cookies.token){
+        alert('로그인해주세요');
+          navigate('/');
+      }
+      
+      
+    
+              
+             
+
+  },[]);
+
 
 
   return (
     <StyledContainer>
       <StyledBtnContainer>
         <StyledBtnWrapper>
-          <Link to="/ChatPage">마이페이지</Link>
+          <Link to="/MyChat">마이페이지</Link>
           <button onClick={logOutHandler}>로그아웃</button>
         </StyledBtnWrapper>
-        <p>{user ? user.nickname : "Guest"} 님 환영합니다.</p>
+        <p>{nickname ? nickname : "Guest"} 님 환영합니다.</p>
       </StyledBtnContainer>
       <h1>중고 마켓</h1>
     </StyledContainer>

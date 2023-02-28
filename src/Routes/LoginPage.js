@@ -8,6 +8,7 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import {useStore1} from "./Stores/useStore";
+import jwt_decode from "jwt-decode"
 
 
 
@@ -61,8 +62,11 @@ export default function SignIn() {
                             const expires = new Date();
                             expires.setMilliseconds(expires.getMilliseconds + exprTime);
 
-                            setCookies('token', token, {expires});
-                            console.log(cookies.token);
+                            setCookies('token', token, {expires}, {path : '/'});
+                            
+                            
+                            
+                            console.log(token);
                             setUser(user);
                             
                             navigate('/mainPage');

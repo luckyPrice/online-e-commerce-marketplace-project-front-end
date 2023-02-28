@@ -1,10 +1,14 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Item = ({ data, searched , id}) => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+      console.log(data)
+    },[])
 
     const gotoDetail = () => {
         navigate('/DetailPage/' + id);
@@ -14,13 +18,13 @@ const Item = ({ data, searched , id}) => {
     <StyledContainer onClick={gotoDetail}>
         
       <figure>
-        <img src={data.url} alt="items" />
+        
       </figure>
       <div>
-        <StyledContent>{data.content}</StyledContent>
-        <StyledWriter>{data.writer}</StyledWriter>
-        <StyledAddress>{data.address}</StyledAddress>
-        <StyledPrice>{data.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원</StyledPrice>
+        <StyledContent>{data.maintext}</StyledContent>
+        <StyledWriter>{data.memberid}님</StyledWriter>
+        <StyledAddress>{data.title}</StyledAddress>
+        <StyledPrice>{data.itemprice}원</StyledPrice>
       </div>
       
     </StyledContainer>

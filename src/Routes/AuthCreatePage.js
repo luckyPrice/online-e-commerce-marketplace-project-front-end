@@ -62,10 +62,7 @@ const [favor, setFavor] = React.useState({
     }
 
     const handleChange = (event) => {
-        setSex({
-          ...sex,
-          [event.target.name]: event.target.checked,
-        });
+        setSex(event.target.value);
       };
 
       const favorChange = (event) => {
@@ -117,6 +114,7 @@ const [favor, setFavor] = React.useState({
     <FormControlLabel value="female" control={<Radio />} label="여자" />
     <FormControlLabel value="male" control={<Radio />} label="남자" />
   </RadioGroup>
+  
             <TextField fullWidth label = "주소" type="address" variant="standard" onChange={(event) => setAddress(event.target.value
             )}/>
 
