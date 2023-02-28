@@ -4,6 +4,9 @@ import ItemList from '../Components/item/itemList';
 import Navbar from '../Components/navbar/Navbar';
 
 const MainPage = (props) => {
+  
+  
+
   return (
     <>
       <Header />

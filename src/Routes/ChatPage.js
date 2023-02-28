@@ -11,40 +11,55 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import Box from '@mui/material/Box';
 import './Chat.css'
+import jwt_decode from "jwt-decode"
+import { useNavigate, useSearchParams } from "react-router-dom";
+import queryString from "query-string";
+import ScrollToBottom from 'react-scroll-to-bottom'
 
 var client = null;
 const ChatPage =() => {
     var count = 0;
     const [Chats, setChats] = useState(new Map());
     const {user, setUser} = useStore1();
+    const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies();
+    
+    const [message1, setMessage] = useState([]);
+    let nickname = "";
+    if(cookies.token){
+      nickname = jwt_decode(cookies.token).sub;
+    }
+    
+    const [searchParams, setSearchParams] = useSearchParams();
+    
+    const receiveuser = searchParams.get('receiveuser');
+    const chattitle = searchParams.get('chattitle');
     const [userData, setuserData] = useState({
-        senduser: "",
-        receiveuser:"",
+        senduser: nickname,
+        receiveuser: receiveuser,
+        chattitle : chattitle,
         message:"",
         date:"?"
     });
-    const [message1, setMessage] = useState([]);
-    var firstredirect = 1
-    
-    
 
     useEffect(() => {
-        console.log(firstredirect);
         
-            if(user.nickname == "jabin"){
-                userData.senduser = "jabin"
-                userData.receiveuser = "hi"
-                
-            }
-            else if(user.nickname == "hi"){
-                userData.senduser = "hi"
-                userData.receiveuser = "jabin"
-            }
+        if(!cookies.token){
+            navigate('/');
+        }
+        else{
+            nickname =jwt_decode(cookies.token).sub;
+        }
+
+        
+        
+            
             
                 
                 axios.post('http://localhost:8080/room/getmessage', userData)
                 .then((response) =>{
                     setMessage(response.data);
+                    console.log(response.data);
                 })
                 .catch((error) => {  
                 })   
@@ -54,7 +69,7 @@ const ChatPage =() => {
     },[]);
 
     const chatsavedb = () => {
-        
+        console.log(userData);
         axios.post('http://localhost:8080/room/create', userData)
         .then((response) =>{})
         .catch((error) => {})
@@ -65,7 +80,7 @@ const ChatPage =() => {
         client = over(sock);
         
         
-        client.connect({}, () =>{client.subscribe("/private/message/" + user.nickname, onReceived);})
+        client.connect({}, () =>{client.subscribe("/private/message/" + nickname, onReceived);})
 
         
        
@@ -96,6 +111,7 @@ const ChatPage =() => {
             let ChatMessage={
                 senduser : userData.senduser,
                 receiveuser : userData.receiveuser,
+                chattitle : userData.chattitle,
                 message: userData.message,
                 date: ""
                 
@@ -124,84 +140,72 @@ const ChatPage =() => {
         }
     }
 
+    const onGo = () => {
+        navigate('/MyChat');
+    }
+    
     
 
   
-
+//추후에 함수로 뺄 예정
     return(
         <>
-        
-       
-       
-        <button onClick ={start}>start</button>
-        <Box
-            sx={{
-                marginTop: 14,
-                width: '100%',
-                height: 300,
-                mx: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-        >
-        <Load>
-            
-                {message1 && [...message1].map((mes) => (
-                    mes.senduser == user.nickname ? 
-                    <div className="messageBox">
-                        <p className="justifyEnd">
-                        {mes.message}
+            <button onClick ={onGo}>myChat</button>
+            <Load>
+                <div class="container1">
+                    <div class="chat_wr">
+                        {message1 && [...message1].map((mes) => (
+                            mes.senduser == nickname ? 
+                            <div class="chat_row right">
+                                <div class="chat_right chat">
+                                {mes.message}
 
-                    </p>
-                    </div>
-                    :
-                    <div className="messageBox">
-                    <p className="justifyStart">
-                        {mes.message}
+                            </div>
+                            <div className="empty"></div>
+                            </div>
+                            :
+                            <div class="chat_row left">
+                            <div class="chat_left chat">
+                                {mes.message}
 
-                    </p>
+                            </div>
+                            <div className="empty"></div>
+                            </div>    
+                        ))}
+                        {Chats.get(userData.receiveuser) && [...Chats.get(userData.receiveuser)].map((chat, index) => (
+                            chat.senduser == nickname ? 
+                            <div class="chat_row right">
+                                <div class="chat_right chat">
+                                {chat.message}
+                            </div>
+                            <div className="empty"></div>
+                            </div>
+                            :
+                            <div class="chat_row left">
+                            <div class="chat_left chat">
+                                {chat.message}
+                            </div>
+                            <div className="empty"></div>
+                            </div>
+                        ))}
                     </div>
-                    
-                ))}
-                
-            
-                {Chats.get(userData.receiveuser) && [...Chats.get(userData.receiveuser)].map((chat, index) => (
-                    chat.senduser == user.nickname ? 
-                    <div className="messageBox">
-                    <p key={index} className="justifyEnd">
-                        {chat.message}
-                    </p>
+                    <div className ="chatbottom">
+                        <TextField fullWidth type='text' value={userData.message}
+                            onChange={handleMessage}/>
+                        <Button type='button' onClick={sendMessage}>SEND</Button>
                     </div>
-                    :
-                    <div className="messageBox">
-                    <p key={index} className="justifyStart">
-                        {chat.message}
-                    </p>
-                    </div>
-                ))}
-            
-        
-        
-        
-            <TextField fullWidth type='text' value={userData.message}
-            onChange={handleMessage}/>
-            <Button type='button' onClick={sendMessage}>SEND</Button>
+                </div>
             </Load>
-            </Box>
         </>
     )
     }
 
     const Load = styled.div`
-    position: absolute;
+    
       bottom: 0;
-      width: 70%;
-    `;
-
-    const Sendchat = styled.div`
-    position: absoulte;
-    bottom: 0;
+      width: 100%;
+      
+     
     `;
 
 
