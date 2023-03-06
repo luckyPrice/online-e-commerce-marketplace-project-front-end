@@ -1,7 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
+import {useState, useEffect } from 'react';
 import axios from "axios";
-import { useParams } from 'react-router-dom';
-import * as StompJs from '@stomp/stompjs';
 import {useStore1} from "./Stores/useStore";
 import SockJS from 'sockjs-client';
 import {useCookies} from "react-cookie";
@@ -9,29 +7,21 @@ import Stomp, {over} from "stompjs";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
-import Box from '@mui/material/Box';
 import './Chat.css'
 import jwt_decode from "jwt-decode"
 import { useNavigate, useSearchParams } from "react-router-dom";
-import queryString from "query-string";
-import ScrollToBottom from 'react-scroll-to-bottom'
 
 var client = null;
 const ChatPage =() => {
-    var count = 0;
-    const [Chats, setChats] = useState(new Map());
-    const {user, setUser} = useStore1();
+    let nickname = "";
+    const [Chats, setChats] = useState(new Map());  
     const navigate = useNavigate();
     const [cookies, setCookies] = useCookies();
-    
     const [message1, setMessage] = useState([]);
-    let nickname = "";
     if(cookies.token){
       nickname = jwt_decode(cookies.token).sub;
     }
-    
     const [searchParams, setSearchParams] = useSearchParams();
-    
     const receiveuser = searchParams.get('receiveuser');
     const chattitle = searchParams.get('chattitle');
     const [userData, setuserData] = useState({
@@ -43,29 +33,18 @@ const ChatPage =() => {
     });
 
     useEffect(() => {
-        
         if(!cookies.token){
             navigate('/');
         }
         else{
             nickname =jwt_decode(cookies.token).sub;
         }
-
-        
-        
-            
-            
-                
-                axios.post('http://localhost:8080/room/getmessage', userData)
+            axios.post('http://localhost:8080/room/getmessage', userData)
                 .then((response) =>{
                     setMessage(response.data);
-                    console.log(response.data);
                 })
-                .catch((error) => {  
-                })   
-
+                .catch((error) => {})   
             start();
-
     },[]);
 
     const chatsavedb = () => {
@@ -78,13 +57,7 @@ const ChatPage =() => {
     const start = () => {
         let sock = new SockJS('http://localhost:8080/ws')
         client = over(sock);
-        
-        
         client.connect({}, () =>{client.subscribe("/private/message/" + nickname, onReceived);})
-
-        
-       
-        
     }
 
     const onReceived = async (chat) => {
@@ -114,10 +87,7 @@ const ChatPage =() => {
                 chattitle : userData.chattitle,
                 message: userData.message,
                 date: ""
-                
-            
             };
-            
             if(userData.senduser !== userData.receiveuser){
                 if(Chats.get(userData.receiveuser)){
                     Chats.get(userData.receiveuser).push(ChatMessage);

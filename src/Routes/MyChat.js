@@ -1,6 +1,5 @@
 import React, { useEffect, useState} from "react";
 import axios from "axios";
-import {useStore1} from "./Stores/useStore";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode"
 import './Chat.css'
@@ -9,12 +8,15 @@ import {useCookies} from "react-cookie";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function MyChat(){
+    let nickname="";
     const [cookies, setCookies] = useCookies();
     const [mychat, setMychat] = useState([]);
     const navigate = useNavigate();
 
 
-    const nickname = jwt_decode(cookies.token).sub;
+    if(cookies.token){
+        nickname = jwt_decode(cookies.token).sub;
+      }
     
 
     useEffect(() => {

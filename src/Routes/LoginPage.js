@@ -133,8 +133,7 @@ export default function SignIn() {
                   {"아이디가 없으신가요? 회원가입하기"}
                 </Link>
               </Grid>
-            
-              </Box>
+            </Box>
       </>      
   );
 }
