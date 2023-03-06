@@ -8,6 +8,7 @@ const Item = ({ data, searched , id}) => {
 
     useEffect(() => {
       console.log(data)
+      console.log(data.url)
     },[])
 
     const gotoDetail = () => {
@@ -18,7 +19,7 @@ const Item = ({ data, searched , id}) => {
     <StyledContainer onClick={gotoDetail}>
         
       <figure>
-        
+        <img src={data.url} alt="items"/>
       </figure>
       <div>
         <StyledContent>{data.maintext}</StyledContent>
@@ -42,9 +43,10 @@ const StyledContainer = styled.div`
   figure {
     margin: 0;
     width: 250px;
-    height: 200px;
+    height: 230px;
     img {
       width: 100%;
+      
     }
   }
 `;

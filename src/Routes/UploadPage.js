@@ -9,14 +9,15 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import {useStore1} from "./Stores/useStore";
 import { Co2TwoTone } from "@mui/icons-material";
+import jwt_decode from "jwt-decode"
 
 
 
 
 export default function UploadPage() {  
+    let nickname = "";
     const navigate = useNavigate();
     const [requestResult, setRequestResult] = useState("");
-    const [value, setValue] = useState("");
     const [Id, setId] = useState("");
     const [Category, setCategory] = useState("");
     const [ItemName, setItemName] = useState("");
@@ -25,9 +26,12 @@ export default function UploadPage() {
     const [ItemPrice, setItemPrice] = useState("");
     const [cookies, setCookies] = useCookies();
     const {user, setUser} = useStore1();
-    
-    
-
+    const [attachment, setAttachment] = useState("");
+    const [imgFile, setImgFile] = useState(null);	//파일
+    const [imgFile2, setImgFile2] = useState(null);	//파일
+    if(cookies.token){
+      nickname = jwt_decode(cookies.token).sub;
+    }
     
 
     const onChange = (event) =>{
@@ -45,26 +49,28 @@ export default function UploadPage() {
         }
     };
 
-    useEffect(() => {
-      console.log("dfdfdfd");
-      console.log(user.nickname);
-      
-  },[])
-
+  
   
     const UploadHandler = () => {
-       const data = {
-        memberid : user.nickname,
-        category : Category,
-        itemname : ItemName,
-        itemid : null,
-        title : Title,
-        maintext : Main_text,
-        itemprice : ItemPrice,
-       }
-            axios.post('http://localhost:8080/api/load/Upload', data)
+      
+      const fd = new FormData();
+      Object.values(imgFile).forEach((file) => fd.append("file", file));
+       fd.append("memberid", nickname);
+       fd.append("category", Category);
+       fd.append("itemname", ItemName);
+       fd.append("itemid", 1);
+       fd.append("title", Title);
+       fd.append("maintext", Main_text);
+       fd.append("itemprice", ItemPrice);
+       
+       
+            axios.post('http://localhost:8080/api/load/Upload',fd ,{
+              headers: {
+                "Content-Type": `multipart/form-data; `,
+              }
+            })
                     .then((response) =>{
-                    console.log(response.data);
+                    setImgFile2(response.data);
                     const responseData = response.data;
                         setRequestResult('Upload success');
                         
@@ -85,11 +91,19 @@ export default function UploadPage() {
                     alert('실패');
                         setRequestResult('Failed!!');
                     })
-            console.log(requestResult);
-            
-
             
         };
+
+        const handleChangeFile = (event) => {
+          console.log(event.target.files)
+          setImgFile(event.target.files);
+          for(var i=0;i<event.target.files.length;i++){
+        if (event.target.files[i]) {
+          let reader = new FileReader();
+          reader.readAsDataURL(event.target.files[i]);
+        }
+        }
+        }
 
         const options = [
             {value: '', text: '--Choose an option--'},
@@ -163,7 +177,9 @@ export default function UploadPage() {
               autoComplete="가격"
               onChange={onChange}
             />
-
+            <input type="file" id="file"  onChange={handleChangeFile} multiple="multiple" />
+            <label htmlFor="file">파일 선택</label>
+        
             <Button
             onClick={() => UploadHandler()}
               fullWidth
@@ -172,9 +188,13 @@ export default function UploadPage() {
             >
               글올리기
             </Button>
-
-                
+            
+            
+            
               </Box>
-      </>      
+              
+              
+      </>  
+          
   );
 }
