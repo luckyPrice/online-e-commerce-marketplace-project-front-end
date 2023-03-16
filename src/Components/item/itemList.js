@@ -26,32 +26,6 @@ const ItemList = (props) => {
   const [inputData, setInputData] = useState([]);
 
 
-  // useEffect(async() => {
-  //   try{
-  //   // 데이터를 받아오는 동안 시간이 소요됨으로 await 로 대기
-  //     const res = await axios.get('http://localhost:8080/api/auth/UploadShow')
-  //     const responseData = res.data
-  //     console.log(responseData.data)
-  //     // 받아온 데이터로 다음 작업을 진행하기 위해 await 로 대기
-  //     // 받아온 데이터를 map 해주어 rowData 별로 _inputData 선언
-  //     const _inputData = await responseData.product && responseData.product.map((rowData) => ({
-  //                       memberid: rowData.memberid,
-  //                       category: rowData.category,
-  //                       itemname: rowData.itemname,
-  //                       itemid: rowData.itemid,
-  //                       title: rowData.title,
-  //                       maintext: rowData.maintext,
-  //                       itemprice: rowData.itemprice
-  //           })
-  //     )
-  //     // 선언된 _inputData 를 최초 선언한 inputData 에 concat 으로 추가
-  //     setInputData(inputData.concat(_inputData))
-  //     console.log(inputData)
-  //   } catch(e){
-  //     alert('글불러오기 실패');
-  //     console.error(e.message)
-  //   }
-  // },[])
 
   useEffect(() => {
 
@@ -149,21 +123,27 @@ const ItemList = (props) => {
     switch (e.target.id) {
       /* 인기순 */
       case "pop": 
-        setItems(draft => {
-          draft.data = [...items.data].sort((a, b) => b.pop - a.pop);
-        });
+      setInputData(
+        [...inputData].sort((a, b) => b.favor - a.favor)
+        
+      );
+      console.log(inputData);
         break;
       /* 가격 낮은순 */
       case "desc":
-        setItems(draft => {
-          draft.data = [...items.data].sort((a, b) => a.price - b.price);
-        });
+        setInputData(
+          [...inputData].sort((a, b) => a.itemprice - b.itemprice)
+          
+        );
+        console.log(inputData);
         break;
       /* 가격 높은순 */
       case "asc":
-        setItems(draft => {
-          draft.data = [...items.data].sort((a, b) => b.price - a.price);
-        });
+        setInputData(
+          [...inputData].sort((a, b) => b.itemprice - a.itemprice)
+        );
+        
+        console.log(inputData);
         break;
       default: 
         return;
@@ -198,7 +178,7 @@ const ItemList = (props) => {
         </StyledSoltContainer>
       </StyledFlex>
       <StyledWrapper>
-      {searched.length > 0
+        {searched.length > 0
           ? inputData.map((v, idx) => {
               if (v.itemname.includes(searched)) {
                 return (
