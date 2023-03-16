@@ -35,7 +35,7 @@ export default function MyChat(){
         mychat.map(chatname => {
         return <div className="chatRoom">
             <Link to={`/ChatPage?receiveuser=${chatname.nickname}&chattitle=${chatname.chattitle}`}>
-                유저 : {chatname.nickname}, 거래제목: {chatname.chattitle}
+                유저 : {chatname.nickname}, 거래제목: {chatname.chattitle}, 미확인챗 : {chatname.notread}
             </Link>
         </div>
     })
