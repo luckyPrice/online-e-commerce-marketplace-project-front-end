@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Navbar = (props) => {
   return (
     <StyledContainer>
-      <Link to="/UploadPage">글쓰기</Link>
+      
       <Link to="">물건 판매</Link>
       <Link to="">물건 구매</Link>
       <Link to="">무료나눔</Link>
