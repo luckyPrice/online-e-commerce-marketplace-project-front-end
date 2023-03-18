@@ -12,9 +12,15 @@ import Item from "./Products";
 import ReviewData from "./Reviewdata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore } from "@fortawesome/free-solid-svg-icons";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useNavigate } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import { useHistory } from "react-router-dom";
 
 function MyPage(props) {
  const [cookies] = useCookies();
+ const navigate = useNavigate();
   let [Product] = useState(Products);
   let [Reviewdata] = useState(ReviewData);
   const [requestResult, setRequestResult] = useState("");
@@ -24,6 +30,24 @@ function MyPage(props) {
   if (cookies.token) {
     nickname = jwt_decode(cookies.token).sub;
   }
+
+  const deleteListener = (id, e) => {
+  
+  
+
+    const itemId = {
+      itemid : id,
+      curentuser : nickname
+    }
+    console.log(itemId)
+    axios.post('http://localhost:8080/api/load/delete', itemId).then(
+      window.location.replace('/MainPage')
+    )
+  }
+
+  
+
+  
 
   useEffect(() => {
 
@@ -45,10 +69,14 @@ function MyPage(props) {
 },[])
 
 
+
+
   return (
+    
     <div className="container">
     <div className="row">
       <div className="col-md-6">
+      <ArrowBackIcon onClick={() => navigate('/MainPage')} />
         <br />
         <br />
       <FontAwesomeIcon icon={faStore} size="10x"/>
@@ -72,6 +100,7 @@ function MyPage(props) {
       })}
        
     </div>
+    
     <Tabs
       defaultActiveKey="profile"
       id="justify-tab-example"
@@ -86,6 +115,12 @@ function MyPage(props) {
               <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
               <p>판매자:{product.memberid}</p>
               <p>{product.itemprice}원</p>
+              <Button variant="outlined" onClick={ (e) => {deleteListener(product.itemid, e)}} startIcon={<DeleteIcon />}>
+  Delete
+</Button>
+              
+            
+              
               </div>)
               else 
               return (<p>{nickname}님이 올린 상품이 없습니다.</p>)

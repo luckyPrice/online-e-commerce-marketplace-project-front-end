@@ -66,6 +66,7 @@ const Header = (props) => {
     <StyledContainer>
       <StyledBtnContainer>
         <StyledBtnWrapper>
+        <Link to="/UploadPage">글쓰기</Link>
         <Link to="/MyPage">마이 페이지</Link>
         <Badge badgeContent={chatcount} color="primary">
     <Link to="/MyChat">마이 채팅</Link>
