@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import axios from "axios"
 import Item from './item';
 import styled from 'styled-components';
@@ -13,7 +13,9 @@ import MacM1Air from '../../Assets/macM1Air.jpg';
 import MacM1Pro from '../../Assets/macM1Pro.jpg';
 import MacM2Air from '../../Assets/macM2Air.jpg';
 import MacM2Pro from '../../Assets/macM2Pro.jpg';
+import options from "../../data/options";
 import { useImmer } from 'use-immer';
+import Aside from "../Aside";
 
 const ItemList = (props) => {
   const [searched, setSearched] = useState("");
@@ -27,6 +29,10 @@ const ItemList = (props) => {
 
 
 
+  const [originData, setOriginData] = useState([]);
+  useEffect(() => {
+    setItems(originData);
+  }, [originData]);
   useEffect(() => {
 
     
@@ -37,6 +43,15 @@ const ItemList = (props) => {
                       setInputData(response.data);
                       console.log(inputData)
                       setRequestResult('Success!!');
+                      setOriginData(
+                        response.data.map((i, idx) => {
+                          return {
+                            ...i,
+                            visit: (idx + 1) * i.itemprice,
+                          };
+                        })
+                      );
+
                     })
                     .catch((error) => {
                     console.log(error.message);
@@ -118,41 +133,44 @@ const ItemList = (props) => {
     setSearched(inputRef.current.value);
   };
 
-  const onSetSolt = e => {
-    console.log(e.target.id);
-    switch (e.target.id) {
+  const onSetSort = (type, category) => {
+    switch (type) {
       /* 인기순 */
-      case "pop": 
-      setInputData(
-        [...inputData].sort((a, b) => b.favor - a.favor)
-        
-      );
-      console.log(inputData);
+      case "pop":
+        setItems([...originData.sort((a, b) => b.visit - a.visit)]);
         break;
       /* 가격 낮은순 */
       case "desc":
-        setInputData(
-          [...inputData].sort((a, b) => a.itemprice - b.itemprice)
-          
-        );
-        console.log(inputData);
+        setItems([...originData.sort((a, b) => a.itemprice - b.itemprice)]);
         break;
       /* 가격 높은순 */
       case "asc":
-        setInputData(
-          [...inputData].sort((a, b) => b.itemprice - a.itemprice)
-        );
-        
-        console.log(inputData);
+        setItems([...originData.sort((a, b) => b.itemprice - a.itemprice)]);
         break;
-      default: 
+      case "category":
+        if (category)
+          setItems(originData.filter((i) => i.category === category));
+        else setItems(originData);
+        break;
+      default:
         return;
     }
   };
 
+    const categories = useMemo(
+    () => originData.map((i) => i.category).filter((i) => i),
+    [originData]
+  );
+
+  const categories1 = useMemo(
+    () => options.map((i) => i.text).filter((i) => i),
+    [options]
+  );
  
 
   return (
+    <Body>
+      <Aside categories={categories1} onClickCateogry={onSetSort} />
     <StyledContainer>
       <StyledFlex>
         <h1>판매상품</h1>
@@ -164,15 +182,15 @@ const ItemList = (props) => {
         </StyledSearchForm>
         <StyledSoltContainer>
           <StyledSoltWrapper>
-            <input type="radio" name="solt" id="pop" onChange={onSetSolt} />
+            <input type="radio" name="solt" id="pop" onChange={onSetSort} />
             <label htmlFor="pop">인기순</label>
           </StyledSoltWrapper>
           <StyledSoltWrapper>
-            <input type="radio" name="solt" id="desc" onChange={onSetSolt} />
+            <input type="radio" name="solt" id="desc" onChange={onSetSort} />
             <label htmlFor="desc">가격 낮은순</label>  
           </StyledSoltWrapper>
           <StyledSoltWrapper>
-            <input type="radio" name="solt" id="asc" onChange={onSetSolt} />
+            <input type="radio" name="solt" id="asc" onChange={onSetSort} />
             <label htmlFor="asc">가격 높은순</label>  
           </StyledSoltWrapper>
         </StyledSoltContainer>
@@ -191,8 +209,14 @@ const ItemList = (props) => {
         
       </StyledWrapper>
     </StyledContainer>
+    </Body>
   )    
 };
+
+const Body = styled.div`
+  display: flex;
+`;
+
 
 const StyledFlex = styled.div`
   position: relative;

@@ -1,0 +1,83 @@
+.nav__submenu {
+  display: none;
+}
+
+.nav__menu-item:hover .nav__submenu {
+  display: block;
+}
+
+/*
+Layout styles.
+
+I like to work on stuff that's good looking so I remixed a cool simple menu by Mike Rojas (thanks!): https://codepen.io/mikerojas87/pen/rojKb 
+*/
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.menu-container {
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.nav {
+  display: inline-block;
+  margin: 5rem auto 0;
+  background: #a7d5f4;
+  text-align: left;
+}
+.nav a {
+  display: block;
+  padding: 0 16px;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.nav__menu {
+  line-height: 45px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nav__menu-item {
+  display: block;
+  position: relative;
+}
+.nav__menu-item:hover {
+  background-color: #0089e5;
+  color: white;
+}
+.nav__menu-item:hover .nav__submenu {
+  display: block;
+}
+
+.nav__submenu {
+  font-weight: 300;
+  text-transform: none;
+  display: none;
+  position: static;
+  width: 200px;
+  background-color: #0089e5;
+}
+
+.nav__submenu-item:hover {
+  background: #0089e5(0, 0, 0, 0.1);
+  color: white;
+}

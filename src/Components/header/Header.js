@@ -76,7 +76,7 @@ const Header = (props) => {
         </StyledBtnWrapper>
         <p>{nickname ? nickname : "Guest"} 님 환영합니다.</p>
       </StyledBtnContainer>
-      <h1>중고 마켓</h1>
+      <Link to="/MainPage"><h1>중고 마켓</h1></Link>
     </StyledContainer>
      
 ) 

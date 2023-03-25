@@ -6,6 +6,8 @@ import './Chat.css'
 import { Link } from 'react-router-dom';
 import {useCookies} from "react-cookie";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PersonIcon from '@mui/icons-material/Person';
+import styled from "styled-components";
 
 export default function MyChat(){
     let nickname="";
@@ -35,7 +37,9 @@ export default function MyChat(){
         mychat.map(chatname => {
         return <div className="chatRoom">
             <Link to={`/ChatPage?receiveuser=${chatname.nickname}&chattitle=${chatname.chattitle}`}>
-                유저 : {chatname.nickname}, 거래제목: {chatname.chattitle}, 미확인챗 : {chatname.notread}
+            <p><PersonIcon fontSize="large"></PersonIcon>{chatname.nickname}</p>
+                 <ChatTitle>{chatname.chattitle} </ChatTitle>
+                 <Checkcount>{chatname.notread}</Checkcount>
             </Link>
         </div>
     })
@@ -54,4 +58,16 @@ export default function MyChat(){
 
 
 }
+
+const Checkcount = styled.div`
+display: flex;
+justify-content: flex-end;
+color: red;
+`;
+
+const ChatTitle = styled.div`
+display: flex;
+justify-content: flex-start;
+font-size : 20px;
+`;
 

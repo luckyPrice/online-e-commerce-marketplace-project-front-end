@@ -113,6 +113,8 @@
 .chatRoom{
   background-color:skyblue;
   font-size : 30px;
+  border-radius: 10px;
+  margin:10px;
   
 }
 

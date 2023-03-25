@@ -20,6 +20,7 @@ import sellerdata from './Routes/Sellerdata';
 import Reviewdata from './Routes/Reviewdata';
 import ReviewPage from'./Routes/ReviewPage';
 import ReviewAdd from './Routes/ReviewAdd';
+import CartPage from './Routes/CartPage';
 import {
     BrowserRouter,
     HashRouter as Router,
@@ -49,6 +50,7 @@ function App() {
       <Route exact path="/UploadPage" element={<UploadPage />}></Route>
       <Route exact path="/SellerPage/:seller" element={<SellerPage Product ={ Product } sellerdata={ sellerdata }/>}></Route>
       <Route exact path="/UploadPage" element={<UploadPage />}></Route>
+      <Route exact path="/Cart" element={<CartPage />}></Route>
     </Routes>
     </BrowserRouter>
 
