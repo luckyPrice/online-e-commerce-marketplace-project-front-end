@@ -10,12 +10,12 @@ import styled from 'styled-components';
 import './Chat.css'
 import jwt_decode from "jwt-decode"
 import { useNavigate, useSearchParams } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 var client = null;
 const ChatPage =() => {
     let nickname = "";
     const [Chats, setChats] = useState(new Map());  
-    const navigate = useNavigate();
     const [cookies, setCookies] = useCookies();
     const [message1, setMessage] = useState([]);
     if(cookies.token){
@@ -31,6 +31,7 @@ const ChatPage =() => {
         message:"",
         date:"?"
     });
+    let navigate = useNavigate();
 
     useEffect(() => {
         if(!cookies.token){
@@ -111,7 +112,7 @@ const ChatPage =() => {
     }
 
     const onGo = () => {
-        navigate('/MyChat');
+        navigate(-1);
     }
     
     
@@ -119,9 +120,12 @@ const ChatPage =() => {
   
 //추후에 함수로 뺄 예정
     return(
-        <>
-            <button onClick ={onGo}>myChat</button>
+        <><Abs>
+            <p>거래자:{userData && userData.receiveuser}</p>
+            <p>거래 제목:{userData && userData.chattitle}</p></Abs>
+            <ArrowBackIcon onClick={onGo} />
             <Load>
+                
                 <div class="container1">
                     <div class="chat_wr">
                         {message1 && [...message1].map((mes) => (
@@ -174,6 +178,21 @@ const ChatPage =() => {
     
       bottom: 0;
       width: 100%;
+      
+     
+    `;
+
+    const Abs = styled.div`
+    
+        position: fixed;
+        display: flex;
+        background:skyblue;
+  margin-left : 350px;
+  width: 800px;
+  height: 50px;
+  
+      
+      
       
      
     `;

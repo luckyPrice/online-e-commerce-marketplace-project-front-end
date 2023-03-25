@@ -35,6 +35,7 @@ const Item = ({ data, searched , id}) => {
 
 const StyledContainer = styled.div`
   display: flex;
+  overflow: hidden;
   align-items: flex-start;
   gap: 36px;
   width: 49%;

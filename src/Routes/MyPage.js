@@ -26,10 +26,15 @@ function MyPage(props) {
   const [requestResult, setRequestResult] = useState("");
   const [inputData, setInputData] = useState([]);
 
+
+
+
   let nickname = "";
   if (cookies.token) {
     nickname = jwt_decode(cookies.token).sub;
   }
+
+  const [favorData, setFavorData] = useState([]);
 
   const deleteListener = (id, e) => {
   
@@ -37,7 +42,7 @@ function MyPage(props) {
 
     const itemId = {
       itemid : id,
-      curentuser : nickname
+      currentuser : nickname
     }
     console.log(itemId)
     axios.post('http://localhost:8080/api/load/delete', itemId).then(
@@ -55,9 +60,27 @@ function MyPage(props) {
     axios.get('http://localhost:8080/api/load/UploadShow')
                     .then((response) =>{
                       
-                      
+                      console.log(response.data);
                       setInputData(response.data);
                       console.log(inputData)
+                      setRequestResult('Success!!');
+                    })
+                    .catch((error) => {
+                    console.log(error.message);
+                    
+                    setRequestResult('Failed!!');
+                    })
+
+                    const itemId = {
+                    itemid : 0,
+                    nickname : nickname
+                    }
+                    axios.post('http://localhost:8080/api/load/favorRequest', itemId)
+                    .then((response) =>{
+                      
+                      console.log(response.data);
+                      setFavorData(response.data);
+                      console.log(favorData)
                       setRequestResult('Success!!');
                     })
                     .catch((error) => {
@@ -116,14 +139,13 @@ function MyPage(props) {
               <p>판매자:{product.memberid}</p>
               <p>{product.itemprice}원</p>
               <Button variant="outlined" onClick={ (e) => {deleteListener(product.itemid, e)}} startIcon={<DeleteIcon />}>
-  Delete
-</Button>
+             Delete
+            </Button>
               
             
               
               </div>)
-              else 
-              return (<p>{nickname}님이 올린 상품이 없습니다.</p>)
+              
           })}
       </Tab>
       <Tab eventKey="review" title="내가 쓴 리뷰">
@@ -140,7 +162,17 @@ function MyPage(props) {
      })}
       </Tab>
       <Tab eventKey="heart" title="찜한 상품">
-       
+      {favorData.map(function (product, id) {
+            
+              return ( 
+              <div key={id}>
+              <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
+              <p>판매자:{product.memberid}</p>
+              <p>{product.itemprice}원</p>
+              
+          </div>)
+              
+          })}
       </Tab>
       <Tab eventKey="follower" title="팔로워">
       
