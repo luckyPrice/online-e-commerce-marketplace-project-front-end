@@ -67,6 +67,11 @@ function DetailPage(props) {
 
 });
   const [itemDetail, setitemDetail] = useState(null);
+  const [purpose, setPurpose] = React.useState('Sell');
+
+  const handleChange = (event) => {
+        setPurpose(event.target.value);
+      };
 
   useEffect(() => {
     axios
@@ -111,7 +116,7 @@ function DetailPage(props) {
        
           <Button variant="outlined" onClick={handleShow}>
             <FontAwesomeIcon icon={faCartShopping} />
-            장바구니
+            즉시 구매
           </Button>
           <Modal show={show} onHide={handleClose}>
                 <Modal.Header>

@@ -69,7 +69,7 @@ const Header = (props) => {
         <Link to="/UploadPage">글쓰기</Link>
         <Link to="/MyPage">마이 페이지</Link>
         <Badge badgeContent={chatcount} color="primary">
-    <Link to="/MyChat">마이 채팅</Link>
+    <Link to="/MyChat">대화창</Link>
       </Badge>
           
           <button onClick={logOutHandler}>로그아웃</button>

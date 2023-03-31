@@ -49,7 +49,7 @@ export default function MyChat(){
     return(
         <>
             <h2>내 채팅목록</h2>
-                <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+                <ArrowBackIcon onClick={() => navigate('/MainPage/all')} />
             <div>
                 {mychat && resultchecking}
             </div>
