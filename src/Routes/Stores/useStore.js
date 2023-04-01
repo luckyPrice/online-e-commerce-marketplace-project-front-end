@@ -12,6 +12,18 @@ export const useStore2 = create(set => ({
     
 }));
 
+export const useStore3 = create(set => ({
+    category : 'all',
+    setCategory : (category) => {set((state) => ({...state, category}));},
+    
+}));
+
+export const useStore4 = create(set => ({
+    detailcategory : null,
+    setDetailcategory : (detailcategory) => {set((state) => ({...state, detailcategory}));},
+    
+}));
+
 
 
 

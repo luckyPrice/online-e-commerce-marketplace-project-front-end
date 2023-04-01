@@ -16,7 +16,7 @@ import MacM2Pro from "../../Assets/macM2Pro.jpg";
 import { useImmer } from "use-immer";
 import Aside from "../Aside";
 import options from '../../data/options'
-import {useStore2} from "../../Routes/Stores/useStore";
+import {useStore2, useStore3, useStore4} from "../../Routes/Stores/useStore";
 
 const ItemList = (props) => {
   const [searched, setSearched] = useState("");
@@ -29,9 +29,22 @@ const ItemList = (props) => {
   const [inputData, setInputData] = useState([]);
   const {purpose, setPurpose} = useStore2();
   const [originData, setOriginData] = useState([]);
+  const {category, setCategory} = useStore3();
+  const {detailcategory, setDetailcategory} = useStore4();
   useEffect(() => {
     setItems(originData);
   }, [originData]);
+  useEffect(() => {
+    
+    setItems([...originData].filter(item => (item.category == category)).filter(item => (item.detailcategory == detailcategory)));
+    console.log("input " + items);
+    console.log(category);
+    console.log(detailcategory);
+  }, [detailcategory]);
+  useEffect(() => {
+    setItems([...originData].filter(item => (item.purpose == purpose)));
+  }, [purpose]);
+  
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/load/UploadShow")
@@ -59,7 +72,7 @@ const ItemList = (props) => {
     setSearched(inputRef.current.value);
   };
 
-  const onSetSort = (type, category) => {
+  const onSetSort = (type) => {
     switch (type) {
       /* 인기순 */
       case "pop":
@@ -73,11 +86,11 @@ const ItemList = (props) => {
       case "asc":
         setItems([...originData.sort((a, b) => b.itemprice - a.itemprice)]);
         break;
-      case "category":
+      /*case "category":
         if (category)
           setItems(originData.filter((i) => i.category === category));
         else setItems(originData);
-        break;
+        break;*/
       default:
         return;
     }
@@ -96,7 +109,6 @@ const ItemList = (props) => {
       <Aside categories={categories1} onClickCateogry={onSetSort} />
       <StyledContainer>
         <h1>오늘의 추천 상품</h1>
-        {purpose}
         <StyledWrapper>
           {[...items]
             .sort((a, b) => b.visit - a.visit)
@@ -146,6 +158,7 @@ const ItemList = (props) => {
           {searched.length > 0
             ? items.map((v, idx) => {
                 if (v.itemname.includes(searched)) {
+                  
                   return (
                     <Item
                       key={idx}
