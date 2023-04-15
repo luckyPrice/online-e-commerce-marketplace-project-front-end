@@ -44,10 +44,11 @@
 
 .container1{
   display: flex;
+  top:-1000px;
   flex-direction: column;
   margin-left : 350px;
   width: 800px;
-  height: 700px;
+  height: 500px;
   justify-content: flex-end;
   
  
@@ -93,6 +94,14 @@
   margin: 0 0 5px;
   /* flex-grow:1; */ /*주석을 제거해 보세요.*/
 }
+.chat_left_big {
+  padding: 40px 50px;
+  background: skyblue;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+  border-radius: 8px 40px 40px 40px;
+  margin: 0 0 5px;
+  /* flex-grow:1; */ /*주석을 제거해 보세요.*/
+}
 
 .chat_empty {
   flex-shrink: 0;/*아이콘 영역의 너비 만큰 말풍선이 넘지 않게 하기위해 48px 로 고정합니다. */
@@ -105,6 +114,15 @@
   box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
   border-radius: 40px 8px 40px 40px;
   margin: 0 0 5px;
+  
+}
+.chat_right_big {
+  padding: 40px 50px;
+  background: orange;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.4);
+  border-radius: 40px 8px 40px 40px;
+  margin: 0 0 5px;
+  
 }
 .right{
   justify-content: flex-end; /*오른쪽 끝으로 정렬합니다.*/
@@ -114,10 +132,15 @@
   background-color:skyblue;
   font-size : 30px;
   border-radius: 10px;
-  margin:10px;
+  margin:5px;
+  height: 75px;
   
 }
 
 .chatbottom{
+  display: flex;
   bottom:0px;
+  flex-wrap: nowrap;/*줄바꿈(개항)하지 않음*/
+  flex-direction: row;
 }
+

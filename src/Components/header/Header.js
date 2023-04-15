@@ -74,7 +74,8 @@ const Header = (props) => {
           
           <button onClick={logOutHandler}>로그아웃</button>
         </StyledBtnWrapper>
-        <p>{nickname ? nickname : "Guest"} 님 환영합니다.</p>
+        <p>{nickname ? nickname : "Guest"} 님 환영합니다.<Link to="/CashPage">충전</Link></p>
+        
       </StyledBtnContainer>
       <Link to="/MainPage"><h1>중고 마켓</h1></Link>
     </StyledContainer>

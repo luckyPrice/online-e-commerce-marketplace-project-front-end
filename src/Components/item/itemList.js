@@ -26,6 +26,8 @@ const ItemList = (props) => {
   const [requestResult, setRequestResult] = useState("");
   const navigate = useNavigate();
   let resData = [];
+  
+  const[first, setFirst] = useState(true);
   const [inputData, setInputData] = useState([]);
   const {purpose, setPurpose} = useStore2();
   const [originData, setOriginData] = useState([]);
@@ -35,14 +37,20 @@ const ItemList = (props) => {
     setItems(originData);
   }, [originData]);
   useEffect(() => {
+    if(category != 'all'){
+      setFirst(false);
+    }
     
     setItems([...originData].filter(item => (item.category == category)).filter(item => (item.detailcategory == detailcategory)));
-    console.log("input " + items);
-    console.log(category);
-    console.log(detailcategory);
+    console.log(first);
+    
   }, [detailcategory]);
   useEffect(() => {
+    if(detailcategory != null){
+      setFirst(false);
+    }
     setItems([...originData].filter(item => (item.purpose == purpose)));
+    
   }, [purpose]);
   
   useEffect(() => {
@@ -53,7 +61,7 @@ const ItemList = (props) => {
           response.data.map((i, idx) => {
             return {
               ...i,
-              visit: (idx + 1) * i.itemprice,
+              visit: i.view,
             };
           })
         );
@@ -105,17 +113,31 @@ const ItemList = (props) => {
     [options]
   );
   return (
+    <>
+    {first ? 
     <Body>
       <Aside categories={categories1} onClickCateogry={onSetSort} />
+      
       <StyledContainer>
-        <h1>오늘의 추천 상품</h1>
+      
+        <h1>인기 상품</h1>
         <StyledWrapper>
           {[...items]
-            .sort((a, b) => b.visit - a.visit)
+            .sort((a, b) => b.view - a.view)
             .map((i) => (
               <Item data={i} key={i.itemid} searched={searched} id={i.itemid} />
             ))}
         </StyledWrapper>
+        </StyledContainer>
+        </Body>
+        
+        :
+    <Body>
+      <Aside categories={categories1} onClickCateogry={onSetSort} />
+      
+      <StyledContainer>
+      
+        
         <StyledFlex>
           <h1>판매상품</h1>
           <StyledSearchForm onSubmit={(e) => onSetSearched(e)}>
@@ -175,6 +197,8 @@ const ItemList = (props) => {
         </StyledWrapper>
       </StyledContainer>
     </Body>
+            }
+            </>
   );
 };
 

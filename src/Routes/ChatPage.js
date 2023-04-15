@@ -11,6 +11,14 @@ import './Chat.css'
 import jwt_decode from "jwt-decode"
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeart,
+  faHeartCircleCheck,
+  faComment,
+  faCartShopping,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 var client = null;
 const ChatPage =() => {
@@ -29,7 +37,8 @@ const ChatPage =() => {
         receiveuser: receiveuser,
         chattitle : chattitle,
         message:"",
-        date:"?"
+        date:"?",
+        type:"message"
     });
     let navigate = useNavigate();
 
@@ -43,6 +52,7 @@ const ChatPage =() => {
             axios.post('http://localhost:8080/room/getmessage', userData)
                 .then((response) =>{
                     setMessage(response.data);
+                    console.log(response.data);
                 })
                 .catch((error) => {})   
             start();
@@ -120,10 +130,14 @@ const ChatPage =() => {
   
 //추후에 함수로 뺄 예정
     return(
-        <><Abs>
+        <>
+        <ArrowBackIcon onClick={onGo} />
+        <Margin></Margin>
+        
+        <Abs>
             <p>거래자:{userData && userData.receiveuser}</p>
             <p>거래 제목:{userData && userData.chattitle}</p></Abs>
-            <ArrowBackIcon onClick={onGo} />
+            
             <Load>
                 
                 <div class="container1">
@@ -131,10 +145,18 @@ const ChatPage =() => {
                         {message1 && [...message1].map((mes) => (
                             mes.senduser == nickname ? 
                             <div class="chat_row right">
+                                {mes.type === "message" ? (
                                 <div class="chat_right chat">
                                 {mes.message}
-
-                            </div>
+                                 </div>)
+                                 :
+                                 (
+                                <div class="chat_right_big chat">
+                                <p>{mes.message}</p>
+                                <Button variant="contained" onClick={() => navigate(`/TradePage?receiveuser=${mes.receiveuser}&chattitle=${mes.chattitle}`)}>주문 내역</Button>
+                                 </div>)
+                                }
+                                
                             <div className="empty"></div>
                             </div>
                             :
@@ -182,6 +204,24 @@ const ChatPage =() => {
      
     `;
 
+    const Test = styled.div`
+        background: skyblue;
+        width:300px;
+        height: 700px;
+        display:fixed;
+        float:right;
+    
+    `
+
+    const Chatlist = styled.div`
+        background: skyblue;
+        width:300px;
+        height: 700px;
+        display:flex;
+        float:left;
+    
+    `
+
     const Abs = styled.div`
     
         position: fixed;
@@ -196,6 +236,12 @@ const ChatPage =() => {
       
      
     `;
+
+    const Margin = styled.div`
+        display : flex;
+        height:100px;
+    
+    `
 
 
 export default ChatPage;
