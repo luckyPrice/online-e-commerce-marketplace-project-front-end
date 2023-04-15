@@ -21,6 +21,9 @@ import Reviewdata from './Routes/Reviewdata';
 import ReviewPage from'./Routes/ReviewPage';
 import ReviewAdd from './Routes/ReviewAdd';
 import CartPage from './Routes/CartPage';
+import Address from './Routes/Address';
+import TradePage from './Routes/TradePage';
+import CashPage from './Routes/CashPage';
 import {
     BrowserRouter,
     HashRouter as Router,
@@ -51,6 +54,10 @@ function App() {
       <Route exact path="/SellerPage/:seller" element={<SellerPage Product ={ Product } sellerdata={ sellerdata }/>}></Route>
       <Route exact path="/UploadPage" element={<UploadPage />}></Route>
       <Route exact path="/Cart" element={<CartPage />}></Route>
+      <Route exact path="/BuyPage/:id" element={<BuyPage />}></Route>
+      <Route exact path="/Address" element={<Address />}></Route>
+      <Route exact path="/TradePage" element={<TradePage />}></Route>
+      <Route exact path="/CashPage" element={<CashPage />}></Route>
     </Routes>
     </BrowserRouter>
 

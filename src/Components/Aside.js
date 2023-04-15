@@ -27,14 +27,33 @@ import local_service from "../data/local_service";
 import roommate from "../data/roommate";
 import job from "../data/job";
 import talent from "../data/talent";
+import options from "../data/options";
+import {useStore2, useStore3, useStore4} from "../Routes/Stores/useStore";
 
 
 const Aside = ({ categories, onClickCateogry }) => {
+
+  
+
+  const {category, setCategory} = useStore3();
+  const {detailcategory, setDetailcategory} = useStore4();
   let type = null
+
+  const onDetailcatechange = (cate, detailcate, e) => {
+    
+    console.log(cate);
+    const arr = options.filter(option => option.text == cate)
+    console.log(arr[0]);
+    setCategory(arr[0].value);
+    setDetailcategory(detailcate.value);
+    console.log(category);
+    console.log(detailcategory);
+    console.log(detailcate);
+  }
   const onSetCategory = (category) =>{
 
     
-    console.log(category);
+    
     if (category == "여성의류") {
       type = femail_clothes;
     } else if (category === "남성의류") {
@@ -93,11 +112,37 @@ const Aside = ({ categories, onClickCateogry }) => {
     else{
       type = [];
     }
-
+    
     return type;
   };
 
-
+  const Submenu = ({category2, category}) =>{
+    return (
+  
+      // <ul className="nav__submenu">
+      //     <li className="nav__submenu-item ">
+      //       <a>Our Company</a>
+      //     </li>
+      //     <li className="nav__submenu-item ">
+      //       <a>Our Team</a>
+      //     </li>
+      //     <li className="nav__submenu-item ">
+      //       <a>Our Portfolio</a>
+      //     </li>
+      //   </ul>
+      <ul className="nav__submenu">
+        {category2 && category2.map((category3) => (
+          
+            <li key={category3.value} className="nav__submenu-item">
+              <button onClick={ (e) => {onDetailcatechange(category, category3, e)}} className="nav__submenu-item"
+              >
+                {category3.text}
+              </button>
+            </li>
+          ))}
+      </ul>
+    )
+  }
 
   return (
     <Wrapper className="nav">
@@ -123,7 +168,7 @@ const Aside = ({ categories, onClickCateogry }) => {
             >
               {category}
             </button>
-            <Submenu category2={onSetCategory(category)}/>
+            <Submenu category2={onSetCategory(category)} category={category}/>
           </List>
         ))}
       </ul>
@@ -131,32 +176,7 @@ const Aside = ({ categories, onClickCateogry }) => {
   );
 };
 
-const Submenu = ({category2}) =>{
-  return (
 
-    // <ul className="nav__submenu">
-    //     <li className="nav__submenu-item ">
-    //       <a>Our Company</a>
-    //     </li>
-    //     <li className="nav__submenu-item ">
-    //       <a>Our Team</a>
-    //     </li>
-    //     <li className="nav__submenu-item ">
-    //       <a>Our Portfolio</a>
-    //     </li>
-    //   </ul>
-    <ul className="nav__submenu">
-      {category2 && category2.map((category3) => (
-          <li key={category3.value} className="nav__submenu-item">
-            <button className="nav__submenu-item"
-            >
-              {category3.text}
-            </button>
-          </li>
-        ))}
-    </ul>
-  )
-}
 
 export default Aside;
 

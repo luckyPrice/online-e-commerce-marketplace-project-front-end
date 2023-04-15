@@ -1,16 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import {useStore2} from "../../Routes/Stores/useStore";
 
 const Navbar = (props) => {
+  const {purpose, setPurpose} = useStore2();
+
+  const sellPurpose = () => {
+    console.log(purpose);
+    setPurpose("sell");
+    console.log(purpose);
+  }
+  const purchasePurpose = () => {
+    console.log(purpose);
+    setPurpose("purchase");
+    console.log(purpose);
+  }
+  const donatePurpose = () => {
+    console.log(purpose);
+    setPurpose("donate");
+    console.log(purpose);
+  }
   return (
     <StyledContainer>
       
-      <Link to="">물건 판매</Link>
-      <Link to="">물건 구매</Link>
-      <Link to="">무료나눔</Link>
-      <Link to="">알바 구합니다</Link>
-      <Link to="">알바 합니다</Link>
+      <button onClick={sellPurpose}>판매합니다</button>
+      <button onClick={purchasePurpose}>구매합니다</button>
+      <button onClick={donatePurpose}>무료나눔합니다</button>
+      
     </StyledContainer>
   )    
 };

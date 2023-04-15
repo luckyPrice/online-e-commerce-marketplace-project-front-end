@@ -67,6 +67,7 @@ function DetailPage(props) {
 
 });
   const [itemDetail, setitemDetail] = useState(null);
+  
 
   useEffect(() => {
     axios
@@ -108,18 +109,19 @@ function DetailPage(props) {
           <h5>판매자: {itemDetail && itemDetail.memberid}</h5>
           <br />
           <b>가격:{itemDetail && itemDetail.itemprice}</b>원<br />
-       
+          { itemDetail &&(itemDetail.memberid !== nickname && (
+       <>
           <Button variant="outlined" onClick={handleShow}>
             <FontAwesomeIcon icon={faCartShopping} />
-            장바구니
+            즉시 구매
           </Button>
           <Modal show={show} onHide={handleClose}>
                 <Modal.Header>
                     <Modal.Title>장바구니에 추가</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>장바구니로 이동하시겠습니까?</Modal.Body>
+                <Modal.Body>구매하시겠습니까?</Modal.Body>
                 <Modal.Footer>
-                <Button variant="outlined" onClick={() => navigate("/Cart")}>
+                <Button variant="outlined" onClick={() => navigate("/BuyPage/" + id)}>
                        OK!
                 </Button>
                 <Button variant="outlined" onClick={handleClose}>
@@ -157,6 +159,11 @@ function DetailPage(props) {
             <FontAwesomeIcon icon={faUser} />{" "}
             {itemDetail && itemDetail.memberid}님
           </Button>
+          </>
+          )
+          
+          
+          )}
         </Grid>
       </div>
 

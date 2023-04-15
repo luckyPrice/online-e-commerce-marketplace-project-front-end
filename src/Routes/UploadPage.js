@@ -36,6 +36,9 @@ import local_service from "../data/local_service";
 import roommate from "../data/roommate";
 import job from "../data/job";
 import talent from "../data/talent";
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 
 
@@ -86,6 +89,11 @@ export default function UploadPage() {
           setDetailCategory(value);
         }
     };
+    const [purpose, setPurpose] = React.useState('sell');
+
+  const purposeChange = (event) => {
+        setPurpose(event.target.value);
+      };
 
   
   
@@ -101,6 +109,7 @@ export default function UploadPage() {
        fd.append("maintext", Main_text);
        fd.append("itemprice", ItemPrice);
        fd.append("detailcategory", DetailCategory);
+       fd.append("purpose", purpose);
        
        
             axios.post('http://localhost:8080/api/load/Upload',fd ,{
@@ -143,6 +152,7 @@ export default function UploadPage() {
         }
         }
         }
+
 
         if (selected === "femail clothes") {
           type = femail_clothes;
@@ -306,6 +316,19 @@ export default function UploadPage() {
                             
                         />
                     </Form.Group>
+                    <RadioGroup
+            row
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="female"
+            name="radio-buttons-group"
+            value={purpose}
+            onChange={purposeChange}
+            >
+               
+    <FormControlLabel value="sell" control={<Radio />} label="판매" />
+    <FormControlLabel value="purchase" control={<Radio />} label="구매" />
+    <FormControlLabel value="donate" control={<Radio />} label="무료 나눔" />
+  </RadioGroup>
 
                     
                     

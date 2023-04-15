@@ -6,7 +6,7 @@ const talent = [
     {value: 'blog_document_translate', text: '블로그/문서/번역'},
     {value: '', text: '거래대행'},
     {value: 'move_delivery', text: '재능인 찾아요'},
-    {value: 'move_delivery', text: '기타재능'},
+    {value: 'move_delivery_etc', text: '기타재능'},
   ];
 
 
