@@ -110,6 +110,7 @@ export default function UploadPage() {
        fd.append("itemprice", ItemPrice);
        fd.append("detailcategory", DetailCategory);
        fd.append("purpose", purpose);
+      
        
        
             axios.post('http://localhost:8080/api/load/Upload',fd ,{
@@ -128,7 +129,7 @@ export default function UploadPage() {
                             return;
                         }
 
-                        navigate('/mainPage');
+                        navigate('/');
                             
                       
 

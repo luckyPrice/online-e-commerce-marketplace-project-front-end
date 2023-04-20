@@ -12,6 +12,7 @@ import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useSearchParams, useParams } from "react-router-dom";
+
 var client = null;
 const TradePage = () => {
     const [cookies, setCookies] = useCookies();
@@ -172,7 +173,7 @@ const TradePage = () => {
         let sock = new SockJS('http://localhost:8080/ws')
         client = over(sock);
         client.connect({}, () =>{client.subscribe("/private/message/" + nickname);});
-        console.log("?")
+        
         
     }
 
@@ -181,7 +182,7 @@ const TradePage = () => {
 
         seller ? 
         <>
-        <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+        <ArrowBackIcon onClick={() => navigate('/')} />
         <Box
             sx={{
                 marginTop: 14,
@@ -191,9 +192,10 @@ const TradePage = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                border: 'solid gray',
               }}
         >
-        
+        <h3>주문정보</h3>
         <img src={itemDetail&&itemDetail.url} alt="items" width="150px" height="150px" />
         
         
@@ -211,13 +213,15 @@ const TradePage = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                border: 'solid gray',
               }}
         >
-        
+        <h3>주문정보</h3>
         <img src={itemDetail&&itemDetail.url} alt="items" width="150px" height="150px" />
         
         
         <Button type='button' onClick={BuyerAct}>수령 완료</Button>
+        <Button type='button' onClick={() => navigate('/StarReviewPage/' + itemDetail.itemid)}>리뷰작성</Button>
         </Box>
         
         </>

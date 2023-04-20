@@ -4,16 +4,17 @@ import { useNavigate } from "react-router-dom";
 import {useCookies} from "react-cookie";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import {useStore1} from "./Stores/useStore";
 import jwt_decode from "jwt-decode"
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 
 
 
-export default function SignIn() {
+const LoginPage = () => {
     const navigate = useNavigate();
     const [requestResult, setRequestResult] = useState("");
     const [value, setValue] = useState("");
@@ -69,7 +70,7 @@ export default function SignIn() {
                             console.log(token);
                             setUser(user);
                             
-                            navigate('/mainPage');
+                            navigate('/');
                         
 
 
@@ -85,6 +86,10 @@ export default function SignIn() {
 
   return (
     <>
+    <StyledContainer>
+    <Link to="/"><h1>중고 마켓</h1></Link>
+    </StyledContainer>
+    
     <Box
           sx={{
             marginTop: 14,
@@ -129,11 +134,56 @@ export default function SignIn() {
             </Button>
             
               <Grid item>
-                <Link href="/AuthCreatePage" variant="body2">
+                <Link to="/AuthCreatePage" variant="body2">
                   {"아이디가 없으신가요? 회원가입하기"}
                 </Link>
               </Grid>
             </Box>
       </>      
   );
+
+  
 }
+
+const StyledBtnContainer = styled.div`
+  position: absolute;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  a,
+  button {
+    display: inline-block;
+    padding: 6px 8px;
+    border: 1px solid #141414;
+    border-radius: 6px;
+    color: #141414;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+  }
+  a:hover,
+  button:hover {
+    background-color: #141414;
+    color: #fff;
+  }
+`;
+
+const StyledBtnWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+`;
+
+const StyledContainer = styled.div`
+  position: relative;
+  padding: 30px 0;
+  h1 {
+    display: flex;
+    justify-content: center;
+    color: #141414;
+    font-weight: bold;
+  }
+`;
+
+export default LoginPage;

@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Products from "./data";
-import Item from "./Products";
 import SellerData from "./Sellerdata";
-import { Nav } from "react-bootstrap";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import ReviewPage from'./ReviewPage';
-
-
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faShop} from "@fortawesome/free-solid-svg-icons";
 function SellerPage(props) {
-  let [tab, setTab] = useState(0);
-
-  let [Product] = useState(Products);
+  const navigate = useNavigate();
   let { seller } = useParams();
   let setProduct = props.Product.find(function (product) {
     return product.seller === seller;
   });
+  const [inputData, setInputData] = useState([]);
+  const [requestResult, setRequestResult] = useState("");
+  useEffect(() => {
+
+    
+    axios.get('http://localhost:8080/api/load/UploadShow')
+                    .then((response) =>{
+                      
+                      
+                      setInputData(response.data);
+                      console.log(inputData)
+                      setRequestResult('Success!!');
+              
+
+                    })
+                    .catch((error) => {
+                    console.log(error.message);
+                    
+                    setRequestResult('Failed!!');
+                    })
+
+},[])
+
  
   return (
     <div className="container">
@@ -26,9 +44,10 @@ function SellerPage(props) {
           <br />
           <br />
 
-          <img src="/icon/person-circle.svg" width="150px" height="150px" />
+         
         </div>
-        <h3>SellerPage {setProduct.seller}</h3> <br />
+        <FontAwesomeIcon icon={faShop} size="10x"/>
+        <h3>{setProduct.seller}님의 상점</h3> <br />
         {SellerData.map(function (SD, k) {
           if (setProduct.seller == SD.name) {
             return (
@@ -51,51 +70,45 @@ function SellerPage(props) {
             );
           }
         })}
-        <Nav className="mt-5 mb-3" variant="tabs" defaultActiveKey="link-0">
-          <Nav.Item>
-            <Nav.Link
-              eventKey="link-0"
-              onClick={() => {
-                setTab(0);
-              }}
-            >
-              상품
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              eventKey="link-1"
-              onClick={() => {
-                setTab(1);
-              }}
-            >
-              리뷰
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <TabContent tab={tab} />
+        <Tabs
+      defaultActiveKey="profile"
+      id="fill-tab-example"
+      className="mb-3"
+      fill
+    >
+      <Tab eventKey="products" title="상품">
+      {inputData.map(function (product, id) {
+         const gotoDetail = () => {
+          navigate('/DetailPage/' + product.itemid);
+      }
+           if (setProduct.seller == product.memberid)
+              return (        
+              <div key={id} onClick={gotoDetail} >
+              <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
+              <p>판매자:{product.memberid}</p>
+              <p>{product.itemprice}원</p>
+     
+              
+              </div>
+              )
+              
+          })}
+      </Tab>
+      <Tab eventKey="review" title="상점 후기">
+       
+      </Tab>
+      <Tab eventKey="follower" title="팔로워">
+      
+      </Tab>
+      <Tab eventKey="following" title="팔로잉">
+      
+      </Tab>
+    </Tabs>
       </div>
     </div>
-  );
-  function TabContent(props) {
-
     
-    if (props.tab === 0) {
-      return (
-        
-        <div className="pt-4"> 
-       
-        {Product.map(function (product, id) {
-            if (product.seller == seller)
-              return <Item product={Product[id]} i={id} key={id} />;
-          })}</div>
-         
-       
-      );
-    } else if (props.tab === 1) {
-      return <div><ReviewPage/></div>
-    }
-  }
+  );
+
 
 }
 

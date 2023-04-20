@@ -8,25 +8,22 @@ import Grid from "@mui/material/Grid";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Products from "./data";
-import Item from "./Products";
-import ReviewData from "./Reviewdata";
+import { FaStar } from "react-icons/fa";
+//import ReviewData from "./Reviewdata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStore } from "@fortawesome/free-solid-svg-icons";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import { useHistory } from "react-router-dom";
 
-function MyPage(props) {
+
+function MyPage(id) {
  const [cookies] = useCookies();
  const navigate = useNavigate();
   let [Product] = useState(Products);
-  let [Reviewdata] = useState(ReviewData);
   const [requestResult, setRequestResult] = useState("");
   const [inputData, setInputData] = useState([]);
-
-
+  const [reviewData, setReviewData] = useState([]);
 
 
   let nickname = "";
@@ -44,15 +41,33 @@ function MyPage(props) {
       itemid : id,
       currentuser : nickname
     }
+
     console.log(itemId)
     axios.post('http://localhost:8080/api/load/delete', itemId).then(
-      window.location.replace('/MainPage')
+      window.location.replace('/')
     )
+  }
+
+  const Star = (idx) => {
+    return 
+    for(let i = 0 ; i < idx ; i ++){
+<FaStar
+    size={24}
+    color="#FFBA5A"
+    style={{
+      marginRight: 10,
+      cursor: "pointer"
+    }}
+  />
+    }
+    
   }
 
   
 
-  
+
+
+
 
   useEffect(() => {
 
@@ -88,6 +103,20 @@ function MyPage(props) {
                     
                     setRequestResult('Failed!!');
                     })
+                    const getreview = {
+                      nickname : nickname
+                    }
+                    axios.post('http://localhost:8080/api/forum/getreview', getreview)
+                    .then((response) =>{
+  
+                      setReviewData(response.data);
+                      setRequestResult('Success!!');
+                    })
+                    .catch((error) => {
+                    console.log(error.message);
+                    
+                    setRequestResult('Failed!!');
+                    })
 
 },[])
 
@@ -99,17 +128,17 @@ function MyPage(props) {
     <div className="container">
     <div className="row">
       <div className="col-md-6">
-      <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+      <ArrowBackIcon onClick={() => navigate('/')} />
         <br />
         <br />
-      <FontAwesomeIcon icon={faStore} size="10x"/>
+      <FontAwesomeIcon icon={faCircleUser} size="10x"/>
       <br />
       <p>{nickname}님의 My Page 입니다.</p>
       </div>
       {SellerData.map(function (SD, k) {
         if (nickname == SD.name) {
           return (
-            <Grid is_flex="true">
+              <Grid is_flex="true">
               <b>상점오픈: {SD.opendate}일 전</b>
               <br/>
               <b>방문자:{SD.visitor}</b>명<br/>
@@ -118,6 +147,7 @@ function MyPage(props) {
               <b>거래 수:{SD.deal}회</b>
               <br/>
               </Grid>
+             
           );
         }
       })}
@@ -132,9 +162,14 @@ function MyPage(props) {
     >
       <Tab eventKey="home" title="올린 상품">
       {inputData.map(function (product, id) {
+          const gotoDetail = () => {
+            navigate('/DetailPage/' + product.itemid);
+        }
+        
             if (nickname == product.memberid)
               return ( 
-              <div key={id}>
+                
+              <div key={id} onClick={gotoDetail}>
               <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
               <p>판매자:{product.memberid}</p>
               <p>{product.itemprice}원</p>
@@ -149,23 +184,42 @@ function MyPage(props) {
           })}
       </Tab>
       <Tab eventKey="review" title="내가 쓴 리뷰">
-      {Reviewdata.map(function (RD, id) {
-      if (nickname == RD.customer)
+      {reviewData && reviewData.map(function (RD, id) {
+      
       return(
       
       <div key={id}>
-      <p>판매자:{RD.seller}</p>
-      <p>상품평:{RD.level}</p>
-      <p>별점:{RD.star}</p><br/><br/>
+      <FontAwesomeIcon icon={faCircleUser} size="2x"/>
+      <p>판매자:{RD.target}</p>
+      <p>상품평:{RD.comment}</p>
+      <p>{Array(5).fill(RD.star).map((_, index) => {
+          return (
+            <FaStar
+              key={index}
+              size={24}
+              
+              color="#FFBA5A"
+              style={{
+                marginRight: 10,
+                cursor: "pointer"
+              }}
+            />
+
+          )
+        })}</p><br/><br/>
       </div>)
         
      })}
+     
       </Tab>
       <Tab eventKey="heart" title="찜한 상품">
       {favorData.map(function (product, id) {
+          const gotoDetail = () => {
+                navigate('/DetailPage/' + product.itemid);
+            }
             
               return ( 
-              <div key={id}>
+              <div key={id} onClick={gotoDetail}>
               <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
               <p>판매자:{product.memberid}</p>
               <p>{product.itemprice}원</p>

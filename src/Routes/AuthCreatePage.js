@@ -53,7 +53,7 @@ const [favor, setFavor] = React.useState({
                 alert('다시 확인해주세요');
                 return;
             }
-            navigate('/');
+            navigate('/LoginPage');
         })
         .catch((error) => {
             setRequestResult('Failed!!');
@@ -77,7 +77,7 @@ const [favor, setFavor] = React.useState({
 
     return(
     <div>
-        <ArrowBackIcon onClick={() => navigate('/')} />
+        <ArrowBackIcon onClick={() => navigate('/LoginPage')} />
         <Box
             sx={{
                 marginTop: 14,
