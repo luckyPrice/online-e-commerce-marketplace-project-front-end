@@ -24,6 +24,7 @@ import CartPage from './Routes/CartPage';
 import Address from './Routes/Address';
 import TradePage from './Routes/TradePage';
 import CashPage from './Routes/CashPage';
+import StarReviewPage from './Routes/StarReviewPage';
 import {
     BrowserRouter,
     HashRouter as Router,
@@ -39,9 +40,9 @@ function App() {
   return (
   <BrowserRouter>
     <Routes>
-      <Route exact path="/" element={<LoginPage />}></Route>
+      <Route exact path="/LoginPage" element={<LoginPage />}></Route>
       <Route exact path="/AuthCreatePage" element={<AuthCreatePage />}></Route>
-      <Route exact path="/MainPage" element={<MainPage />}></Route>
+      <Route exact path="/" element={<MainPage />}></Route>
       <Route exact path="/MyPage" element={<MyPage />}></Route>
       <Route exact path="/SellPage" element={<SellPage />}></Route>
       <Route exact path="/BuyPage" element={<BuyPage />}></Route>
@@ -58,6 +59,7 @@ function App() {
       <Route exact path="/Address" element={<Address />}></Route>
       <Route exact path="/TradePage" element={<TradePage />}></Route>
       <Route exact path="/CashPage" element={<CashPage />}></Route>
+      <Route exact path="/StarReviewPage/:id" element={<StarReviewPage />}></Route>
     </Routes>
     </BrowserRouter>
 

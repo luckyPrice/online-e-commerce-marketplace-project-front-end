@@ -35,6 +35,7 @@ const ItemList = (props) => {
   const {detailcategory, setDetailcategory} = useStore4();
   useEffect(() => {
     setItems(originData);
+    
   }, [originData]);
   useEffect(() => {
     if(category != 'all'){
@@ -49,11 +50,14 @@ const ItemList = (props) => {
     if(detailcategory != null){
       setFirst(false);
     }
+    
+    console.log(originData);
     setItems([...originData].filter(item => (item.purpose == purpose)));
     
   }, [purpose]);
   
   useEffect(() => {
+    
     axios
       .get("http://localhost:8080/api/load/UploadShow")
       .then((response) => {
@@ -65,12 +69,15 @@ const ItemList = (props) => {
             };
           })
         );
+        console.log(originData);
       })
       .catch((error) => {
         console.log(error.message);
 
         setRequestResult("Failed!!");
+        
       });
+      setFirst(true);
   }, []);
 
   const [items, setItems] = useState([]);
@@ -125,7 +132,10 @@ const ItemList = (props) => {
           {[...items]
             .sort((a, b) => b.view - a.view)
             .map((i) => (
+              <>
+                    
               <Item data={i} key={i.itemid} searched={searched} id={i.itemid} />
+              </>
             ))}
         </StyledWrapper>
         </StyledContainer>
@@ -182,12 +192,15 @@ const ItemList = (props) => {
                 if (v.itemname.includes(searched)) {
                   
                   return (
+                    <>
+                    
                     <Item
                       key={idx}
                       data={v}
                       searched={searched}
                       id={v.itemid}
                     />
+                    </>
                   );
                 }
               })
@@ -282,5 +295,7 @@ const StyledWrapper = styled.div`
   padding-bottom: 20px;
   box-sizing: border-box;
 `;
+
+
 
 export default ItemList;

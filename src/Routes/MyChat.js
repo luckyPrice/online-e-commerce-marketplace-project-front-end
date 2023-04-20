@@ -15,6 +15,9 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
+import Header from "../Components/header/Header";
+import Navbar from "../Components/navbar/Navbar";
+import Grid from "@mui/material/Grid";
 
 var client = null;
 const MyChat = () =>{
@@ -155,14 +158,19 @@ const MyChat = () =>{
 
     return(
         <>
-            <h2>내 채팅목록</h2>
+        <Grid padding="60px 0 0 0" max_width="950px" margin="0 auto">
+      <Header />
+      <Navbar />
+            
                 <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+            <ChatForm>
             <LeftForm>
+            <Title><h2>전체 대화</h2></Title>
                 {mychat && resultchecking}
             </LeftForm>
             <RightForm>
                 
-            <div class="container1">
+            <div class="container2">
                     <div class="chat_wr">
                         {message1 && [...message1].map((mes) => (
                             mes.senduser == nickname ? 
@@ -214,6 +222,8 @@ const MyChat = () =>{
                     </div>
                 </div>
             </RightForm>
+            </ChatForm>
+            </Grid>
         </>
     )
 
@@ -221,48 +231,62 @@ const MyChat = () =>{
 }
 
 const Checkcount = styled.div`
-position:fixed;
+margin-left : 350px;
 left : 730px;
 color: red;
 text-align: right;
 `;
 
-const LeftForm = styled.div`
-    
-position: fixed;
+const Title = styled.div`
+text-align:center;
+`;
 
-      
-  margin-left : 350px;
+const LeftForm = styled.div`
+
+background-color:pink;
   width:450px;
-  height: 50px;
+  height: 500px;
   right:700px;
+  overflow-y:scroll;
   
-  flex-direction : column;
-  flex-wrap : wrap;
+     
+    `;
+
+const ChatForm = styled.div`
+    
+
+
+margin-left : 350px;
+border:solid;
+    width:860px;
+  height: 520px;
+  right:700px;
+  display: flex;
+  flex-direction : row;
+  flex-wrap : nowrap;
      
     `;
 
 const RightForm = styled.div`
     
-position: fixed;
-display: flex;
+
+
         
-margin-left : 350px;
-left : 100px;
+
 height: 100px;
-width:50%;
+width:350px;
       
      
     `;
 
 const ChatTitle = styled.div`
-display: flex;
+display: fixed;
 justify-content: flex-start;
 font-size : 20px;
 `;
 
 const ChatInfo = styled.div`
-display: flex;
+display: fixed;
 flex-direction : row;
 
 `;

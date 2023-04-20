@@ -8,14 +8,17 @@ import jwt_decode from "jwt-decode"
 import Badge from '@mui/material/Badge';
 import axios from "axios"
 import MailIcon from '@mui/icons-material/Mail';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 const Header = (props) => {
     const [cookies, setCookies] = useCookies();
     const {user, removeUser} = useStore1();
+    let login = false;
     const navigate = useNavigate();
     const [chatcount, setCount] = useState(null);
     let nickname = "";
     if(cookies.token){
+      login = true;
       nickname = jwt_decode(cookies.token).sub;
     }
     
@@ -24,7 +27,12 @@ const Header = (props) => {
     const logOutHandler = () => {
         setCookies('token', '', {expires: new Date()});
         removeUser();
-        navigate('/');
+        login = false;
+    }
+
+    const logInHandler = () => {
+        
+        navigate('/LoginPage');
     }
 
     useEffect(() => {
@@ -35,8 +43,8 @@ const Header = (props) => {
 
 
       if(!cookies.token){
-        alert('로그인해주세요');
-          navigate('/');
+        //alert('로그인해주세요');
+          //navigate('/');
       }
       else{
         console.log(nickname)
@@ -72,12 +80,17 @@ const Header = (props) => {
     <Link to="/MyChat">대화창</Link>
       </Badge>
           
-          <button onClick={logOutHandler}>로그아웃</button>
+            {login ? <button onClick={logOutHandler}>로그아웃</button> : <button onClick={logInHandler}>로그인</button>}
+            
+            
+          
+
+        
         </StyledBtnWrapper>
-        <p>{nickname ? nickname : "Guest"} 님 환영합니다.<Link to="/CashPage">충전</Link></p>
+        <p>{nickname ? nickname : "Guest"} 님 환영합니다.<MonetizationOnIcon onClick={() => navigate('/CashPage')} /></p>
         
       </StyledBtnContainer>
-      <Link to="/MainPage"><h1>중고 마켓</h1></Link>
+      <Link to="/"><h1>중고 마켓</h1></Link>
     </StyledContainer>
      
 ) 
