@@ -7,6 +7,10 @@ import Tabs from 'react-bootstrap/Tabs';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faShop} from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { FaStar } from "react-icons/fa";
 function SellerPage(props) {
   const navigate = useNavigate();
   let { seller } = useParams();
@@ -14,6 +18,7 @@ function SellerPage(props) {
     return product.seller === seller;
   });
   const [inputData, setInputData] = useState([]);
+  const [reviewData, setReviewData] = useState([]);
   const [requestResult, setRequestResult] = useState("");
   useEffect(() => {
 
@@ -34,6 +39,21 @@ function SellerPage(props) {
                     setRequestResult('Failed!!');
                     })
 
+                    const getreview = {
+                      nickname : seller
+                    }
+                    axios.post('http://localhost:8080/api/forum/getreview', getreview)
+                    .then((response) =>{
+  
+                      setReviewData(response.data);
+                      setRequestResult('Success!!');
+                    })
+                    .catch((error) => {
+                    console.log(error.message);
+                    
+                    setRequestResult('Failed!!');
+                    })
+
 },[])
 
  
@@ -47,9 +67,9 @@ function SellerPage(props) {
          
         </div>
         <FontAwesomeIcon icon={faShop} size="10x"/>
-        <h3>{setProduct.seller}님의 상점</h3> <br />
+        <h3>{seller}님의 상점</h3> <br />
         {SellerData.map(function (SD, k) {
-          if (setProduct.seller == SD.name) {
+          if (seller == SD.name) {
             return (
               <div className="col-md-6" key={k}>
                 <li>
@@ -81,7 +101,7 @@ function SellerPage(props) {
          const gotoDetail = () => {
           navigate('/DetailPage/' + product.itemid);
       }
-           if (setProduct.seller == product.memberid)
+           if (product.memberid == seller)
               return (        
               <div key={id} onClick={gotoDetail} >
               <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
@@ -95,7 +115,41 @@ function SellerPage(props) {
           })}
       </Tab>
       <Tab eventKey="review" title="상점 후기">
-       
+      {reviewData && reviewData.map(function (RD, id) {
+      
+      return(
+      
+      <div key={id}>
+      <Form>
+      <FontAwesomeIcon icon={faCircleUser} size="2x"/>
+      <ProfileForm>{RD.target}
+      
+      <p>{Array(RD.star).fill(RD.star).map((_, index) => {
+          return (
+            <FaStar
+              key={index}
+              size={10}
+              
+              color="#FFBA5A"
+              style={{
+                marginRight: 1,
+                cursor: "pointer"
+              }}
+            />
+
+          )
+        })}</p></ProfileForm></Form>
+        <Obj onClick={() => navigate('/DetailPage/' + RD.itemid)} >{RD.title}
+        <Icondiv><ArrowForwardIosIcon/></Icondiv>
+        </Obj>
+        <Comment>
+        <p>상품평:{RD.comment}</p>
+        </Comment>
+        <br/><br/>
+      
+      </div>)
+        
+     })}
       </Tab>
       <Tab eventKey="follower" title="팔로워">
       
@@ -111,5 +165,31 @@ function SellerPage(props) {
 
 
 }
+
+const Form = styled.div`
+display: flex;
+  flex-direction : row;
+  flex-wrap : nowrap;
+`;
+
+const ProfileForm = styled.div`
+margin-left : 20px;
+`;
+
+const Obj = styled.div`
+display: flex;
+border:solid 1px;
+width:200px;
+`;
+
+const Icondiv = styled.div`
+margin-left : 150px;
+
+text-align: right;
+`;
+
+const Comment = styled.div`
+margin-top : 10px;
+`;
 
 export default SellerPage;

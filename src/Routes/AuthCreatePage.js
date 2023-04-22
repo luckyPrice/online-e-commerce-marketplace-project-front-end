@@ -23,14 +23,10 @@ const [phonenumber, setPhonenumber] = useState("");
 const [sex, setSex] = React.useState('female');
 const [address, setAddress] = useState("");
 const navigate = useNavigate();
-const [favor, setFavor] = React.useState({
-    clothes: true,
-    elect: false,
-    hobby: false,
-  });
 
 
-  const { clothes, elect, hobby } = favor;
+
+  
 
         // 임시(회원가입), jwt 토큰을 이용해 만들 예정입니다.
     const signUpHandler = () => {
@@ -65,12 +61,7 @@ const [favor, setFavor] = React.useState({
         setSex(event.target.value);
       };
 
-      const favorChange = (event) => {
-        setFavor({
-          ...favor,
-          [event.target.name]: event.target.checked,
-        });
-      };
+      
 
    
       
@@ -118,26 +109,7 @@ const [favor, setFavor] = React.useState({
             <TextField fullWidth label = "주소" type="address" variant="standard" onChange={(event) => setAddress(event.target.value
             )}/>
 
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox checked={clothes} onChange={favorChange} name="clothes" />
-            }
-            label="의류"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={elect} onChange={favorChange} name="elect" />
-            }
-            label="가전제품"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={hobby} onChange={favorChange} name="hobby" />
-            }
-            label="취미"
-          />
-        </FormGroup> 
+        
         
         
         <Button component="span" onClick={() => signUpHandler()}

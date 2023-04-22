@@ -225,7 +225,7 @@ export default function UploadPage() {
 
   return (
     <>
-    <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+    <ArrowBackIcon onClick={() => navigate('/')} />
 
     <div><h2>게시글 작성</h2></div>
     <Box style={{borderWidth:2, borderStyle:'solid', borderColor:'#C4C4C4', borderRadius:5}}

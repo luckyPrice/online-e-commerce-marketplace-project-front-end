@@ -231,8 +231,11 @@ const MyChat = () =>{
 }
 
 const Checkcount = styled.div`
-margin-left : 350px;
-left : 730px;
+
+position:relative;
+display:flex;
+margin-left: auto;
+
 color: red;
 text-align: right;
 `;
@@ -260,8 +263,8 @@ margin-left : 350px;
 border:solid;
     width:860px;
   height: 520px;
-  right:700px;
   display: flex;
+  position:relative;
   flex-direction : row;
   flex-wrap : nowrap;
      
