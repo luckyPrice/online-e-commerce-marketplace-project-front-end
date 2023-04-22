@@ -88,6 +88,7 @@ useEffect(() => {
         writter : nickname,
         target : itemDetail.memberid,
         date : "",
+        title : itemDetail.itemname
     }
         axios.post('http://localhost:8080/api/forum/store', data)
         .then((response) =>{

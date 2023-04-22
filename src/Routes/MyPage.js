@@ -15,6 +15,8 @@ import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
+import styled from "styled-components";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 
 function MyPage(id) {
@@ -48,20 +50,7 @@ function MyPage(id) {
     )
   }
 
-  const Star = (idx) => {
-    return 
-    for(let i = 0 ; i < idx ; i ++){
-<FaStar
-    size={24}
-    color="#FFBA5A"
-    style={{
-      marginRight: 10,
-      cursor: "pointer"
-    }}
-  />
-    }
-    
-  }
+  
 
   
 
@@ -189,24 +178,33 @@ function MyPage(id) {
       return(
       
       <div key={id}>
+      <Form>
       <FontAwesomeIcon icon={faCircleUser} size="2x"/>
-      <p>판매자:{RD.target}</p>
-      <p>상품평:{RD.comment}</p>
-      <p>{Array(5).fill(RD.star).map((_, index) => {
+      <ProfileForm>{RD.target}
+      
+      <p>{Array(RD.star).fill(RD.star).map((_, index) => {
           return (
             <FaStar
               key={index}
-              size={24}
+              size={10}
               
               color="#FFBA5A"
               style={{
-                marginRight: 10,
+                marginRight: 1,
                 cursor: "pointer"
               }}
             />
 
           )
-        })}</p><br/><br/>
+        })}</p></ProfileForm></Form>
+        <Obj onClick={() => navigate('/DetailPage/' + RD.itemid)} >{RD.title}
+        <Icondiv><ArrowForwardIosIcon/></Icondiv>
+        </Obj>
+        <Comment>
+        <p>상품평:{RD.comment}</p>
+        </Comment>
+        <br/><br/>
+      
       </div>)
         
      })}
@@ -240,5 +238,31 @@ function MyPage(id) {
   );
   
 }
+
+const Form = styled.div`
+display: flex;
+  flex-direction : row;
+  flex-wrap : nowrap;
+`;
+
+const ProfileForm = styled.div`
+margin-left : 20px;
+`;
+
+const Obj = styled.div`
+display: flex;
+border:solid 1px;
+width:200px;
+`;
+
+const Icondiv = styled.div`
+margin-left : 150px;
+
+text-align: right;
+`;
+
+const Comment = styled.div`
+margin-top : 10px;
+`;
 
 export default MyPage;

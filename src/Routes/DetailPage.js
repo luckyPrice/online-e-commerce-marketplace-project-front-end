@@ -189,7 +189,7 @@ function DetailPage(props) {
           <p>상점 정보</p>
           <Button
             variant="outlined"
-            onClick={() => navigate("/SellerPage/" + setProduct.seller)}
+            onClick={() => navigate("/SellerPage/" + itemDetail.memberid)}
           >
             <FontAwesomeIcon icon={faShop} />{" "}
             {itemDetail && itemDetail.memberid}님 상점 바로가기
@@ -226,7 +226,7 @@ function DetailPage(props) {
         </Grid>
       </div>
       <Grid padding="0px 40px 40px 40px">
-      <Recommend />
+      {itemDetail && <Recommend id={id} category={itemDetail.category}/>}
       </Grid>
       <Grid padding="0px 40px 40px 40px">
         <h5>상품정보</h5>

@@ -17,20 +17,22 @@ const Item = ({ data, searched , id}) => {
   return (
     data.status === "거래중" ?
     <>
-    <Test>거래중</Test>
+    
     <StyledContainer onClick={gotoDetail}>
     
       <figure>
-        <img src={data.url} alt="items" width="300px" height="300px"/>
+        <img src={data.url} alt="items" width="300px" height="300px" />
       </figure>
       <div>
         <StyledContent>{data.maintext}</StyledContent>
         <StyledWriter>{data.memberid}님</StyledWriter>
         <StyledAddress>{data.title}</StyledAddress>
         <StyledPrice>{data.itemprice}원</StyledPrice>
+        
       </div>
-      
+      <Test><h3>거래중</h3></Test>
     </StyledContainer>
+    
     </>
     :
     <>
@@ -54,11 +56,12 @@ const Item = ({ data, searched , id}) => {
 
 const StyledContainer = styled.div`
   display: flex;
+  position:relative;
   overflow: hidden;
   align-items: flex-start;
   gap: 36px;
   width: 49%;
-  padding: 20px 12px;
+  
   border: 1px solid #d4d4d4;
   figure {
     margin: 0;
@@ -95,15 +98,16 @@ const StyledPrice = styled.p`
 `;
 
 const Test = styled.div`
-  display: flex;
-  position: absolute;
+
+
+  position:absolute;
   z-index: 1;
   background-color:skyblue;
   text-align:center;
-  width: 39.7%;
-  height: 36%;
+  width: 100%;
+  height: 100%;
   opacity: 0.5;
- 
+  
 `;
 
 export default Item;

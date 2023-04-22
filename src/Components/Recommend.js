@@ -1,8 +1,34 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import Slider from "react-slick";
+import axios from "axios";
 
 
-function Recommend() {
+function Recommend(prop) {
+  const [item, setItem] = useState(null);
+  const num = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  useEffect(() => {
+    console.log(prop);
+    
+    let recommenddata = {
+      itemid : prop.id,
+      currentuser: prop.category
+    }
+    
+    axios
+      .post("http://localhost:8080/api/load/recommend", recommenddata)
+      .then((response) => {
+        console.log(response.data);
+        setItem(response.data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+
+        
+        
+      });
+      
+  }, []);
 
   const settings = {
     dots: true,
@@ -18,33 +44,21 @@ function Recommend() {
 				<style>{cssstyle}</style>
 				<h5>연관상품 추천</h5>
         <Slider {...settings}>
-          <div>
-            <h3>상품 1</h3>
+         {item && num.map((v, idx) => 
+         {return (
+         <div>
+            <p className="recommend">{item[idx] ? <img src={item[idx].url} alt="items"width="100px" height="100px" /> : "empty"}
+            {item[idx] ? item[idx].title : ""}</p>
           </div>
-          <div>
-            <h3>상품 2</h3>
-          </div>
-          <div>
-            <h3>상품 3</h3>
-          </div>
-          <div>
-            <h3>상품 4</h3>
-          </div>
-          <div>
-            <h3>상품 5</h3>
-          </div>
-          <div>
-            <h3>상품 6</h3>
-          </div>
-          <div>
-            <h3>상품 7</h3>
-          </div>
-          <div>
-            <h3>상품 8</h3>
-          </div>
-          <div>
-            <h3>상품 9</h3>
-          </div>
+         )}
+         
+         )}
+
+
+
+
+         
+          
         </Slider>
 			</div>
 		);
@@ -67,8 +81,22 @@ h3 {
     position: relative;
     text-align: center;
 }
+.recommend{
+  
+    font-size: 20px;
+    
+    margin: 10px;
+    padding: 2%;
+    position: relative;
+    text-align: center;
+}
+
 .slick-next:before, .slick-prev:before {
     color: #000;
+}
+img {
+  margin: auto;
+  display: block;
 }
 .center .slick-center h3 {
     color: #e67e22;
