@@ -16,7 +16,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import UploadPage from "./Routes/UploadPage";
 import SellerPage from "./Routes/SellerPage";
-import sellerdata from './Routes/Sellerdata';
+import SellerData from './Routes/Sellerdata';
 import Reviewdata from './Routes/Reviewdata';
 import ReviewPage from'./Routes/ReviewPage';
 import ReviewAdd from './Routes/ReviewAdd';
@@ -24,6 +24,7 @@ import CartPage from './Routes/CartPage';
 import Address from './Routes/Address';
 import TradePage from './Routes/TradePage';
 import CashPage from './Routes/CashPage';
+import PayPage from './Routes/PayPage';
 import StarReviewPage from './Routes/StarReviewPage';
 import {
     BrowserRouter,
@@ -52,9 +53,10 @@ function App() {
       <Route exact path="/ReviewAdd" element ={<ReviewAdd/>}></Route>
       <Route path="/DetailPage/:id" element={<DetailPage Product ={ Product }/>} />
       <Route exact path="/UploadPage" element={<UploadPage />}></Route>
-      <Route exact path="/SellerPage/:seller" element={<SellerPage Product ={ Product } sellerdata={ sellerdata }/>}></Route>
-      <Route exact path="/UploadPage" element={<UploadPage />}></Route>
+      <Route exact path="/SellerPage/:seller" element={<SellerPage/>}></Route>
+      
       <Route exact path="/Cart" element={<CartPage />}></Route>
+      <Route exact path="/PayPage/:id" element={<PayPage />}></Route>
       <Route exact path="/BuyPage/:id" element={<BuyPage />}></Route>
       <Route exact path="/Address" element={<Address />}></Route>
       <Route exact path="/TradePage" element={<TradePage />}></Route>
