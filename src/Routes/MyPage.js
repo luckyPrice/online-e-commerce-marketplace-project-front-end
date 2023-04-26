@@ -32,6 +32,9 @@ function MyPage(id) {
   if (cookies.token) {
     nickname = jwt_decode(cookies.token).sub;
   }
+  else{
+    navigate("/");
+  }
 
   const [favorData, setFavorData] = useState([]);
 

@@ -11,12 +11,11 @@ import styled from "styled-components";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FaStar } from "react-icons/fa";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 function SellerPage(props) {
   const navigate = useNavigate();
   let { seller } = useParams();
-  let setProduct = props.Product.find(function (product) {
-    return product.seller === seller;
-  });
+ 
   const [inputData, setInputData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
   const [requestResult, setRequestResult] = useState("");
@@ -61,6 +60,7 @@ function SellerPage(props) {
     <div className="container">
       <div className="row">
         <div className="col-md-6">
+        <ArrowBackIcon onClick={() => navigate('/')} />
           <br />
           <br />
 
