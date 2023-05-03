@@ -109,7 +109,7 @@ useEffect(() => {
 
   return (
     <>
-    <ArrowBackIcon onClick={() => navigate('/')} />
+    <ArrowBackIcon onClick={() => navigate('/MainPage')} />
     <div style={styles.container}>
       <h2>리뷰페이지</h2>
       <br></br>

@@ -28,16 +28,44 @@ import roommate from "../data/roommate";
 import job from "../data/job";
 import talent from "../data/talent";
 import options from "../data/options";
+import React, { useEffect, useState } from "react";
 import {useStore2, useStore3, useStore4} from "../Routes/Stores/useStore";
+import {useStore1} from "../Routes/Stores/useStore";
+import {useCookies} from "react-cookie";
+import jwt_decode from "jwt-decode"
+
+import {
+  Menu,
+  MenuContext,
+  MenuItem,
+  MenuItemFR,
+  ProSidebarProvider,
+  Sidebar,
+  SubMenu,
+  SubMenuFR,
+  menuClasses,
+  sidebarClasses,
+  useProSidebar
+} from "react-pro-sidebar";
+
+import { FaList, FaRegHeart } from "react-icons/fa";
+import { FiHome, FiLogOut, FiArrowLeftCircle, FiArrowRightCircle } from "react-icons/fi";
+import { RiPencilLine } from "react-icons/ri";
+import { BiCog } from "react-icons/bi";
 
 
 const Aside = ({ categories, onClickCateogry }) => {
-
-  
-
+  let login = false;
+  const [cookies, setCookies] = useCookies();
+  const {user, removeUser} = useStore1();
   const {category, setCategory} = useStore3();
   const {detailcategory, setDetailcategory} = useStore4();
   let type = null
+  let nickname = "";
+  if(cookies.token){
+    login = true;
+    nickname = jwt_decode(cookies.token).sub;
+  }
 
   const onDetailcatechange = (cate, detailcate, e) => {
     
@@ -50,6 +78,13 @@ const Aside = ({ categories, onClickCateogry }) => {
     console.log(detailcategory);
     console.log(detailcate);
   }
+
+  const logOutHandler = () => {
+    setCookies('token', '', {expires: new Date()});
+    removeUser();
+    login = false;
+}
+
   const onSetCategory = (category) =>{
 
     
@@ -116,6 +151,14 @@ const Aside = ({ categories, onClickCateogry }) => {
     return type;
   };
 
+  const [menuCollapse, setMenuCollapse] = useState(false)
+
+    //create a custom function that will change menucollapse state from false to true and true to false
+  const menuIconClick = () => {
+    //condition checking to change state from true to false and vice versa
+    menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
+  }
+
   const Submenu = ({category2, category}) =>{
     return (
   
@@ -133,8 +176,8 @@ const Aside = ({ categories, onClickCateogry }) => {
       <ul className="nav__submenu">
         {category2 && category2.map((category3) => (
           
-            <li key={category3.value} className="nav__submenu-item">
-              <button onClick={ (e) => {onDetailcatechange(category, category3, e)}} className="nav__submenu-item"
+            <li key={category3.value}>
+              <button onClick={ (e) => {onDetailcatechange(category, category3, e)}} className="category_button2"
               >
                 {category3.text}
               </button>
@@ -145,34 +188,39 @@ const Aside = ({ categories, onClickCateogry }) => {
   }
 
   return (
-    <Wrapper className="nav">
-      <ul className="nav__menu">
-        <p>
-          <b>전체 카테고리</b>
-        </p>
-        <List>
-          <button
-            onClick={() => {
-              onClickCateogry("category");
-            }}
-          >
-            all
-          </button>
-        </List>
+    <div id="header">
+    <ProSidebarProvider collapsed={menuCollapse} >
+    <sidebarClasses className = "pro-sidebar-layout">
+      <Menu iconShape="square">
+          <MenuItem active={true} icon={<FiHome/>} className="pro-inner-item">
+            Home
+          </MenuItem>
+
+      </Menu>
         {categories.map((category) => (
-          <List key={category} className="nav__menu-item">
-            <button className="nav__menu-item"
+          <List  key={category} className="nav__menu-item">
+            <Menu iconShape="square">
+          <MenuItem class = "menu">
+            <button className="category_button"
               onClick={() => {
                 onClickCateogry("category", category);
               }}
             >
               {category}
             </button>
-            <Submenu category2={onSetCategory(category)} category={category}/>
+            <Submenu category2={onSetCategory(category)} category={category} />
+            </MenuItem>
+            </Menu>
           </List>
         ))}
-      </ul>
-    </Wrapper>
+    </sidebarClasses>
+    <Sidebar>
+      <Menu iconShape="square">
+              <MenuItem icon={<FiLogOut />} onClick={logOutHandler}>Logout</MenuItem>
+            </Menu>
+    </Sidebar>
+    </ProSidebarProvider>
+    </div>
   );
 };
 

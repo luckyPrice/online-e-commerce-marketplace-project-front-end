@@ -144,29 +144,48 @@ const ChatPage =() => {
                     <div class="chat_wr">
                         {message1 && [...message1].map((mes) => (
                             mes.senduser == nickname ? 
-                            <div class="chat_row right">
-                                {mes.type === "message" ? (
+                            <>
+                                {mes.type === "message" ? (<>
+                                <div class="chat_row right">
                                 <div class="chat_right chat">
                                 {mes.message}
-                                 </div>)
+                                 </div>
+                                 <div className="empty"></div>
+                            </div></>)
                                  :
                                  (
-                                <div class="chat_right_big chat">
+                                    <>s
+                                <div>
+                                <div class="test">
                                 <p>{mes.message}</p>
-                                <Button variant="contained" onClick={() => navigate(`/TradePage?receiveuser=${mes.receiveuser}&chattitle=${mes.chattitle}`)}>주문 내역</Button>
-                                 </div>)
+                                <Button variant="contained" onClick={() => navigate(`/TradePage?buyer=${mes.senduser}&seller=${mes.receiveuser}&object=${mes.chattitle}`)}>주문 내역</Button>
+                                 </div><div className="empty"></div>
+                                 </div>
+                                 </>)
                                 }
-                                
-                            <div className="empty"></div>
-                            </div>
+                                </>
+                            
                             :
-                            <div class="chat_row left">
-                            <div class="chat_left chat">
+                            <>
+                                {mes.type === "message" ? (<>
+                                <div class="chat_row left">
+                                <div class="chat_left chat">
                                 {mes.message}
-
-                            </div>
-                            <div className="empty"></div>
-                            </div>    
+                                 </div>
+                                 <div className="empty"></div>
+                            </div></>)
+                                 :
+                                 (
+                                    <>
+                                <div>
+                                <div class="test">
+                                <p>{mes.message}</p>
+                                <Button variant="contained" onClick={() => navigate(`/TradePage?buyer=${mes.receiveuser}&seller=${mes.senduser}&object=${mes.chattitle}`)}>주문 내역</Button>
+                                 </div><div className="empty"></div>
+                                 </div>
+                                 </>)
+                                }
+                                </>   
                         ))}
                         {Chats.get(userData.receiveuser) && [...Chats.get(userData.receiveuser)].map((chat, index) => (
                             chat.senduser == nickname ? 

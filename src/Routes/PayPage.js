@@ -14,9 +14,9 @@ import {useCookies} from "react-cookie";
 import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
 //디테일 페이지에서 상품->결제 페이지로 이동
-
-function PayPage() {
-    var client = null;
+var client = null;
+const PayPage =() => {
+    
     const [cookies, setCookies] = useCookies();
     let nickname =""
     const [userData, setUserData] = useState(null);
@@ -138,7 +138,7 @@ function PayPage() {
             senduser : nickname,
             receiveuser : itemDetail.memberid,
             chattitle : itemDetail.title,
-            message: "물건이 판매되었습니다.",
+            message: "거래가 요청되었습니다.",
             date: "",
             type:"trade"
         };
@@ -154,7 +154,7 @@ function PayPage() {
                 senduser : nickname,
                 receiveuser : itemDetail.memberid,
                 chattitle : itemDetail.title,
-                message: "물건이 판매되었습니다.",
+                message: "거래가 요청되었습니다.",
                 date: ""
             };
             console.log(ChatMessage);
@@ -197,19 +197,7 @@ function PayPage() {
                 icon: "success",
             });
             if(userData.cash > itemDetail.itemprice){
-                let cashupdate = {
-                    nickname : itemDetail.memberid,
-                    cash : itemDetail.itemprice
-                }
-                axios
-                  .post("http://localhost:8080/api/auth/UpdateCash", cashupdate)
-                  .then((response) => {
-                    
-                    
-                  })
-                  .catch((error) => {
-                    console.log(error.message);
-                  });
+                
                 let cashreduce = {
                     nickname : nickname,
                     cash : itemDetail.itemprice
@@ -236,7 +224,9 @@ function PayPage() {
                   .catch((error) => {
                     console.log(error.message);
                   });
-                  navigate(`/TradePage?receiveuser=${itemDetail.memberid}&chattitle=${itemDetail.itemname}`)
+
+                  sendMessage();
+                  navigate(`/TradePage?buyer=${nickname}&seller=${itemDetail.memberid}&object=${itemDetail.itemname}`)
                 }
         }
         else {
@@ -330,7 +320,7 @@ function PayPage() {
     }
 
     return (
-
+        client ? 
         <div>
 
             <h3>결제 페이지</h3> <br />
@@ -464,6 +454,8 @@ function PayPage() {
                 <Button onClick={PayButtonClick}>결제하기</Button>
             </Grid>
         </div >
+        :
+        <></>
 
     )
 }
