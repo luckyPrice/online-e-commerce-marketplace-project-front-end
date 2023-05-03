@@ -9,6 +9,7 @@ import Badge from '@mui/material/Badge';
 import axios from "axios"
 import MailIcon from '@mui/icons-material/Mail';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import './Header.css'
 
 const Header = (props) => {
     const [cookies, setCookies] = useCookies();
@@ -72,54 +73,29 @@ const Header = (props) => {
   return (
     
     <StyledContainer>
-      <StyledBtnContainer>
-        <StyledBtnWrapper>
-        <Link to="/UploadPage">글쓰기</Link>
-        <Link to="/MyPage">마이 페이지</Link>
-        <Badge badgeContent={chatcount} color="primary">
-    <Link to="/MyChat">대화창</Link>
-      </Badge>
-          
-            {login ? <button onClick={logOutHandler}>로그아웃</button> : <button onClick={logInHandler}>로그인</button>}
-            
-            
-          
 
-        
+        <StyledBtnWrapper>
+        {/* <Link to="/UploadPage">글쓰기</Link>
+        <Link to="/MyPage">마이 페이지</Link> */}
+        {/* <Badge badgeContent={chatcount} color="primary">
+    <Link to="/MyChat">대화창</Link>
+      </Badge> */}
+          
+          <p className='nickname'>{nickname ? nickname : "Guest"} 님 환영합니다.</p> 
+            <p> {login ? <button onClick={logOutHandler} className='button1'>로그아웃</button> : <button onClick={logInHandler} className='button1'>로그인</button>}</p>
+            
+            
         </StyledBtnWrapper>
-        <p>{nickname ? nickname : "Guest"} 님 환영합니다.<MonetizationOnIcon onClick={() => navigate('/CashPage')} /></p>
         
-      </StyledBtnContainer>
-      <Link to="/"><h1>중고 마켓</h1></Link>
+        
+
+      <Link to="/MainPage"><h1 className='logo'>중고 마켓</h1></Link>
     </StyledContainer>
      
 ) 
 };
 
-const StyledBtnContainer = styled.div`
-  position: absolute;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  a,
-  button {
-    display: inline-block;
-    padding: 6px 8px;
-    border: 1px solid #141414;
-    border-radius: 6px;
-    color: #141414;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-  }
-  a:hover,
-  button:hover {
-    background-color: #141414;
-    color: #fff;
-  }
-`;
+
 
 const StyledBtnWrapper = styled.div`
   display: flex;
@@ -129,12 +105,7 @@ const StyledBtnWrapper = styled.div`
 const StyledContainer = styled.div`
   position: relative;
   padding: 30px 0;
-  h1 {
-    display: flex;
-    justify-content: center;
-    color: #141414;
-    font-weight: bold;
-  }
+  height: 15vh;
 `;
 
 export default Header;

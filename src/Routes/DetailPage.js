@@ -128,30 +128,10 @@ function DetailPage(props) {
           <h5>판매자: {itemDetail && itemDetail.memberid}</h5>
           <br />
           <b>가격:{itemDetail && itemDetail.itemprice}</b>원<br />
-          { itemDetail &&(itemDetail.memberid !== nickname && (
+          { itemDetail &&(itemDetail.memberid !== nickname && itemDetail.status === "판매중" && (
        <>
-          <Button variant="outlined"
-            onClick={() =>
-              Swal.fire({
-                title: "즉시구매!!",
-                text: "즉시 구매 페이지로 이동하시겠습니까?",
-                icon: "success",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "구매하기",
-                cancelButtonText: "계속 쇼핑하기",
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  navigate("/Buypage/"+id);
-                }
-              })
-            }
-          >
-            <FontAwesomeIcon icon={faCartShopping} />
-            즉시구매
-          </Button>
-
+          
+            
           <Button
             variant="outlined"
             onClick={() =>
@@ -192,7 +172,10 @@ function DetailPage(props) {
             />  찜
           </Button>
           </>
-          ))}
+          
+          )
+           )}
+          {itemDetail && (itemDetail.status === "판매 완료" && <h4>판매 완료된 상품입니다.</h4>)}
           <br />
           <br />
 

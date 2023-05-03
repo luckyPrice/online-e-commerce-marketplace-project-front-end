@@ -10,6 +10,8 @@ import {useStore1} from "./Stores/useStore";
 import jwt_decode from "jwt-decode"
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import './LoginPage.css'
+import video from '../static/back.mp4';
 
 
 

@@ -2,33 +2,40 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import {useStore2} from "../../Routes/Stores/useStore";
+import Slider from '../../Routes/Slide/components/Slider';
+
 
 const Navbar = (props) => {
   const {purpose, setPurpose} = useStore2();
 
-  const sellPurpose = () => {
-    console.log(purpose);
-    setPurpose("sell");
-    console.log(purpose);
-  }
-  const purchasePurpose = () => {
-    console.log(purpose);
-    setPurpose("purchase");
-    console.log(purpose);
-  }
-  const donatePurpose = () => {
-    console.log(purpose);
-    setPurpose("donate");
-    console.log(purpose);
-  }
+  // const sellPurpose = () => {
+  //   console.log(purpose);
+  //   setPurpose("sell");
+  //   console.log(purpose);
+  // }
+  // const purchasePurpose = () => {
+  //   console.log(purpose);
+  //   setPurpose("purchase");
+  //   console.log(purpose);
+  // }
+  // const donatePurpose = () => {
+  //   console.log(purpose);
+  //   setPurpose("donate");
+  //   console.log(purpose);
+  // }
+
+  // return <Slider />;
   return (
-    <StyledContainer>
+    <>
+    <Slider />
+    {/* <StyledContainer>
       
-      <button onClick={sellPurpose}>판매합니다</button>
-      <button onClick={purchasePurpose}>구매합니다</button>
-      <button onClick={donatePurpose}>무료나눔합니다</button>
+      <button onClick={sellPurpose}>판매</button>
+      <button onClick={purchasePurpose}>구매</button>
+      <button onClick={donatePurpose}>무료나눔</button>
       
-    </StyledContainer>
+    </StyledContainer> */}
+    </>
   )    
 };
 

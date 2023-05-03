@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import Item from "./item";
 import styled from "styled-components";
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +18,8 @@ import { useImmer } from "use-immer";
 import Aside from "../Aside";
 import options from '../../data/options'
 import {useStore2, useStore3, useStore4} from "../../Routes/Stores/useStore";
+import Tile from '../Tiles/Tile';
+import Tile2 from "./Tiles2/Tile2";
 
 const ItemList = (props) => {
   const [searched, setSearched] = useState("");
@@ -26,15 +29,18 @@ const ItemList = (props) => {
   const [requestResult, setRequestResult] = useState("");
   const navigate = useNavigate();
   let resData = [];
+  const [test, setTest] = useState(true);
   
+  var datanum = 0;
   const[first, setFirst] = useState(true);
   const [inputData, setInputData] = useState([]);
   const {purpose, setPurpose} = useStore2();
   const [originData, setOriginData] = useState([]);
   const {category, setCategory} = useStore3();
+  const [view, setViews] = useState([])
   const {detailcategory, setDetailcategory} = useStore4();
   useEffect(() => {
-    setItems(originData);
+    setItems([...originData].filter(i => i.itemid <= 10));
     
   }, [originData]);
   useEffect(() => {
@@ -70,6 +76,11 @@ const ItemList = (props) => {
           })
         );
         console.log(originData);
+        //setOriginData(response.data.filter(i => i.itemid <= 10));
+        setViews(response.data.filter(i => i.itemid <= 10));
+        let viewtest = response.data.filter(i => i.itemid <= 10);
+        console.log(viewtest);
+        datanum = 1;
       })
       .catch((error) => {
         console.log(error.message);
@@ -78,6 +89,7 @@ const ItemList = (props) => {
         
       });
       setFirst(true);
+      console.log(view);
   }, []);
 
   const [items, setItems] = useState([]);
@@ -110,6 +122,17 @@ const ItemList = (props) => {
         return;
     }
   };
+
+  const fetchData = () => {
+    
+    console.log("input");
+    
+    setItems([...originData].filter(i => i.itemid <= items.length + 10));
+    
+    let viewtest = [...originData].filter(i => i.itemid <= view.length + 10);
+    
+
+  }
   const categories = useMemo(
     () => originData.map((i) => i.category).filter((i) => i),
     [originData]
@@ -126,18 +149,32 @@ const ItemList = (props) => {
       <Aside categories={categories1} onClickCateogry={onSetSort} />
       
       <StyledContainer>
-      
-        <h1>인기 상품</h1>
-        <StyledWrapper>
+      <Tile />
+      <Tile2/>
+        <h1  className="text1">인기 상품</h1>
+        
+        <InfiniteScroll
+          dataLength={items.length}
+          next={fetchData}
+          hasMore={test}
+          loader={
+            <h4></h4>
+          }>
+        
+        <StyledWrapper> 
           {[...items]
             .sort((a, b) => b.view - a.view)
             .map((i) => (
               <>
-                    
+                 
               <Item data={i} key={i.itemid} searched={searched} id={i.itemid} />
+              
               </>
             ))}
-        </StyledWrapper>
+            
+            </StyledWrapper>
+        </InfiniteScroll>
+        
         </StyledContainer>
         </Body>
         
@@ -186,7 +223,15 @@ const ItemList = (props) => {
             </StyledSoltWrapper>
           </StyledSoltContainer>
         </StyledFlex>
-        <StyledWrapper>
+        
+          <InfiniteScroll
+          dataLength={view.length}
+          next={fetchData}
+          hasMore={test}
+          loader={
+            <h4></h4>
+          }>
+            <StyledWrapper>
           {searched.length > 0
             ? items.map((v, idx) => {
                 if (v.itemname.includes(searched)) {
@@ -204,10 +249,18 @@ const ItemList = (props) => {
                   );
                 }
               })
-            : items.map((v) => (
+              
+            : items.map((v) => {
+              
+                return (<>
                 <Item data={v} searched={searched} id={v.itemid} />
-              ))}
-        </StyledWrapper>
+                </>
+                )
+              
+            })}
+            </StyledWrapper>
+              </InfiniteScroll>
+        
       </StyledContainer>
     </Body>
             }
@@ -266,6 +319,7 @@ const StyledSoltContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  overflow:none;
 `;
 
 const StyledSoltWrapper = styled.div`
@@ -284,9 +338,16 @@ const StyledContainer = styled.div`
   align-items: flex-start;
   width: 100%;
   padding: 20px 40px;
+  .text1{
+    position: relative;
+    top: 50px;
+  }
+  overflow: hidden;
 `;
 
 const StyledWrapper = styled.div`
+  position: relative;
+  top: 60px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -294,7 +355,10 @@ const StyledWrapper = styled.div`
   gap: 20px;
   padding-bottom: 20px;
   box-sizing: border-box;
+  overflow: hidden;
 `;
+
+
 
 
 

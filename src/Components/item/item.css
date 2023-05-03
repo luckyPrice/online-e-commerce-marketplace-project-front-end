@@ -1,0 +1,60 @@
+:root {
+    --primary-color3: #d4d4d4;
+  }
+
+.StyledContainer {
+    display: flex;
+    position:relative;
+    overflow: hidden;
+    align-items: flex-start;
+    gap: 36px;
+    width: 20%;
+    height: 300px;
+    border: 2px solid var(--primary-color3);
+    border-radius: 15px;
+    font-family: sans-serif;
+    transition: all 300ms ease;
+}
+
+
+.StyledContainer img {
+    overflow: hidden;
+    position: absolute;
+    height: 100%;
+    
+}
+
+.StyledContent {
+    position: absolute;
+    bottom: 55px;
+    left: 10%;
+    font-size: 21px;
+    font-weight: 600;
+}
+.StyledWriter {
+    position: absolute;
+    bottom: 15px;
+    right: 10%;
+    font-size: 19px;
+    font-weight: 500;
+}
+.StyledAddress {
+    position: absolute;
+    bottom: 35px;
+    left: 10%;
+  font-size: 18px;
+  font-weight: 500;
+}
+.StyledPrice {
+    position: absolute;
+    bottom: 15px;
+    left: 10%;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.StyledContainer:hover{
+  box-shadow: 0 0 12px var(--primary-color3);
+  transform: scale(1.1);
+  color: var(--primary-color3);
+}

@@ -5,7 +5,6 @@ import AuthCreatePage from "./Routes/AuthCreatePage";
 import LoginPage from "./Routes/LoginPage";
 import MainPage from "./Routes/MainPage";
 import MyPage from "./Routes/MyPage";
-import BuyPage from "./Routes/BuyPage";
 import SellPage from "./Routes/SellPage";
 import ChatPage from "./Routes/ChatPage";
 import MyChat from "./Routes/MyChat";
@@ -22,10 +21,12 @@ import ReviewPage from'./Routes/ReviewPage';
 import ReviewAdd from './Routes/ReviewAdd';
 import CartPage from './Routes/CartPage';
 import Address from './Routes/Address';
-import TradePage from './Routes/TradePage';
 import CashPage from './Routes/CashPage';
 import PayPage from './Routes/PayPage';
 import StarReviewPage from './Routes/StarReviewPage';
+import LandingPage from './Routes/Landing/LandingPage';
+import Tile2 from './Components/item/Tiles2/Tile2';
+import DetailPayPage from './Routes/DetailPayPage';
 import {
     BrowserRouter,
     HashRouter as Router,
@@ -41,12 +42,12 @@ function App() {
   return (
   <BrowserRouter>
     <Routes>
+    <Route exact path="/" element={<LandingPage />}></Route>
       <Route exact path="/LoginPage" element={<LoginPage />}></Route>
       <Route exact path="/AuthCreatePage" element={<AuthCreatePage />}></Route>
-      <Route exact path="/" element={<MainPage />}></Route>
+      <Route exact path="/MainPage" element={<MainPage />}></Route>
       <Route exact path="/MyPage" element={<MyPage />}></Route>
       <Route exact path="/SellPage" element={<SellPage />}></Route>
-      <Route exact path="/BuyPage" element={<BuyPage />}></Route>
       <Route exact path="/ChatPage" element={<ChatPage />}></Route>
       <Route exact path="/MyChat" element ={<MyChat />}></Route>
       <Route exact path="/ReviewPage" element ={<ReviewPage Reviewdata ={ Reviewdata }/>}></Route>
@@ -54,12 +55,10 @@ function App() {
       <Route path="/DetailPage/:id" element={<DetailPage Product ={ Product }/>} />
       <Route exact path="/UploadPage" element={<UploadPage />}></Route>
       <Route exact path="/SellerPage/:seller" element={<SellerPage/>}></Route>
-      
+      <Route exact path="/DetailPayPage" element={<DetailPayPage />}></Route>
       <Route exact path="/Cart" element={<CartPage />}></Route>
       <Route exact path="/PayPage/:id" element={<PayPage />}></Route>
-      <Route exact path="/BuyPage/:id" element={<BuyPage />}></Route>
       <Route exact path="/Address" element={<Address />}></Route>
-      <Route exact path="/TradePage" element={<TradePage />}></Route>
       <Route exact path="/CashPage" element={<CashPage />}></Route>
       <Route exact path="/StarReviewPage/:id" element={<StarReviewPage />}></Route>
     </Routes>

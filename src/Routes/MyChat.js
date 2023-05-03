@@ -18,6 +18,8 @@ import Avatar from '@mui/material/Avatar';
 import Header from "../Components/header/Header";
 import Navbar from "../Components/navbar/Navbar";
 import Grid from "@mui/material/Grid";
+import Loading from '../Components/Loading';
+
 
 var client = null;
 const MyChat = () =>{
@@ -36,7 +38,8 @@ const MyChat = () =>{
         message:"",
         date:"?"
     });
-    const [layer, setLayer] = useState(null);
+    const [load, setLoad] = useState(true);
+    
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
@@ -54,8 +57,10 @@ const MyChat = () =>{
     },[]);
 
     const getMessage = (chatname, idx, e) => {
+        setLoad(false);
         console.log(chatname.nickname);
         console.log(idx);
+        console.log(userData);
         let chatData = {
         senduser: nickname,
         receiveuser: chatname.nickname,
@@ -64,13 +69,17 @@ const MyChat = () =>{
         date:"?",
         type:"message"
         }
+        setuserData({...userData, "receiveuser" : chatname.nickname, "chattitle" : chatname.chattitle, "senduser" : nickname});
+       
         axios.post('http://localhost:8080/room/getmessage', chatData)
                 .then((response) =>{
                     setMessage(response.data);
                     console.log(response.data);
+                    setLoad(true);
                 })
                 .catch((error) => {})   
             start();
+            
     }
 
     const start = () => {
@@ -92,6 +101,7 @@ const MyChat = () =>{
             Chats.set(chatData.senduser, list);
             setChats(new Map(Chats));
         }
+        
     }
 
     
@@ -119,8 +129,12 @@ const MyChat = () =>{
     const chatsavedb = () => {
         console.log(userData);
         axios.post('http://localhost:8080/room/create', userData)
-        .then((response) =>{})
-        .catch((error) => {})
+        .then((response) =>{
+
+        })
+        .catch((error) => {
+            console.log("error");
+        })
     }
 
 
@@ -137,18 +151,21 @@ const MyChat = () =>{
                 if(Chats.get(userData.receiveuser)){
                     Chats.get(userData.receiveuser).push(ChatMessage);
                 setChats(new Map(Chats));
+                console.log("1");
                 }
                 else{
                     let list = [];
                 list.push(ChatMessage);
                 Chats.set(userData.receiveuser, list);
                 setChats(new Map(Chats));
+                console.log("2");
                 }
                 
             }
             client.send('/pub/chat',{}, JSON.stringify(ChatMessage));
             chatsavedb();
             setuserData({...userData, "message" : ""})
+            
         }
         else{
             console.log("error");
@@ -157,55 +174,102 @@ const MyChat = () =>{
     
 
     return(
+        
         <>
         <Grid padding="60px 0 0 0" max_width="950px" margin="0 auto">
       <Header />
       <Navbar />
             
-                <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+                
             <ChatForm>
             <LeftForm>
             <Title><h2>전체 대화</h2></Title>
                 {mychat && resultchecking}
             </LeftForm>
             <RightForm>
-                
+            
+            
             <div class="container2">
                     <div class="chat_wr">
-                        {message1 && [...message1].map((mes) => (
+                        
+                    {load ?  
+                    <>
+                        {message1 && [...message1].map((mes, idx) => (
                             mes.senduser == nickname ? 
-                            <div class="chat_row right">
-                                {mes.type === "message" ? (
+                            <>
+                            {idx == 0 &&  "---" + mes.date.substring(0,10) + "---"}
+                            {idx != 0 && (message1[idx-1].date.substring(0,10) != mes.date.substring(0,10) && "---" + mes.date.substring(0,10) + "---")}
+                            
+                                {mes.type === "message" ? (<>
+                                <div class="chat_row right">
+                                    <div>
+                                    <br></br>
+                                    <br></br>
+                                    
+                                <Date>{mes.date.slice(11)}</Date>
+                                </div>
                                 <div class="chat_right chat">
                                 {mes.message}
-                                 </div>)
+                                 </div>
+                                 
+                            </div></>)
                                  :
                                  (
-                                <div class="chat_right_big chat">
-                                {mes.message}
-                                <Button variant="contained" onClick={() => navigate(`/TradePage?receiveuser=${mes.receiveuser}&chattitle=${mes.chattitle}`)}>주문 내역</Button>
-                                 </div>)
+                                    <>
+                                    
+                                <div>
+                                <div class="test">
+                                <p>{mes.message}</p>
+                                <Button variant="contained" onClick={() => navigate(`/DetailPayPage?buyer=${mes.senduser}&seller=${mes.receiveuser}&object=${mes.chattitle}`)}>주문 내역</Button>
+                                 </div>
+                                 </div>
+                                 </>)
                                 }
-                                
-                            <div className="empty"></div>
-                            </div>
+                                </>
+                            
                             :
-                            <div class="chat_row left">
-                            <div class="chat_left chat">
+                            <>
+                            {idx == 0 &&  "---" + mes.date.substring(0,10) + "---"}
+                            {idx != 0 && (message1[idx-1].date.substring(0,10) != mes.date.substring(0,10) && "---" + mes.date.substring(0,10) + "---")}
+                                {mes.type === "message" ? (<>
+                                <div class="chat_row left">
+                                
+                                <div class="chat_left chat">
                                 {mes.message}
-
-                            </div>
-                            <div className="empty"></div>
-                            </div>    
+                                 </div>
+                                 
+                                 <div>
+                                    <br></br>
+                                    <br></br>
+                                <Date>{mes.date.slice(11)}</Date>
+                                </div>
+                            </div></>)
+                                 :
+                                 (
+                                    <>
+                                <div>
+                                <div class="test">
+                                <p>{mes.message}</p>
+                                {client &&
+                                 <Button variant="contained" onClick={() => navigate(`/DetailPayPage?buyer=${mes.receiveuser}&seller=${mes.senduser}&object=${mes.chattitle}`)}>주문 내역</Button>
+                                }
+                                 </div>
+                                 </div>
+                                 </>)
+                                }
+                                </>    
                         ))}
                         {Chats.get(userData.receiveuser) && [...Chats.get(userData.receiveuser)].map((chat, index) => (
                             chat.senduser == nickname ? 
+                            <>
+                            <h4>{chat.date}</h4>
                             <div class="chat_row right">
                                 <div class="chat_right chat">
                                 {chat.message}
                             </div>
                             <div className="empty"></div>
                             </div>
+                            </>
                             :
                             <div class="chat_row left">
                             <div class="chat_left chat">
@@ -214,6 +278,12 @@ const MyChat = () =>{
                             <div className="empty"></div>
                             </div>
                         ))}
+                        </>
+                        :
+                        <>
+                <Loading />
+                </>
+                }
                     </div>
                     <div className ="chatbottom">
                         <TextField fullWidth type='text' value={userData.message}
@@ -221,10 +291,13 @@ const MyChat = () =>{
                        <Button variant="contained" onClick={sendMessage} endIcon={<SendIcon />}>Send</Button>
                     </div>
                 </div>
+                
+                 
             </RightForm>
             </ChatForm>
             </Grid>
         </>
+        
     )
 
 
@@ -243,6 +316,12 @@ text-align: right;
 const Title = styled.div`
 text-align:center;
 `;
+
+const Date = styled.div`
+display:flex;
+
+font-size : 8px;
+`
 
 const LeftForm = styled.div`
 
