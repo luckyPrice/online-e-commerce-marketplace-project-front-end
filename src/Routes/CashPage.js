@@ -13,6 +13,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
+import Header from "../Components/header/Header";
+import Navbar from "../Components/navbar/Navbar";
+import Grid from "@mui/material/Grid";
 
 function CashPage() {
     let nickname =""
@@ -21,6 +24,7 @@ function CashPage() {
     const [userData, setUserData] = useState(null);
     const [cash, setCash] = useState(0);
     const [currentcash, setCurrentcash] = useState(0);
+    const [cashinfo, setCashInfo] = useState([]);
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
@@ -44,12 +48,30 @@ function CashPage() {
         }
         
         setCurrentcash(parseInt(currentcash) + parseInt(cash));
+        alert("정상적으로 충전되었습니다.")
+        navigate("/CashPage");
       }
 
       const handleChange = (event) => {
         setCash(event.target.value);
         console.log(cash);
       }
+       useEffect(() => {
+        let nick = {
+          nickname : nickname
+      }
+        axios
+        .post("http://localhost:8080/api/auth/getCashOrder", nick)
+        .then((response) => {
+          console.log(response.data);
+          setCashInfo(response.data);
+          
+          
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+       }, []);
     
     useEffect(() => {
         let nick = {
@@ -66,17 +88,23 @@ function CashPage() {
           .catch((error) => {
             console.log(error.message);
           });
+
+          
+
       }, []);
 
 
 return(
     <>
-    <ArrowBackIcon onClick={() => navigate('/')} />
+    <Grid padding="60px 0 0 0" max_width="950px" margin="0 auto">
+      <Header />
+      <Navbar />
+    <ArrowBackIcon onClick={() => navigate('/MainPage')} />
         <Box
             sx={{
-                marginTop: 14,
-                width: 400,
-                height: 500,
+                
+                width: 600,
+                height: 400,
                 mx: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
@@ -84,11 +112,13 @@ return(
                 border: 'solid gray',
               }}
         >
+          <h3>캐시 충전하기</h3>
             <CashBox>
-            
+            보유캐시 : {userData && currentcash} {'>'} 충전후 :  {userData && parseInt(currentcash) + parseInt(cash)}
             </CashBox>
             <SelectBox>
-            보유캐시 : {userData && currentcash}
+            충전금액 선택
+            <br></br>
             <FormControl>
             <FormLabel id="demo-radio-buttons-group-label"></FormLabel>
             <RadioGroup
@@ -107,17 +137,25 @@ return(
             
             </RadioGroup>
             </FormControl>
+            <br></br>
             직접입력 : <input style={{width:'80px', display: 'inline-block'}}  onChange = {handleChange} type="text"></input>
             </SelectBox>
-            <Button variant="contained" onClick = {Cashfill}>충전하기</Button>
+            <Button color="tertiary" variant="filledTonal" onClick = {Cashfill}>충전하기</Button>
+
+            
+
+
             </Box>
+            </Grid>
             </>
 )
 }
 
 const CashBox = styled.div`
-border:solid;
-width: 200px;
+width:100%;
+margin-top : 40px;
+border:solid 1px;
+padding : 10px;
 
 
 `;
@@ -125,11 +163,15 @@ width: 200px;
 const SelectBox = styled.div`
 margin-top : 10px;
 border:solid;
-width: 200px;
-height:300px;
+width:100%;
+height:200px;
 
 
 `;
+
+
+
+
 
 export default CashPage;
 

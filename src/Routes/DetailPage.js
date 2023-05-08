@@ -29,8 +29,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 function DetailPage(props) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  
 
   let nickname = ""
   const [Follower, setFollower] = useState(false);
@@ -91,6 +90,22 @@ function DetailPage(props) {
       });
   }, []);
 
+  const setStatus = () => {
+    let changestatus = {
+      itemid : itemDetail.itemid,
+      currentuser : "판매 완료" // 변수 이름만 currentuser
+  }
+  console.log(itemDetail.itemid);
+  axios
+    .post("http://localhost:8080/api/load/changeStatus", changestatus)
+    .then((response) => {
+      
+      
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+  }
 
 
   return (
@@ -128,7 +143,7 @@ function DetailPage(props) {
           <h5>판매자: {itemDetail && itemDetail.memberid}</h5>
           <br />
           <b>가격:{itemDetail && itemDetail.itemprice}</b>원<br />
-          { itemDetail &&(itemDetail.memberid !== nickname && itemDetail.status === "판매중" && (
+          { itemDetail &&(itemDetail.memberid !== nickname && itemDetail.status === "판매중" ? (
        <>
           
             
@@ -136,7 +151,7 @@ function DetailPage(props) {
             variant="outlined"
             onClick={() =>
               navigate(
-                `/ChatPage?receiveuser=${itemDetail.memberid}&chattitle=${itemDetail.title}`
+                `/MyChat?receiveuser=${itemDetail.memberid}&chattitle=${itemDetail.title}`
               )
             }
           >
@@ -174,6 +189,10 @@ function DetailPage(props) {
           </>
           
           )
+          :
+          <>
+          {itemDetail.status === "판매중" && <Button onClick={setStatus}>판매완료</Button>}
+          </>
            )}
           {itemDetail && (itemDetail.status === "판매 완료" && <h4>판매 완료된 상품입니다.</h4>)}
           <br />
@@ -189,11 +208,11 @@ function DetailPage(props) {
           </Button>
           <Button
             variant="outlined"
-            onClick={() => navigate("/SellerPage/" + setProduct.seller)}
+            onClick={() => navigate("/SellerPage/" + itemDetail.memberid)}
           >상품 더 보기</Button>
           <Button
             variant="outlined"
-            onClick={() => navigate("/SellerPage/" + setProduct.seller)}
+            onClick={() => navigate("/SellerPage/" + itemDetail.memberid)}
           >상점 후기</Button>
           <br />
           <Button

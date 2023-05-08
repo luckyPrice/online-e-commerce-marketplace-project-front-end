@@ -17,7 +17,7 @@ const Tile = ({}) => {
 
 
   return (
-    <div className="container">
+    <div className="c">
     <div className="radio-tile-group">
 
       <div className="input-container">

@@ -85,6 +85,11 @@ const Aside = ({ categories, onClickCateogry }) => {
     login = false;
 }
 
+const reset = () => {
+  setCategory('all');
+    setDetailcategory('all');
+}
+
   const onSetCategory = (category) =>{
 
     
@@ -192,7 +197,7 @@ const Aside = ({ categories, onClickCateogry }) => {
     <ProSidebarProvider collapsed={menuCollapse} >
     <sidebarClasses className = "pro-sidebar-layout">
       <Menu iconShape="square">
-          <MenuItem active={true} icon={<FiHome/>} className="pro-inner-item">
+          <MenuItem active={true} icon={<FiHome/>} className="pro-inner-item" onClick={reset}>
             Home
           </MenuItem>
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useSearchParams } from "react-router-dom";
 import jwt_decode from "jwt-decode"
 import './Chat.css'
 import { Link } from 'react-router-dom';
@@ -19,33 +19,73 @@ import Header from "../Components/header/Header";
 import Navbar from "../Components/navbar/Navbar";
 import Grid from "@mui/material/Grid";
 import Loading from '../Components/Loading';
+import LoadingButton from '@mui/lab/LoadingButton';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 
 var client = null;
+var i = 0;
 const MyChat = () =>{
     let nickname="";
+    const [searchParams, setSearchParams] = useSearchParams();
     const [cookies, setCookies] = useCookies();
     const [mychat, setMychat] = useState([]);
     const navigate = useNavigate();
     const [message1, setMessage] = useState([]);
-    const [currentuser, setCurrentuser] = useState(null);
-    const [currenttitle, setCurrenttitle] = useState(null);
+    const [send, setSend] = useState(false);
     const [Chats, setChats] = useState(new Map());  
-    const [userData, setuserData] = useState({
-        senduser: nickname,
-        receiveuser: "",
-        chattitle : "",
-        message:"",
-        date:"?"
-    });
-    const [load, setLoad] = useState(true);
-    
+    var receiveuser = null;
+    var chattitle = null;
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
+    if(searchParams){
+        
+        receiveuser = searchParams.get('receiveuser');
+        chattitle = searchParams.get('chattitle');
+    }
+    const [userData, setuserData] = useState({
+        senduser: nickname,
+        receiveuser: receiveuser,
+        chattitle : chattitle,
+        message:"",
+        date:"?",
+        type:"message"
+    });
+    const [load, setLoad] = useState(true);
     
+    
+    
+    
+    
+    
+      useEffect(() => {
+        console.log(i);
+        if(!cookies.token){
+            navigate('/MainPage');
+        }
+        else{
+            nickname =jwt_decode(cookies.token).sub;
+        }
+        if(i == 0){
+            console.log(userData);
+            console.log("input");
+            i++;
+            axios.post('http://localhost:8080/room/getmessage', userData)
+            .then((response) =>{
+                setMessage(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {})   
+            start(); 
+        }
+            
+    },[]);
+
 
     useEffect(() => {
+        
         const nicknamesend = {
             nickname : nickname
         }
@@ -55,6 +95,8 @@ const MyChat = () =>{
             })
             .catch((error) => {})
     },[]);
+
+    
 
     const getMessage = (chatname, idx, e) => {
         setLoad(false);
@@ -130,7 +172,13 @@ const MyChat = () =>{
         console.log(userData);
         axios.post('http://localhost:8080/room/create', userData)
         .then((response) =>{
-
+            axios.post('http://localhost:8080/room/getmessage', userData)
+                .then((response) =>{
+                    setMessage(response.data);
+                    console.log(response.data);
+                    setLoad(true);
+                })
+                .catch((error) => {}) 
         })
         .catch((error) => {
             console.log("error");
@@ -151,6 +199,7 @@ const MyChat = () =>{
                 if(Chats.get(userData.receiveuser)){
                     Chats.get(userData.receiveuser).push(ChatMessage);
                 setChats(new Map(Chats));
+                
                 console.log("1");
                 }
                 else{
@@ -158,6 +207,7 @@ const MyChat = () =>{
                 list.push(ChatMessage);
                 Chats.set(userData.receiveuser, list);
                 setChats(new Map(Chats));
+                
                 console.log("2");
                 }
                 
@@ -165,6 +215,7 @@ const MyChat = () =>{
             client.send('/pub/chat',{}, JSON.stringify(ChatMessage));
             chatsavedb();
             setuserData({...userData, "message" : ""})
+            
             
         }
         else{
@@ -187,7 +238,7 @@ const MyChat = () =>{
                 {mychat && resultchecking}
             </LeftForm>
             <RightForm>
-            
+            <ChatBar><h3>현재 대화 : {userData && userData.chattitle}</h3></ChatBar>
             
             <div class="container2">
                     <div class="chat_wr">
@@ -219,8 +270,11 @@ const MyChat = () =>{
                                     
                                 <div>
                                 <div class="test">
-                                <p>{mes.message}</p>
-                                <Button variant="contained" onClick={() => navigate(`/DetailPayPage?buyer=${mes.senduser}&seller=${mes.receiveuser}&object=${mes.chattitle}`)}>주문 내역</Button>
+                                <p>{mes.message}</p>{
+
+                                    <Button variant="contained" onClick={() => navigate(`/DetailPayPage?buyer=${mes.senduser}&seller=${mes.receiveuser}&object=${mes.chattitle}`)}>주문 내역</Button>
+                                }
+                                
                                  </div>
                                  </div>
                                  </>)
@@ -259,25 +313,7 @@ const MyChat = () =>{
                                 }
                                 </>    
                         ))}
-                        {Chats.get(userData.receiveuser) && [...Chats.get(userData.receiveuser)].map((chat, index) => (
-                            chat.senduser == nickname ? 
-                            <>
-                            <h4>{chat.date}</h4>
-                            <div class="chat_row right">
-                                <div class="chat_right chat">
-                                {chat.message}
-                            </div>
-                            <div className="empty"></div>
-                            </div>
-                            </>
-                            :
-                            <div class="chat_row left">
-                            <div class="chat_left chat">
-                                {chat.message}
-                            </div>
-                            <div className="empty"></div>
-                            </div>
-                        ))}
+                        
                         </>
                         :
                         <>
@@ -288,7 +324,8 @@ const MyChat = () =>{
                     <div className ="chatbottom">
                         <TextField fullWidth type='text' value={userData.message}
                             onChange={handleMessage}/>
-                       <Button variant="contained" onClick={sendMessage} endIcon={<SendIcon />}>Send</Button>
+                       <LoadingButton variant="contained" onClick={sendMessage} loading={send}
+                         loadingPosition="end" endIcon={<SendIcon />}>Send</LoadingButton>
                     </div>
                 </div>
                 
@@ -333,6 +370,16 @@ background-color:pink;
   
      
     `;
+
+    const ChatBar = styled.div`
+    position:absolute;
+  z-index: 1;
+  background-color:skyblue;
+  text-align:center;
+  width:47.5%;
+  height:20%;
+  opacity: 0.5;
+    `
 
 const ChatForm = styled.div`
     

@@ -60,7 +60,7 @@ function SellerPage(props) {
     <div className="container">
       <div className="row">
         <div className="col-md-6">
-        <ArrowBackIcon onClick={() => navigate('/')} />
+        <ArrowBackIcon onClick={() => navigate(-1)} />
           <br />
           <br />
 
