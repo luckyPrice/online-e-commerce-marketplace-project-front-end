@@ -3,7 +3,6 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import jwt_decode from "jwt-decode";
 import { useCookies } from "react-cookie";
-import SellerData from "./Sellerdata";
 import Grid from "@mui/material/Grid";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -18,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import styled from "styled-components";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import './MyPage.css'
+import Item from "../Components/item/item";
 
 
 function MyPage(id) {
@@ -121,29 +121,28 @@ function MyPage(id) {
     <div className="container">
     <div className="row">
       <div className="col-md-6">
-      <ArrowBackIcon onClick={() => navigate('/')} />
+      <ArrowBackIcon onClick={() => navigate('/MainPage')} />
         <br />
         <br />
       <FontAwesomeIcon icon={faCircleUser} size="10x"/>
       <br />
       <p>{nickname}님의 My Page 입니다.</p>
+      <button type="button" class="btn btn-link" onClick={() => navigate('/DealPage/' + nickname)}>
+            나의 거래내역</button>
       </div>
-      {SellerData.map(function (SD, k) {
-        if (nickname == SD.name) {
-          return (
+      
+        
               <Grid is_flex="true">
-              <b>상점오픈: {SD.opendate}일 전</b>
+              <b>상점오픈: 1일 전</b>
               <br/>
-              <b>방문자:{SD.visitor}</b>명<br/>
-              <b>본인인증:{SD.verification}</b>
+              <b>방문자:1</b>명<br/>
+              <b>본인인증:1</b>
               <br />
-              <b>거래 수:{SD.deal}회</b>
+              <b>거래 수:1회</b>
               <br/>
               </Grid>
              
-          );
-        }
-      })}
+          
        
     </div>
     
@@ -161,8 +160,7 @@ function MyPage(id) {
         
             if (nickname == product.memberid)
               return ( 
-                
-              <div key={id} onClick={gotoDetail}>
+                <div key={id} onClick={gotoDetail}>
               <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
               <p>판매자:{product.memberid}</p>
               <p>{product.itemprice}원</p>
@@ -172,7 +170,7 @@ function MyPage(id) {
               
             
               
-              </div>)
+            </div>)
               
           })}
       </Tab>
@@ -201,9 +199,9 @@ function MyPage(id) {
 
           )
         })}</p></ProfileForm></Form>
-        <Obj onClick={() => navigate('/DetailPage/' + RD.itemid)} >{RD.title}
+        <p><Obj onClick={() => navigate('/DetailPage/' + RD.itemid)} >{RD.title}
         <Icondiv><ArrowForwardIosIcon/></Icondiv>
-        </Obj>
+        </Obj></p>
         <Comment>
         <p>상품평:{RD.comment}</p>
         </Comment>
@@ -251,22 +249,29 @@ display: flex;
 
 const ProfileForm = styled.div`
 margin-left : 20px;
+display:flex;
 `;
 
 const Obj = styled.div`
 display: flex;
 border:solid 1px;
 width:200px;
+
 `;
 
 const Icondiv = styled.div`
-margin-left : 150px;
-
-text-align: right;
+position:relative;
+left:130px;
 `;
 
 const Comment = styled.div`
 margin-top : 10px;
 `;
+
+const Upload = styled.div`
+border:solid 1px;
+border-radius: 2px 2px 2px 2px;
+width:30%;
+`
 
 export default MyPage;

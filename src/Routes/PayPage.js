@@ -13,6 +13,7 @@ import jwt_decode from "jwt-decode"
 import {useCookies} from "react-cookie";
 import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 //디테일 페이지에서 상품->결제 페이지로 이동
 var client = null;
 const PayPage =() => {
@@ -21,6 +22,7 @@ const PayPage =() => {
     let nickname =""
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const [address, setAddress] = useState("");
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
@@ -28,6 +30,30 @@ const PayPage =() => {
     const [itemId, setitemId] = useState({
         itemid: id,
     });
+
+    const open = useDaumPostcodePopup("https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js");
+
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setAddress(fullAddress);
+  };
+
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
+  };
 
     const [itemDetail, setitemDetail] = useState(null);
     useEffect(() => {
@@ -163,10 +189,11 @@ const PayPage =() => {
             let orderinfo = {
                 buyer: nickname,
                 seller: itemDetail.memberid,
-                object : itemDetail.itemname,
+                object : itemDetail.title,
                 price : itemDetail.itemprice,
                 url : itemDetail.url,
-                address : ""
+                address : address,
+                date : ""
             }
             console.log(orderinfo);
             axios.post("http://localhost:8080/api/order/ordercreate", orderinfo)
@@ -226,7 +253,8 @@ const PayPage =() => {
                   });
 
                   sendMessage();
-                  navigate(`/TradePage?buyer=${nickname}&seller=${itemDetail.memberid}&object=${itemDetail.itemname}`)
+                  setTimeout(2000);
+                  navigate(`/DetailPayPage?buyer=${nickname}&seller=${itemDetail.memberid}&object=${itemDetail.title}`)
                 }
         }
         else {
@@ -350,8 +378,9 @@ const PayPage =() => {
                         placeholder="배송지를 등록해주세요"
                         aria-label="배송지를 등록해주세요"
                         aria-describedby="basic-addon2"
+                        value={address}
                     />
-                    <Button onClick={() => navigate("/Address")} variant="outline-secondary" >
+                    <Button onClick={handleClick} variant="outline-secondary" >
                         등록
                     </Button>
                 </InputGroup>
@@ -362,9 +391,7 @@ const PayPage =() => {
                         aria-label="배송요청 사항을 입력하세요"
                         aria-describedby="basic-addon2"
                     />
-                    <Button variant="outline-secondary">
-                        등록
-                    </Button>
+                    
                 </InputGroup>
                 <Form.Select id="Select" name="Select">
 

@@ -232,7 +232,7 @@ export default function UploadPage() {
           backgroundAttachment: 'fixed',
           backgroundSize: '100% 115%'
           }}>
-          <ArrowBackIcon onClick={() => navigate('/')} />
+          <ArrowBackIcon onClick={() => navigate('/MainPage')} />
           <div class="form1">
               <h1>게시글 작성</h1>
           </div>

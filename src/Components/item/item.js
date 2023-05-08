@@ -15,19 +15,27 @@ const Item = ({ data, searched , id}) => {
     },[])
 
     const gotoDetail = () => {
+      if(data.status == "판매중"){
         navigate('/DetailPage/' + id);
+      }
+      else if(data.status == "거래중"){
+        alert('해당 물품은 거래가 진행중입니다.');
+      }
+        
+      
+        
     }
   return (
     data.status === "거래중" ?
     <>
     
-    <div onClick={gotoDetail} className='StyledContainer'>
+    <div onClick={gotoDetail} className='StyledContainer1'>
         <img src={data.url} alt="items"/>
       <div className='write'>
-        <div className='StyledContent'>{data.maintext}</div>
-        <div className='StyledWriter'>{data.memberid}님</div>
-        <div className='StyledAddress'>{data.title}</div>
-        <div className='StyledPrice'>{data.itemprice}원</div>   
+        <div className='StyledContent1'>{data.maintext}</div>
+        <div className='StyledWriter1'>{data.memberid}님</div>
+        <div className='StyledAddress1'>{data.title}</div>
+        <div className='StyledPrice1'>{data.itemprice}원</div>   
         <FavoriteBorderIcon></FavoriteBorderIcon>{data.favor}
         <VisibilityIcon></VisibilityIcon>{data.view}
       </div>
@@ -37,14 +45,14 @@ const Item = ({ data, searched , id}) => {
     </>
     :
     <>
-    <div onClick={gotoDetail} className='StyledContainer'>
+    <div onClick={gotoDetail} className='StyledContainer1'>
         <div className='box'>
         <img src={data.url} alt="items"/>
       <div className='write'>
-      <div className='StyledContent'>{data.maintext}</div>
-      <div className='StyledWriter'>{data.memberid}님</div>
-      <div className='StyledAddress'>{data.title}</div>
-      <div className='StyledPrice'>{data.itemprice}원</div>   
+      <div className='StyledContent1'>{data.maintext}</div>
+      <div className='StyledWriter1'>{data.memberid}님</div>
+      <div className='StyledAddress1'>{data.title}</div>
+      <div className='StyledPrice1'>{data.itemprice}원</div>   
       <FavoriteBorderIcon></FavoriteBorderIcon>{data.favor}
         <VisibilityIcon></VisibilityIcon>{data.view}
       </div>

@@ -47,7 +47,7 @@ function Recommend(prop) {
          {item && num.map((v, idx) => 
          {return (
          <div>
-            <p className="recommend">{item[idx] ? <img src={item[idx].url} alt="items"width="100px" height="100px" /> : "empty"}
+            <p className="recommend">{item[idx] ? <img src={item[idx].url} alt="items"width="100px" height="100px" /> : "연관상품이 없습니다"}
             {item[idx] ? item[idx].title : ""}</p>
           </div>
          )}

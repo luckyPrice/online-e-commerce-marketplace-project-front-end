@@ -39,7 +39,7 @@ const Navbar = (props) => {
   )    
 };
 
-const StyledContainer = styled.div`
+/*const StyledContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -59,6 +59,6 @@ const StyledContainer = styled.div`
     background-color: #141414;
     color: #fff;
   }
-`;
+`;*/
 
 export default Navbar;

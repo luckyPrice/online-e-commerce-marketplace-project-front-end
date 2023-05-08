@@ -47,8 +47,13 @@ const ItemList = (props) => {
     if(category != 'all'){
       setFirst(false);
     }
+    if(category == 'all' && detailcategory == 'all'){
+      setItems([...originData]);
+    }
+    else{
+      setItems([...originData].filter(item => (item.category == category)).filter(item => (item.detailcategory == detailcategory)));
+    }
     
-    setItems([...originData].filter(item => (item.category == category)).filter(item => (item.detailcategory == detailcategory)));
     console.log(first);
     
   }, [detailcategory]);
@@ -90,6 +95,7 @@ const ItemList = (props) => {
       });
       setFirst(true);
       console.log(view);
+      
   }, []);
 
   const [items, setItems] = useState([]);
@@ -144,23 +150,28 @@ const ItemList = (props) => {
   );
   return (
     <>
+    
     {first ? 
+
     <Body>
       <Aside categories={categories1} onClickCateogry={onSetSort} />
-      
-      <StyledContainer>
-      <Tile />
-      <Tile2/>
-        <h1  className="text1">인기 상품</h1>
-        
-        <InfiniteScroll
+      <InfiniteScroll
+          
           dataLength={items.length}
           next={fetchData}
           hasMore={test}
           loader={
             <h4></h4>
-          }>
+          }
+          scroll={false}
+          >
+      <StyledContainer>
+      <Tile />
+      <Tile2/>
+        <h1  className="text1">인기 상품</h1>
         
+        
+            
         <StyledWrapper> 
           {[...items]
             .sort((a, b) => b.view - a.view)
@@ -173,19 +184,22 @@ const ItemList = (props) => {
             ))}
             
             </StyledWrapper>
-        </InfiniteScroll>
+        
         
         </StyledContainer>
+        </InfiniteScroll>
         </Body>
         
         :
+        
     <Body>
+      
       <Aside categories={categories1} onClickCateogry={onSetSort} />
       
-      <StyledContainer>
-      
         
-        <StyledFlex>
+            
+      <StyledContainer>
+      <StyledFlex>
           <h1>판매상품</h1>
           <StyledSearchForm onSubmit={(e) => onSetSearched(e)}>
             <input type="text" ref={inputRef} />
@@ -223,15 +237,8 @@ const ItemList = (props) => {
             </StyledSoltWrapper>
           </StyledSoltContainer>
         </StyledFlex>
-        
-          <InfiniteScroll
-          dataLength={view.length}
-          next={fetchData}
-          hasMore={test}
-          loader={
-            <h4></h4>
-          }>
             <StyledWrapper>
+            
           {searched.length > 0
             ? items.map((v, idx) => {
                 if (v.itemname.includes(searched)) {
@@ -258,12 +265,16 @@ const ItemList = (props) => {
                 )
               
             })}
+            
             </StyledWrapper>
-              </InfiniteScroll>
-        
+              
+            
       </StyledContainer>
+      
     </Body>
+    
             }
+            
             </>
   );
 };
@@ -285,10 +296,11 @@ const StyledFlex = styled.div`
   }
 `;
 
+
 const StyledSearchForm = styled.form`
   position: absolute;
   top: 0;
-  right: -10%;
+  right: -20%;
   transform: translate(-100%, 0%);
   display: flex;
   align-items: center;
