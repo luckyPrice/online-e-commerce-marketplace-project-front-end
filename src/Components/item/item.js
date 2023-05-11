@@ -32,12 +32,12 @@ const Item = ({ data, searched , id}) => {
     <div onClick={gotoDetail} className='StyledContainer1'>
         <img src={data.url} alt="items"/>
       <div className='write'>
-        <div className='StyledContent1'>{data.maintext}</div>
+        
         <div className='StyledWriter1'>{data.memberid}님</div>
         <div className='StyledAddress1'>{data.title}</div>
         <div className='StyledPrice1'>{data.itemprice}원</div>   
-        <FavoriteBorderIcon></FavoriteBorderIcon>{data.favor}
-        <VisibilityIcon></VisibilityIcon>{data.view}
+        <div className='favor'><FavoriteBorderIcon></FavoriteBorderIcon>{data.favor}</div>
+        <div className='vision'><VisibilityIcon></VisibilityIcon>{data.view}</div>
       </div>
       <Test><h3>거래중</h3></Test>
     </div>
@@ -49,12 +49,12 @@ const Item = ({ data, searched , id}) => {
         <div className='box'>
         <img src={data.url} alt="items"/>
       <div className='write'>
-      <div className='StyledContent1'>{data.maintext}</div>
+      
       <div className='StyledWriter1'>{data.memberid}님</div>
       <div className='StyledAddress1'>{data.title}</div>
       <div className='StyledPrice1'>{data.itemprice}원</div>   
-      <FavoriteBorderIcon></FavoriteBorderIcon>{data.favor}
-        <VisibilityIcon></VisibilityIcon>{data.view}
+      <div className='favor'><FavoriteBorderIcon></FavoriteBorderIcon>{data.favor}</div>
+        <div className='vision'><VisibilityIcon></VisibilityIcon>{data.view}</div>
       </div>
       </div>  
     </div>

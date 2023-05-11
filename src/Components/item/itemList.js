@@ -155,19 +155,10 @@ const ItemList = (props) => {
 
     <Body>
       <Aside categories={categories1} onClickCateogry={onSetSort} />
-      <InfiniteScroll
-          
-          dataLength={items.length}
-          next={fetchData}
-          hasMore={test}
-          loader={
-            <h4></h4>
-          }
-          scroll={false}
-          >
+      
       <StyledContainer>
       <Tile />
-      <Tile2/>
+      
         <h1  className="text1">인기 상품</h1>
         
         
@@ -187,7 +178,7 @@ const ItemList = (props) => {
         
         
         </StyledContainer>
-        </InfiniteScroll>
+        
         </Body>
         
         :
@@ -199,6 +190,7 @@ const ItemList = (props) => {
         
             
       <StyledContainer>
+        <Tile />
       <StyledFlex>
           <h1>판매상품</h1>
           <StyledSearchForm onSubmit={(e) => onSetSearched(e)}>
@@ -362,7 +354,7 @@ const StyledWrapper = styled.div`
   top: 60px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  
   width: 100%;
   gap: 20px;
   padding-bottom: 20px;

@@ -1,4 +1,4 @@
-const femail_clothes = [
+const female_clothes = [
     {value: '', text: '--선택--'},
     {value: 'f_padded_coat_jacket', text: '패딩/점퍼'},
     {value: 'f_coat', text: '코트'},
@@ -22,4 +22,4 @@ const femail_clothes = [
     {value: 'f_underwear_homewear', text: '언더웨어/홈훼어'},
     {value: 'f_theme_event', text: '테마/이벤트'},
   ];
-  export default femail_clothes;
+  export default female_clothes;

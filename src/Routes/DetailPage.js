@@ -228,12 +228,7 @@ function DetailPage(props) {
             {itemDetail && itemDetail.memberid}님과 채팅하기
           </Button>
           <br />
-          <Button>
-            <FontAwesomeIcon
-              size="2x"
-              onClick={handleFollwer}
-              icon={Follower ? faSquarePlus : faCircleCheck}
-            />팔로우</Button><br />
+          
 
         </Grid>
       </div>

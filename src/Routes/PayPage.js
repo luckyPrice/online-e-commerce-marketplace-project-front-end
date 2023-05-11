@@ -14,6 +14,7 @@ import {useCookies} from "react-cookie";
 import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 //디테일 페이지에서 상품->결제 페이지로 이동
 var client = null;
 const PayPage =() => {
@@ -352,6 +353,7 @@ const PayPage =() => {
         <div>
 
             <h3>결제 페이지</h3> <br />
+            <ArrowBackIcon onClick={() => navigate('/MainPage')} />
             <Grid padding="0px 40px 40px 40px">
                 <hr />
                 <h4>{itemDetail && itemDetail.itemname} 상품 결제하기</h4>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import './Aside.css'
-import femail_clothes from "../data/femail_clothes";
-import mail_clothes from "../data/mail_clothes";
+import female_clothes from "../data/female_clothes";
+import male_clothes from "../data/male_clothes";
 import shoes from "../data/shoes";
 import bag from "../data/bag";
 import jewelry_watch from "../data/jewelry_watch";
@@ -33,7 +33,6 @@ import {useStore2, useStore3, useStore4} from "../Routes/Stores/useStore";
 import {useStore1} from "../Routes/Stores/useStore";
 import {useCookies} from "react-cookie";
 import jwt_decode from "jwt-decode"
-
 import {
   Menu,
   MenuContext,
@@ -95,9 +94,9 @@ const reset = () => {
     
     
     if (category == "여성의류") {
-      type = femail_clothes;
+      type = female_clothes;
     } else if (category === "남성의류") {
-      type = mail_clothes;
+      type = male_clothes;
     }else if (category === "신발") {
       type = shoes;
     } else if (category === "가방") {

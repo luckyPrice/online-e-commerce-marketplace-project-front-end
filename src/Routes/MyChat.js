@@ -20,8 +20,6 @@ import Navbar from "../Components/navbar/Navbar";
 import Grid from "@mui/material/Grid";
 import Loading from '../Components/Loading';
 import LoadingButton from '@mui/lab/LoadingButton';
-import moment from 'moment';
-import 'moment/locale/ko';
 
 
 var client = null;
@@ -37,6 +35,7 @@ const MyChat = () =>{
     const [Chats, setChats] = useState(new Map());  
     var receiveuser = null;
     var chattitle = null;
+   
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
@@ -54,6 +53,7 @@ const MyChat = () =>{
         type:"message"
     });
     const [load, setLoad] = useState(true);
+    const [current, setCurrent] = useState("");
     
     
     
@@ -99,6 +99,8 @@ const MyChat = () =>{
     
 
     const getMessage = (chatname, idx, e) => {
+        setCurrent(chatname.chatitle);
+
         setLoad(false);
         console.log(chatname.nickname);
         console.log(idx);
@@ -112,16 +114,30 @@ const MyChat = () =>{
         type:"message"
         }
         setuserData({...userData, "receiveuser" : chatname.nickname, "chattitle" : chatname.chattitle, "senduser" : nickname});
+        
+        
        
         axios.post('http://localhost:8080/room/getmessage', chatData)
                 .then((response) =>{
                     setMessage(response.data);
                     console.log(response.data);
+                    refreshchatroom();
                     setLoad(true);
                 })
                 .catch((error) => {})   
             start();
             
+    }
+
+    const refreshchatroom = () => {
+        const nicknamesend = {
+            nickname : nickname
+        }
+        axios.post('http://localhost:8080/room/getchatroom', nicknamesend)
+        .then((response) =>{
+            setMychat(response.data);   
+        })
+                .catch((error) => {})   
     }
 
     const start = () => {
@@ -153,7 +169,7 @@ const MyChat = () =>{
             <div onClick={(e) => {getMessage(chatname, idx, e)}}>
                  <PersonIcon fontSize="medium"></PersonIcon>{chatname.nickname}
                  <ChatInfo>
-                 <ChatTitle>{chatname.chattitle} </ChatTitle>
+                 <ChatTitle font-family="sans-serif;">{chatname.chattitle} </ChatTitle>
                  <Checkcount><Avatar sx={{ bgcolor: deepOrange[500], width: 24, height: 24}}>{chatname.notread}</Avatar></Checkcount>
                  </ChatInfo>
             </div>
@@ -232,13 +248,13 @@ const MyChat = () =>{
       <Navbar />
             
                 
-            <ChatForm>
+            <div className="ChatForm">
             <LeftForm>
             <Title><h2>전체 대화</h2></Title>
                 {mychat && resultchecking}
             </LeftForm>
             <RightForm>
-            <ChatBar><h3>현재 대화 : {userData && userData.chattitle}</h3></ChatBar>
+            <ChatBar><h3>현재 대화 : {userData ? userData.chattitle : "대화중이 아닙니다"}</h3></ChatBar>
             
             <div class="container2">
                     <div class="chat_wr">
@@ -269,7 +285,7 @@ const MyChat = () =>{
                                     <>
                                     
                                 <div>
-                                <div class="test">
+                                <div class="mes">
                                 <p>{mes.message}</p>{
 
                                     <Button variant="contained" onClick={() => navigate(`/DetailPayPage?buyer=${mes.senduser}&seller=${mes.receiveuser}&object=${mes.chattitle}`)}>주문 내역</Button>
@@ -302,7 +318,7 @@ const MyChat = () =>{
                                  (
                                     <>
                                 <div>
-                                <div class="test">
+                                <div class="mes">
                                 <p>{mes.message}</p>
                                 {client &&
                                  <Button variant="contained" onClick={() => navigate(`/DetailPayPage?buyer=${mes.receiveuser}&seller=${mes.senduser}&object=${mes.chattitle}`)}>주문 내역</Button>
@@ -331,7 +347,7 @@ const MyChat = () =>{
                 
                  
             </RightForm>
-            </ChatForm>
+            </div>
             </Grid>
         </>
         
@@ -352,6 +368,7 @@ text-align: right;
 
 const Title = styled.div`
 text-align:center;
+font-family:sans-serif;
 `;
 
 const Date = styled.div`
@@ -381,27 +398,14 @@ background-color:pink;
   opacity: 0.5;
     `
 
-const ChatForm = styled.div`
-    
 
-
-margin-left : 350px;
-border:solid;
-    width:860px;
-  height: 520px;
-  display: flex;
-  position:relative;
-  flex-direction : row;
-  flex-wrap : nowrap;
-     
-    `;
 
 const RightForm = styled.div`
     
 
 
         
-
+font-family:sans-serif;
 height: 100px;
 width:350px;
       

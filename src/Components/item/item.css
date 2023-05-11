@@ -53,6 +53,18 @@
     font-weight: bold;
 }
 
+.favor{
+  position: absolute;
+  bottom : 0px;
+  left : 2px;
+}
+
+.vision{
+  position: absolute;
+  bottom : 0px;
+  left : 37px;
+}
+
 .StyledContainer1:hover{
   box-shadow: 0 0 12px var(--primary-color3);
   transform: scale(1.1);

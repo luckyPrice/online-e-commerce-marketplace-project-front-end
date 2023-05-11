@@ -34,7 +34,7 @@ function MyPage(id) {
     nickname = jwt_decode(cookies.token).sub;
   }
   else{
-    navigate("/");
+    navigate("/MainPage");
   }
 
   const [favorData, setFavorData] = useState([]);
@@ -127,8 +127,8 @@ function MyPage(id) {
       <FontAwesomeIcon icon={faCircleUser} size="10x"/>
       <br />
       <p>{nickname}님의 My Page 입니다.</p>
-      <button type="button" class="btn btn-link" onClick={() => navigate('/DealPage/' + nickname)}>
-            나의 거래내역</button>
+      <Button type="button" class="btn btn-link" onClick={() => navigate('/DealPage/' + nickname)}>
+            나의 거래내역</Button>
       </div>
       
         
@@ -136,7 +136,7 @@ function MyPage(id) {
               <b>상점오픈: 1일 전</b>
               <br/>
               <b>방문자:1</b>명<br/>
-              <b>본인인증:1</b>
+              
               <br />
               <b>거래 수:1회</b>
               <br/>
@@ -228,12 +228,7 @@ function MyPage(id) {
               
           })}
       </Tab>
-      <Tab eventKey="follower" title="팔로워">
       
-      </Tab>
-      <Tab eventKey="following" title="팔로잉">
-      
-      </Tab>
     </Tabs>
   </div>
 
