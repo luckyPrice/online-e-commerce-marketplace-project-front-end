@@ -8,6 +8,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Grid } from "@mui/material";
 import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 //MyPage와 SellerPage에서 링크로 -> 일단 거래중인[판매] 상품 확인 (본인 포함 누구나 확인 가능)
 
@@ -75,12 +76,25 @@ function DealPage() {
             
     }
 
+    const gotoOrder2 = (product) => {
+        
+        for(var i = 0 ; i < orderinfo.length; i++){
+            console.log(orderinfo[i].object);
+            console.log(product.title);
+            if(orderinfo[i].object == product.title){
+                navigate(`/DetailPayPage?buyer=${orderinfo[i].buyer}&seller=${orderinfo[i].seller}&object=${orderinfo[i].object}`)
+            }
+        }
+            
+    }
+
 
 
     return (
 
 
         <div>
+            <ArrowBackIcon onClick={() => navigate('/MainPage')} />
             <Grid padding="50px 300px 30px 300px">
 
                 <h3><b>{user}</b>님이 거래중인 상품입니다</h3>
@@ -90,16 +104,60 @@ function DealPage() {
                     id="justify-tab-example"
                     justify>
                     <Tab eventKey="sell" title="판매상품">
-                        {inputData.map(function (product, id) {
-                            const gotoDetail = () => {
-                                navigate('/DetailPage/' + product.itemid);
+                    {orderinfo.map(function (product, id) {
+                            
+                            
+                            if (product.seller == nickname){
+                            
+                            return (
+                                <>
+                                <div key={id}  >
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">상품 번호</th>
+                                                <th scope="col">상품 이미지</th>
+                                                <th scope="col">상품 정보</th>
+                                                <th scope="col">가격</th>
+                                                <th scope="col">주문 처리 상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">{product.id}</th>
+                                                <td><img src={product.url} alt="items" position="absolute" width="300px" height="300px" /></td>
+                                                <td><b>{product.object}</b></td>
+                                                <td>{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+                                                <td>{product.step==4 ? "거래 완료" : "거래중"} <br /><Button onClick={() => navigate(`/DetailPayPage?buyer=${product.buyer}&seller=${product.seller}&object=${product.object}`)}>주문 상세</Button></td>
+                                                
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                
+                                </>
+                            )
                             }
-                            if (product.memberid == user && product.status == "거래중")
+                            
+                        
+
+
+
+                    })}
+                    </Tab>
+                    <Tab eventKey="buy" title="구매상품">
+                    {orderinfo.map(function (product, id) {
+                            
+                            
+                                if (product.buyer == nickname){
+                                
                                 return (
                                     <>
                                     <div key={id}  >
                                         <table class="table">
-                                            <thead onClick={gotoDetail}>
+                                            <thead>
                                                 <tr>
                                                     <th scope="col">상품 번호</th>
                                                     <th scope="col">상품 이미지</th>
@@ -110,11 +168,11 @@ function DealPage() {
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <th onClick={gotoDetail} scope="row">{product.itemid}</th>
-                                                    <td onClick={gotoDetail}><img src={product.url} alt="items" position="absolute" width="300px" height="300px" /></td>
-                                                    <td onClick={gotoDetail}><b>{product.itemname}</b><br />{product.title}</td>
-                                                    <td onClick={gotoDetail}>{product.itemprice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
-                                                    <td><b>{product.status}</b><br /><Button onClick={(e) => {gotoOrder(product, id, e)}}>주문 상세</Button></td>
+                                                    <th scope="row">{product.id}</th>
+                                                    <td><img src={product.url} alt="items" position="absolute" width="300px" height="300px" /></td>
+                                                    <td><b>{product.object}</b></td>
+                                                    <td>{product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</td>
+                                                    <td>{product.step==4 ? "거래 완료" : "거래중"} <br /><Button onClick={() => navigate(`/DetailPayPage?buyer=${product.buyer}&seller=${product.seller}&object=${product.object}`)}>주문 상세</Button></td>
                                                     
                                                 </tr>
 
@@ -125,13 +183,13 @@ function DealPage() {
                                     
                                     </>
                                 )
+                                }
+                                
+                            
 
 
 
                         })}
-                    </Tab>
-                    <Tab eventKey="buy" title="구매상품">
-
                     </Tab>
 
 

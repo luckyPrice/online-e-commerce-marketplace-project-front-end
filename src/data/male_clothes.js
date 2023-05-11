@@ -1,4 +1,4 @@
-const mail_clothes = [
+const male_clothes = [
     {value: '', text: '--선택--'},
     {value: 'm_padded_coat_jacket', text: '패딩/점퍼'},
     {value: 'm_coat', text: '코트'},
@@ -19,4 +19,4 @@ const mail_clothes = [
     {value: 'm_theme_event', text: '테마/이벤트'},
   ];
 
-  export default mail_clothes;
+  export default male_clothes;

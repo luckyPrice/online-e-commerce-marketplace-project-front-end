@@ -42,6 +42,18 @@
         margin: 0 0 5px;
 }
 
+.ChatForm{
+  margin-left : 350px;
+border:solid;
+    width:860px;
+  height: 520px;
+  display: flex;
+  position:relative;
+  flex-direction : row;
+  flex-wrap : nowrap;
+  font-family: sans-serif;
+}
+
 
 
 .container1{
@@ -139,7 +151,7 @@
   width: 48px;
 }
 
-.test{
+.mes{
   border:solid 1px;
   text-align:center;
   border-radius: 8px 8px 8px 8px;
@@ -174,6 +186,12 @@
   border-radius: 10px;
   margin:5px;
   height: 75px;
+  
+}
+
+.chatRoom:hover{
+  
+  transform: scale(1.1);
   
 }
 

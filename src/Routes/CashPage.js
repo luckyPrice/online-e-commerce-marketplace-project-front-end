@@ -28,6 +28,9 @@ function CashPage() {
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
+      else{
+        navigate('/MainPage')
+      }
 
       const Cashfill = () => {
         let cashupdate = {

@@ -1,7 +1,7 @@
 const options = [
     {value: '', text: '--선택--'},
     {value: 'female clothes', text: '여성의류'},
-    {value: 'mail clothes', text: '남성의류'},
+    {value: 'male clothes', text: '남성의류'},
     {value: 'shoes', text: '신발'},
     {value: 'bag', text: '가방'},
     {value: 'jewelry,watch', text: '시계/쥬얼리'},

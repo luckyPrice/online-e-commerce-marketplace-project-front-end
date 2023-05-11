@@ -100,7 +100,7 @@ const [buyerinfo, setBuyerInfo] = useState(null);
             // 판매자일 경우
             let ChatMessage={
                 senduser : nickname,
-                receiveuser : receiveuser,
+                receiveuser : senduser,
                 chattitle : chattitle,
                 message: mes,
                 date: "",
@@ -136,7 +136,7 @@ const [buyerinfo, setBuyerInfo] = useState(null);
                 // 판매자일 경우
                 let ChatMessage={
                     senduser : nickname,
-                    receiveuser : receiveuser,
+                    receiveuser : senduser,
                     chattitle : chattitle,
                     message: mes,
                     date: ""
@@ -187,13 +187,14 @@ const [buyerinfo, setBuyerInfo] = useState(null);
         else if(order.step == 3){
             sendMessage(step3);
         }
-        
-        
         var orderinfo = {
-            buyer: receiveuser,
-            seller: senduser,
+            buyer: senduser,
+            seller: receiveuser,
             object : chattitle,
         }
+        
+        
+        
         
        
         axios.post("http://localhost:8080/api/order/orderchange", orderinfo)
