@@ -8,7 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Form from 'react-bootstrap/Form';
+import { Form } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import FormGroup from '@mui/material/FormGroup';
