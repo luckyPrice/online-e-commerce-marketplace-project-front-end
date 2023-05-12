@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {useStore1} from "./Stores/useStore";
 import jwt_decode from "jwt-decode"
-import Form from "react-bootstrap/form";
+import Form from "react-bootstrap/Form";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import options from "../data/options";
 import female_clothes from "../data/female_clothes";
