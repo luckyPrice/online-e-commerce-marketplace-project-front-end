@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import {Form} from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import $ from 'jquery';
 import Swal from "sweetalert2";
