@@ -17,7 +17,6 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import UploadPage from "./Routes/UploadPage";
 import SellerPage from "./Routes/SellerPage";
-import SellerData from './Routes/Sellerdata';
 import Reviewdata from './Routes/Reviewdata';
 import ReviewPage from'./Routes/ReviewPage';
 import ReviewAdd from './Routes/ReviewAdd';
