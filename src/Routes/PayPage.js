@@ -77,6 +77,7 @@ const PayPage =() => {
               .then((response) => {
                 console.log(response.data);
                 setUserData(response.data);
+                setAddress(response.data.address);
                 
                 
               })
@@ -377,7 +378,7 @@ const PayPage =() => {
                 <h4>배송지</h4>
                 <InputGroup className="mb-3">
                     <Form.Control
-                        placeholder="배송지를 등록해주세요"
+                        placeholder={userData && userData.address}
                         aria-label="배송지를 등록해주세요"
                         aria-describedby="basic-addon2"
                         value={address}

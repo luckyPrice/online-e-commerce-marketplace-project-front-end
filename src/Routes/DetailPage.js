@@ -21,6 +21,7 @@ import Header from "../Components/header/Header";
 import Navbar from "../Components/navbar/Navbar";
 import Recommend from "../Components/Recommend";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 // /DetailPage/상품번호"로 접근하여 상품상세페이지를 보여줌
@@ -89,6 +90,36 @@ function DetailPage(props) {
         console.log(error.message);
       });
   }, []);
+
+  const deleteListener = (id, e) => {
+  
+  
+
+    const itemId = {
+      itemid : id,
+      currentuser : nickname
+    }
+
+    console.log(itemId)
+    axios.post('http://localhost:8080/api/load/delete', itemId).then(
+      window.location.replace('/')
+    )
+  }
+
+  const changeListener = (id, e) => {
+  
+  
+
+    const itemId = {
+      itemid : id,
+      currentuser : nickname
+    }
+
+    console.log(itemId)
+    axios.post('http://localhost:8080/api/load/delete', itemId).then(
+      window.location.replace('/')
+    )
+  }
 
   const setStatus = () => {
     let changestatus = {
@@ -191,9 +222,17 @@ function DetailPage(props) {
           )
           :
           <>
-          {itemDetail.status === "판매중" && <Button onClick={setStatus}>판매완료</Button>}
+          {itemDetail.status === "판매중" && <Button variant="outlined" onClick={setStatus}>판매완료</Button>}
+          {itemDetail.status === "판매중" && <Button variant="outlined" onClick={ (e) => {deleteListener(itemDetail.itemid, e)}} startIcon={<DeleteIcon />}>
+             삭제
+            </Button>}
+            {itemDetail.status === "판매중" && <Button variant="outlined" onClick={ (e) => {changeListener(itemDetail.itemid, e)}} startIcon={<DeleteIcon />}>
+             가격 수정
+            </Button>}
           </>
            )}
+           
+          
           {itemDetail && (itemDetail.status === "판매 완료" && <h4>판매 완료된 상품입니다.</h4>)}
           <br />
           <br />
@@ -238,7 +277,7 @@ function DetailPage(props) {
       <Grid padding="0px 40px 40px 40px">
         <h5>상품정보</h5>
         <b>#카테고리 : {itemDetail && itemDetail.category}</b><br />
-        <b>#해시태그:</b>
+        
         <br /><br />
       </Grid>
   

@@ -8,6 +8,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 
@@ -24,7 +27,29 @@ const [sex, setSex] = React.useState('female');
 const [address, setAddress] = useState("");
 const navigate = useNavigate();
 
+const open = useDaumPostcodePopup("https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js");
 
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    setAddress(fullAddress);
+  };
+
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
+  };
 
   
 
@@ -106,8 +131,17 @@ const navigate = useNavigate();
     <FormControlLabel value="male" control={<Radio />} label="남자" />
   </RadioGroup>
   
-            <TextField fullWidth label = "주소" type="address" variant="standard" onChange={(event) => setAddress(event.target.value
-            )}/>
+            <InputGroup className="mb-3">
+                    <Form.Control
+                        placeholder="주소"
+                        aria-label="주소"
+                        aria-describedby="basic-addon2"
+                        value={address}
+                    />
+                    <Button onClick={handleClick} variant="outline-secondary" >
+                        등록
+                    </Button>
+                </InputGroup>
 
         
         
