@@ -64,7 +64,8 @@ const open = useDaumPostcodePopup("https://t1.daumcdn.net/mapjsapi/bundle/postco
         nickname: nickname,
         phonenumber : phonenumber,
         sex : sex,
-        address : address
+        address : address,
+        date:""
     }
         axios.post('http://localhost:8080/api/auth/signUp', data)
         .then((response) =>{

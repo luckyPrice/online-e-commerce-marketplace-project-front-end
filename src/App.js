@@ -29,6 +29,7 @@ import LandingPage from './Routes/Landing/LandingPage';
 import Tile2 from './Components/item/Tiles2/Tile2';
 import DetailPayPage from './Routes/DetailPayPage';
 import DealPage from './Routes/DealPage';
+import ChangeUploadPage from './Routes/ChangeUploadPage';
 import {
     BrowserRouter,
     HashRouter as Router,
@@ -66,6 +67,7 @@ function App() {
       <Route exact path="/CashPage" element={<CashPage />}></Route>
       <Route exact path="/StarReviewPage/:id" element={<StarReviewPage />}></Route>
       <Route exact path="/DealPage/:user" element={<DealPage/>}></Route>
+      <Route exact path="/ChangeUploadPage/:id" element={<ChangeUploadPage Product={Product}/>} />
     </Routes>
     </BrowserRouter>
 

@@ -108,17 +108,9 @@ function DetailPage(props) {
 
   const changeListener = (id, e) => {
   
-  
+    navigate('/ChangeUploadPage/' + id);
 
-    const itemId = {
-      itemid : id,
-      currentuser : nickname
-    }
-
-    console.log(itemId)
-    axios.post('http://localhost:8080/api/load/delete', itemId).then(
-      window.location.replace('/')
-    )
+    
   }
 
   const setStatus = () => {

@@ -7,6 +7,12 @@
         
       }
 
+      .img_form{
+        position: relative;
+        display:flex;
+        justify-content: center;
+      }
+
     .form1 {
         width: 600px;
         height: 70px;

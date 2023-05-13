@@ -40,7 +40,7 @@ const ItemList = (props) => {
   const [view, setViews] = useState([])
   const {detailcategory, setDetailcategory} = useStore4();
   useEffect(() => {
-    setItems([...originData].filter(i => i.itemid <= 10));
+    setItems(originData);
     
   }, [originData]);
   useEffect(() => {
