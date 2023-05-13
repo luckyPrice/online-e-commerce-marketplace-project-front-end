@@ -7,6 +7,7 @@ import { useCookies } from "react-cookie";
 import styles from "./DetailPayPage.module.css";
 import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
 //결제 페이지(PayPage)에서 결제 확인하면 그 제품에 대한 주문 상세 내역 보여짐(일단 Detail에 포함된 내용만)
 var client = null;
@@ -24,6 +25,7 @@ const DetailPayPage = () => {
     const [seller, setSeller] = useState(true);
     const navigate = useNavigate();
     const [order, setOrder] = useState();
+    const [time, setTime] = useState(false);
     let step0 = "판매자가 주문을 취소했습니다";
     let step1 = "판매자가 거래를 승인했습니다";
     let step2 = "판매자가 물품 전달을 완료했습니다. 수령했나요?";
@@ -69,12 +71,27 @@ const [buyerinfo, setBuyerInfo] = useState(null);
         console.log(response.data);
         setOrder(response.data);
         console.log(item);
+        if(response.data.step == 3){
+            checktime();
+        }
       })
       .catch((error) => {
         console.log(error.message);
       });
       start();
     },[]);
+
+    const checktime = () =>{
+        axios
+        .post("http://localhost:8080/api/order/checktime", item)
+        .then((response) => {
+            if(response.data >= 1){
+                console.log("1일이상이 지났습니다");
+                setTime(true);
+            }
+        })
+    }
+    
 
     useEffect(() => {
         console.log(item)
@@ -92,6 +109,19 @@ const [buyerinfo, setBuyerInfo] = useState(null);
       .catch((error) => {
         console.log(error.message);
       });
+    },[]);
+
+    useEffect(() => {
+        
+        axios
+        .post("http://localhost:8080/api/order/checktime", item)
+        .then((response) => {
+        
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+      
     },[]);
 
     const chatsavedb = (mes) => {
@@ -439,6 +469,12 @@ const [buyerinfo, setBuyerInfo] = useState(null);
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
               전달 완료 </Button>: "")}
+              {time &&<Alert severity="info">거래가 진행된지 2일이 지났습니다 거래완료 하시겠습니까?</Alert>}
+              {time && <Button onClick={() => finalStep()}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}>
+              거래 완료 </Button>}
 
               
               </> 
