@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import Header from "../Components/header/Header";
 import Navbar from "../Components/navbar/Navbar";
 import Grid from "@mui/material/Grid";
+import Alert from '@mui/material/Alert';
 
 function CashPage() {
     let nickname =""
@@ -25,6 +26,7 @@ function CashPage() {
     const [cash, setCash] = useState(0);
     const [currentcash, setCurrentcash] = useState(0);
     const [cashinfo, setCashInfo] = useState([]);
+    const [fill, setFill] = useState(false);
     if(cookies.token){
         nickname = jwt_decode(cookies.token).sub;
       }
@@ -51,8 +53,8 @@ function CashPage() {
         }
         
         setCurrentcash(parseInt(currentcash) + parseInt(cash));
-        alert("정상적으로 충전되었습니다.")
-        navigate("/CashPage");
+        setFill(true);
+        //navigate("/CashPage");
       }
 
       const handleChange = (event) => {
@@ -102,7 +104,9 @@ return(
     <Grid padding="60px 0 0 0" max_width="950px" margin="0 auto">
       <Header />
       <Navbar />
-    <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+    {fill && <Alert variant="outlined" severity="success">
+        충전 성공!
+      </Alert>}
         <Box
             sx={{
                 

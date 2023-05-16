@@ -7,7 +7,8 @@ import { useCookies } from "react-cookie";
 import styles from "./DetailPayPage.module.css";
 import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
+import Loading from '../Components/Loading';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 //결제 페이지(PayPage)에서 결제 확인하면 그 제품에 대한 주문 상세 내역 보여짐(일단 Detail에 포함된 내용만)
 var client = null;
@@ -319,6 +320,7 @@ const [buyerinfo, setBuyerInfo] = useState(null);
 
 
     return (
+        client ?
         <div>
 
             <Grid className={styles.Grid}>
@@ -507,6 +509,10 @@ const [buyerinfo, setBuyerInfo] = useState(null);
 
 
         </div>
+        :
+        <>
+        <Loading />
+        </>
 
     )
 }

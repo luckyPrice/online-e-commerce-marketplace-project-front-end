@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {useStore1} from "./Stores/useStore";
 import jwt_decode from "jwt-decode"
-import Form from "react-bootstrap/Form";
+import { Form } from 'react-bootstrap';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import options from "../data/options";
 import female_clothes from "../data/female_clothes";
@@ -125,12 +125,13 @@ export default function UploadPage() {
             })
                     .then((response) =>{
                     setImgFile2(response.data);
+                    console.log(response.data);
                     const responseData = response.data;
                         setRequestResult('Upload success');
                         
                         
                         if(!responseData.result){
-                            alert("Upload Fail");
+                            alert(responseData.message);
                             return;
                         }
 
@@ -235,7 +236,7 @@ export default function UploadPage() {
           backgroundAttachment: 'fixed',
           backgroundSize: '100% 115%'
           }}>
-          <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+          <ArrowBackIcon onClick={() => navigate(-1)} />
           <div class="form1">
               <h1>게시글 작성</h1>
           </div>

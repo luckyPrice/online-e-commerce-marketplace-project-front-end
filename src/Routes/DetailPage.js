@@ -22,6 +22,7 @@ import Navbar from "../Components/navbar/Navbar";
 import Recommend from "../Components/Recommend";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 // /DetailPage/상품번호"로 접근하여 상품상세페이지를 보여줌
@@ -218,8 +219,8 @@ function DetailPage(props) {
           {itemDetail.status === "판매중" && <Button variant="outlined" onClick={ (e) => {deleteListener(itemDetail.itemid, e)}} startIcon={<DeleteIcon />}>
              삭제
             </Button>}
-            {itemDetail.status === "판매중" && <Button variant="outlined" onClick={ (e) => {changeListener(itemDetail.itemid, e)}} startIcon={<DeleteIcon />}>
-             가격 수정
+            {itemDetail.status === "판매중" && <Button variant="outlined" onClick={ (e) => {changeListener(itemDetail.itemid, e)}} startIcon={<EditIcon />}>
+             수정
             </Button>}
           </>
            )}
