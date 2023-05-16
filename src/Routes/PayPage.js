@@ -15,6 +15,8 @@ import SockJS from 'sockjs-client';
 import Stomp, {over} from "stompjs";
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Loading from '../Components/Loading';
+import LoadingButton from '@mui/lab/LoadingButton';
 //디테일 페이지에서 상품->결제 페이지로 이동
 var client = null;
 const PayPage =() => {
@@ -220,13 +222,13 @@ const PayPage =() => {
 
     const PayButtonClick = () => {
         if (AllCheck == true) {
-            Swal.fire({
-                title: "결제 완료",
-                text: "상품이 결제되었습니다!",
-                icon: "success",
-            });
+            
             if(userData.cash > itemDetail.itemprice){
-                
+                Swal.fire({
+                    title: "결제 완료",
+                    text: "상품이 결제되었습니다!",
+                    icon: "success",
+                });
                 let cashreduce = {
                     nickname : nickname,
                     cash : itemDetail.itemprice
@@ -354,7 +356,7 @@ const PayPage =() => {
         <div>
 
             <h3>결제 페이지</h3> <br />
-            <ArrowBackIcon onClick={() => navigate('/MainPage')} />
+            <ArrowBackIcon onClick={() => navigate(-1)} />
             <Grid padding="0px 40px 40px 40px">
                 <hr />
                 <h4>{itemDetail && itemDetail.itemname} 상품 결제하기</h4>
@@ -485,7 +487,9 @@ const PayPage =() => {
             </Grid>
         </div >
         :
-        <></>
+        <>
+        <Loading />
+        </>
 
     )
 }

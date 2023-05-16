@@ -27,7 +27,7 @@ function MyPage(id) {
   const [requestResult, setRequestResult] = useState("");
   const [inputData, setInputData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
-
+  const [ordercount, setOrderCount] = useState(0);
 
   let nickname = "";
   if (cookies.token) {
@@ -38,7 +38,7 @@ function MyPage(id) {
   }
 
   const [favorData, setFavorData] = useState([]);
-
+  const [time, setTime] = useState(null);
   const deleteListener = (id, e) => {
   
   
@@ -50,7 +50,7 @@ function MyPage(id) {
 
     console.log(itemId)
     axios.post('http://localhost:8080/api/load/delete', itemId).then(
-      window.location.replace('/')
+      window.location.replace('/MainPage')
     )
   }
 
@@ -96,10 +96,10 @@ function MyPage(id) {
                     
                     setRequestResult('Failed!!');
                     })
-                    const getreview = {
+                    const nick = {
                       nickname : nickname
                     }
-                    axios.post('http://localhost:8080/api/forum/getreview', getreview)
+                    axios.post('http://localhost:8080/api/forum/getreview', nick)
                     .then((response) =>{
   
                       setReviewData(response.data);
@@ -110,6 +110,26 @@ function MyPage(id) {
                     
                     setRequestResult('Failed!!');
                     })
+                    axios.post('http://localhost:8080/api/auth/createAuthtime', nick)
+                    .then((response) => {
+                      console.log(response.data);
+                      setTime(response.data);
+                    })
+                    .catch((error) => {
+                      
+                      
+                      
+                      })
+                      axios.post('http://localhost:8080/api/order/ordercount', nick)
+                    .then((response) => {
+                      console.log(response.data);
+                      setOrderCount(response.data);
+                    })
+                    .catch((error) => {
+                      
+                      
+                      
+                      })
 
 },[])
 
@@ -133,12 +153,10 @@ function MyPage(id) {
       
         
               <Grid is_flex="true">
-              <b>상점오픈: 1일 전</b>
+              <b>가입일 : {time && time}일전</b>
               <br/>
-              <b>방문자:1</b>명<br/>
               
-              <br />
-              <b>거래 수:1회</b>
+              <b>거래 수: {ordercount}회</b>
               <br/>
               </Grid>
              
