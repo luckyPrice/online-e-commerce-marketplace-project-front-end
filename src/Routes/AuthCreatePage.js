@@ -126,7 +126,7 @@ const handleClick = () => {
             )}/>
             <TextField style = {{width: '70%'}} sx = {{
                 marginTop: 2,
-              }} label = "패스워드확인" type="passwordcheck" variant="standard" onChange={(event) => setPasswordCheck(event.target.value
+              }} label = "패스워드확인" type="password" variant="standard" onChange={(event) => setPasswordCheck(event.target.value
             )}/>
             <TextField style = {{width: '70%'}} sx = {{
                 marginTop: 2,

@@ -43,7 +43,6 @@ function CashPage() {
           .post("http://localhost:8080/api/auth/UpdateCash", cashupdate)
           .then((response) => {
             
-            console.log(userData);
           })
           .catch((error) => {
             console.log(error.message);
@@ -54,7 +53,6 @@ function CashPage() {
         
         setCurrentcash(parseInt(currentcash) + parseInt(cash));
         setFill(true);
-        //navigate("/CashPage");
       }
 
       const handleChange = (event) => {
@@ -68,7 +66,6 @@ function CashPage() {
         axios
         .post("http://localhost:8080/api/auth/getCashOrder", nick)
         .then((response) => {
-          console.log(response.data);
           setCashInfo(response.data);
           
           
@@ -85,7 +82,6 @@ function CashPage() {
         axios
           .post("http://localhost:8080/api/auth/getAuth", nick)
           .then((response) => {
-            console.log(response.data);
             setUserData(response.data);
             setCurrentcash(response.data.cash);
             

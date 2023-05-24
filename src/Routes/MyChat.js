@@ -75,7 +75,6 @@ const MyChat = () =>{
             axios.post('http://localhost:8080/room/getmessage', userData)
             .then((response) =>{
                 setMessage(response.data);
-                console.log(response.data);
             })
             .catch((error) => {})   
             start(); 
@@ -98,13 +97,12 @@ const MyChat = () =>{
 
     
 
+    
+
     const getMessage = (chatname, idx, e) => {
         setCurrent(chatname.chatitle);
 
         setLoad(false);
-        console.log(chatname.nickname);
-        console.log(idx);
-        console.log(userData);
         let chatData = {
         senduser: nickname,
         receiveuser: chatname.nickname,
@@ -120,7 +118,6 @@ const MyChat = () =>{
         axios.post('http://localhost:8080/room/getmessage', chatData)
                 .then((response) =>{
                     setMessage(response.data);
-                    console.log(response.data);
                     refreshchatroom();
                     setLoad(true);
                 })

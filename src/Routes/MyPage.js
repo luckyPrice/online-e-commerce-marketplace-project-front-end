@@ -8,7 +8,6 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Products from "./data";
 import { FaStar } from "react-icons/fa";
-//import ReviewData from "./Reviewdata";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -68,9 +67,7 @@ function MyPage(id) {
     axios.get('http://localhost:8080/api/load/UploadShow')
                     .then((response) =>{
                       
-                      console.log(response.data);
                       setInputData(response.data);
-                      console.log(inputData)
                       setRequestResult('Success!!');
                     })
                     .catch((error) => {
@@ -85,15 +82,11 @@ function MyPage(id) {
                     }
                     axios.post('http://localhost:8080/api/load/favorRequest', itemId)
                     .then((response) =>{
-                      
-                      console.log(response.data);
                       setFavorData(response.data);
-                      console.log(favorData)
                       setRequestResult('Success!!');
                     })
                     .catch((error) => {
                     console.log(error.message);
-                    
                     setRequestResult('Failed!!');
                     })
                     const nick = {
@@ -101,35 +94,23 @@ function MyPage(id) {
                     }
                     axios.post('http://localhost:8080/api/forum/getreview', nick)
                     .then((response) =>{
-  
                       setReviewData(response.data);
                       setRequestResult('Success!!');
                     })
                     .catch((error) => {
                     console.log(error.message);
-                    
                     setRequestResult('Failed!!');
                     })
                     axios.post('http://localhost:8080/api/auth/createAuthtime', nick)
                     .then((response) => {
-                      console.log(response.data);
                       setTime(response.data);
                     })
-                    .catch((error) => {
-                      
-                      
-                      
-                      })
+                    .catch((error) => {})
                       axios.post('http://localhost:8080/api/order/ordercount', nick)
                     .then((response) => {
-                      console.log(response.data);
                       setOrderCount(response.data);
                     })
-                    .catch((error) => {
-                      
-                      
-                      
-                      })
+                    .catch((error) => {})
 
 },[])
 
@@ -159,9 +140,6 @@ function MyPage(id) {
               <b>거래 수: {ordercount}회</b>
               <br/>
               </Grid>
-             
-          
-       
     </div>
     
     <Tabs
