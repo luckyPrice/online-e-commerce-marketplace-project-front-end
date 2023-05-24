@@ -23,6 +23,7 @@ import Recommend from "../Components/Recommend";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DoneIcon from '@mui/icons-material/Done';
 
 
 // /DetailPage/상품번호"로 접근하여 상품상세페이지를 보여줌
@@ -64,6 +65,7 @@ function DetailPage(props) {
   if (cookies.token) {
     nickname = jwt_decode(cookies.token).sub;
   }
+  
 
   const [itemId, setitemId] = useState({
     itemid: id,
@@ -108,16 +110,48 @@ function DetailPage(props) {
   }
 
   const changeListener = (id, e) => {
-  
     navigate('/ChangeUploadPage/' + id);
-
-    
   }
 
   const setStatus = () => {
     let changestatus = {
       itemid : itemDetail.itemid,
       currentuser : "판매 완료" // 변수 이름만 currentuser
+  }
+  axios
+    .post("http://localhost:8080/api/load/changeStatus", changestatus)
+    .then((response) => {})
+    .catch((error) => {
+      console.log(error.message);
+    });
+    const finish = {
+      nickname : itemDetail.maintext
+    }
+    axios.post('http://localhost:8080/api/upload/finish', finish)
+    .then((response) => {})
+    .catch((error) => {})
+  }
+
+  const setStatus2 = () => {
+    let changestatus = {
+      itemid : itemDetail.itemid,
+      currentuser : "거래중" // 변수 이름만 currentuser
+  }
+  console.log(itemDetail.itemid);
+  axios
+    .post("http://localhost:8080/api/load/changeStatus", changestatus)
+    .then((response) => {
+      
+      
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+  }
+  const setStatus3 = () => {
+    let changestatus = {
+      itemid : itemDetail.itemid,
+      currentuser : "판매중" // 변수 이름만 currentuser
   }
   console.log(itemDetail.itemid);
   axios
@@ -158,7 +192,7 @@ function DetailPage(props) {
             </TransformComponent>
           </TransformWrapper>
           <br />
-          <b>상품설명:{itemDetail && itemDetail.maintext}</b>
+          <b>상품설명 : {itemDetail && itemDetail.maintext}</b>
         </Grid>
 
         <Grid padding="0px 40px 40px 40px">
@@ -167,7 +201,7 @@ function DetailPage(props) {
           <h5>판매자: {itemDetail && itemDetail.memberid}</h5>
           <br />
           <b>가격:{itemDetail && itemDetail.itemprice}</b>원<br />
-          { itemDetail &&(itemDetail.memberid !== nickname && itemDetail.status === "판매중" ? (
+          {cookies.token && (itemDetail &&(itemDetail.memberid !== nickname && itemDetail.status === "판매중" ? (
        <>
           
             
@@ -200,6 +234,7 @@ function DetailPage(props) {
               })
             }
           >
+            
             바로 구매
           </Button>
           <Button >
@@ -215,7 +250,10 @@ function DetailPage(props) {
           )
           :
           <>
-          {itemDetail.status === "판매중" && <Button variant="outlined" onClick={setStatus}>판매완료</Button>}
+          <br />
+          {itemDetail.status === "판매중" && <Button variant="outlined" onClick={setStatus2} startIcon={<DoneIcon />}>거래중</Button>}
+          {itemDetail.status === "거래중" && <Button variant="outlined" onClick={setStatus3} startIcon={<DoneIcon />}>거래취소</Button>}
+          {itemDetail.status === "거래중" && <Button variant="outlined" onClick={setStatus} startIcon={<DoneIcon />}>판매완료</Button>}
           {itemDetail.status === "판매중" && <Button variant="outlined" onClick={ (e) => {deleteListener(itemDetail.itemid, e)}} startIcon={<DeleteIcon />}>
              삭제
             </Button>}
@@ -223,7 +261,7 @@ function DetailPage(props) {
              수정
             </Button>}
           </>
-           )}
+           ))}
            
           
           {itemDetail && (itemDetail.status === "판매 완료" && <h4>판매 완료된 상품입니다.</h4>)}
@@ -247,19 +285,7 @@ function DetailPage(props) {
             onClick={() => navigate("/SellerPage/" + itemDetail.memberid)}
           >상점 후기</Button>
           <br />
-          <Button
-            variant="outlined"
-            onClick={() =>
-              navigate(
-                `/ChatPage?receiveuser=${itemDetail.memberid}&chattitle=${itemDetail.title}`
-              )
-            }
-          >
-
-            <FontAwesomeIcon icon={faComment} />
-            {itemDetail && itemDetail.memberid}님과 채팅하기
-          </Button>
-          <br />
+          
           
 
         </Grid>

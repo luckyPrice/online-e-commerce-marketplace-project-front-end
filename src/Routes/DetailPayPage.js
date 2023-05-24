@@ -48,39 +48,11 @@ const DetailPayPage = () => {
     
 const [buyerinfo, setBuyerInfo] = useState(null);
     useEffect(() => {
-        let nick = {
-            nickname : senduser
-        }
-        axios
-            .post("http://localhost:8080/api/auth/getAuth", nick)
-            .then((response) => {
-                
-                console.log(response.data);
-                setBuyerInfo(response.data);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
+        start();
+        
     }, []);
 
-    useEffect(() => {
-        console.log("아이템은" + item)
-        console.log(item);
-        axios
-        .post("http://localhost:8080/api/order/orderget", item)
-        .then((response) => {
-        console.log(response.data);
-        setOrder(response.data);
-        console.log(item);
-        if(response.data.step == 3){
-            checktime();
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-      start();
-    },[]);
+    
 
     const checktime = () =>{
         axios
@@ -94,36 +66,9 @@ const [buyerinfo, setBuyerInfo] = useState(null);
     }
     
 
-    useEffect(() => {
-        console.log(item)
-        axios
-        .post("http://localhost:8080/api/load/orderDetail", item)
-        .then((response) => {
-        console.log(response.data);
-        console.log(response.data.memberid);
-        if(response.data.memberid != nickname){
-            setSeller(false);
-        }
-        setitemDetail(response.data);
-        console.log(item);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-    },[]);
+    
 
-    useEffect(() => {
-        
-        axios
-        .post("http://localhost:8080/api/order/checktime", item)
-        .then((response) => {
-        
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-      
-    },[]);
+    
 
     const chatsavedb = (mes) => {
         console.log(mes)
@@ -159,9 +104,57 @@ const [buyerinfo, setBuyerInfo] = useState(null);
         
     }
 
+    const getData = () => {
+        let nick = {
+            nickname : senduser
+        }
+        axios
+            .post("http://localhost:8080/api/auth/getAuth", nick)
+            .then((response) => {
+                
+                console.log(response.data);
+                setBuyerInfo(response.data);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+        axios
+        .post("http://localhost:8080/api/order/checktime", item)
+        .then((response) => {
+        
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+      axios
+        .post("http://localhost:8080/api/load/orderDetail", item)
+        .then((response) => {
+        console.log(response.data);
+        console.log(response.data.memberid);
+        if(response.data.memberid != nickname){
+            setSeller(false);
+        }
+        setitemDetail(response.data);
+        console.log(item);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+      axios
+        .post("http://localhost:8080/api/order/orderget", item)
+        .then((response) => {
+        setOrder(response.data);
+        if(response.data.step == 3){
+            checktime();
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+    }
+
     const sendMessage = (mes) => {
-        console.log(client);
-        console.log(mes);
+        
         if(client){
             if(itemDetail.memberid == nickname){
                 // 판매자일 경우
@@ -204,7 +197,7 @@ const [buyerinfo, setBuyerInfo] = useState(null);
         let sock = new SockJS('http://localhost:8080/ws')
         client = over(sock);
         client.connect({}, () =>{client.subscribe("/private/message/" + nickname);});
-        
+        setTimeout(getData,3000);
         
     }
 
@@ -471,7 +464,7 @@ const [buyerinfo, setBuyerInfo] = useState(null);
               variant="contained"
               sx={{ mt: 3, mb: 2 }}>
               전달 완료 </Button>: "")}
-              {time &&<Alert severity="info">거래가 진행된지 2일이 지났습니다 거래완료 하시겠습니까?</Alert>}
+              {time &&<Alert severity="info">거래가 진행된지 1일이 지났습니다 거래완료 하시겠습니까?</Alert>}
               {time && <Button onClick={() => finalStep()}
               fullWidth
               variant="contained"

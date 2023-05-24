@@ -10,13 +10,15 @@ import {useStore1} from "./Stores/useStore";
 import jwt_decode from "jwt-decode"
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import './LoginPage.css'
 import video from '../static/back.mp4';
+import './LoginPage.css'
+import Modal from "./AuthCreatePage";
 
 
 
 
 const LoginPage = () => {
+  const [visibility, setVisibility] = useState(false);
     const navigate = useNavigate();
     const [requestResult, setRequestResult] = useState("");
     const [value, setValue] = useState("");
@@ -24,6 +26,16 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [cookies, setCookies] = useCookies();
     const {user, setUser} = useStore1();
+    const [boxs, setBoxs] = useState();
+    const [modal, setModal] = useState(false);
+
+    const onClickmodal = (event) =>{
+      setModal(true)
+  };
+
+  const onClickmodal_out = (event) =>{
+    setModal(false)
+};
 
     const onChange = (event) =>{
         const {target: {name, value}} = event;
@@ -72,7 +84,7 @@ const LoginPage = () => {
                             console.log(token);
                             setUser(user);
                             
-                            navigate('/');
+                            navigate(-1);
                         
 
 
@@ -86,61 +98,89 @@ const LoginPage = () => {
             console.log(requestResult);
        };
 
+
+
   return (
     <>
-    <StyledContainer>
-    <Link to="/"><h1>중고 마켓</h1></Link>
-    </StyledContainer>
+    <div>
+      
+
+    <video src={video} autoPlay loop muted className="video"/>
     
-    <Box
-          sx={{
-            marginTop: 14,
-            width: 300,
-            height: 300,
-            mx: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-                    >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="id"
-              label="ID"
-              name="id"
-              autoComplete="id"
-              autoFocus
-              onChange={onChange}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="password"
-              onChange={onChange}
-            />
+    <div className="content1">
+      <Box
+            sx={{
+              marginTop: 14,
+              width: 300,
+              height: 300,
+              mx: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+                      >
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="id"
+                label="ID"
+                name="id"
+                autoComplete="id"
+                autoFocus
+                onChange={onChange}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="password"
+                onChange={onChange}
+              />
+              
+              <Button
+              onClick={() => logInHandler()}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                style={{width: 110, height: 50, backgroundColor: 'black', color: 'white', fontSize: '18px', fontWeight: 700}}
+              >
+                로그인
+              </Button>
+              
+                <Grid item>
+                  <Link onClick={() => onClickmodal()} variant="body2" style={{fontWeight: 800}}>
+                    {"아이디가 없으신가요? 회원가입하기"}
+                  </Link>
+                </Grid>
+              </Box>
+            </div>
             
-            <Button
-            onClick={() => logInHandler()}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              로그인
-            </Button>
+            <div className="content2">
+            <StyledContainer>
+            <Link to="/MainPage"><span className="content3">중고 마켓</span></Link>
+            </StyledContainer>
+            </div>
+
+            {
+              modal == true ? <Modal />: null
+            }
+            `{
+              modal == true ? <div className="close_back"><div className="close" onClick={() => onClickmodal_out()}>X</div></div>: null
+            }`
+
+
+
+
+
+    
             
-              <Grid item>
-                <Link to="/AuthCreatePage" variant="body2">
-                  {"아이디가 없으신가요? 회원가입하기"}
-                </Link>
-              </Grid>
-            </Box>
+            
+            </div>
       </>      
   );
 

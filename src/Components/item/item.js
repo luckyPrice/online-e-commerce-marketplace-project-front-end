@@ -3,22 +3,28 @@ import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./item.css";
+import { useCookies } from "react-cookie";
+import jwt_decode from "jwt-decode";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const Item = ({ data, searched , id}) => {
     const navigate = useNavigate();
-
+    let nickname="";
+    const [cookies, setCookies] = useCookies();
+    if(cookies.token){
+        nickname = jwt_decode(cookies.token).sub;
+      }
     useEffect(() => {
       console.log(data)
       console.log(data.url)
     },[])
 
     const gotoDetail = () => {
-      if(data.status == "판매중"){
+      if(data.status == "판매중" || data.mameberid == nickname){
         navigate('/DetailPage/' + id);
       }
-      else if(data.status == "거래중"){
+      else if(data.status == "거래중" && data.mameberid !== nickname){
         alert('해당 물품은 거래가 진행중입니다.');
       }
         

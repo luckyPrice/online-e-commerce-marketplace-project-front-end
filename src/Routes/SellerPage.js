@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import SellerData from "./Sellerdata";
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { useNavigate } from "react-router-dom";
@@ -12,13 +11,15 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FaStar } from "react-icons/fa";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Grid from "@mui/material/Grid";
 function SellerPage(props) {
   const navigate = useNavigate();
   let { seller } = useParams();
- 
   const [inputData, setInputData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
   const [requestResult, setRequestResult] = useState("");
+  const [time, setTime] = useState(null);
+  const [ordercount, setOrderCount] = useState(0);
   useEffect(() => {
 
     
@@ -27,31 +28,36 @@ function SellerPage(props) {
                       
                       
                       setInputData(response.data);
-                      console.log(inputData)
                       setRequestResult('Success!!');
               
 
                     })
                     .catch((error) => {
                     console.log(error.message);
-                    
                     setRequestResult('Failed!!');
                     })
-
-                    const getreview = {
+                    const nick = {
                       nickname : seller
                     }
-                    axios.post('http://localhost:8080/api/forum/getreview', getreview)
+                    axios.post('http://localhost:8080/api/forum/getreview', nick)
                     .then((response) =>{
-  
                       setReviewData(response.data);
                       setRequestResult('Success!!');
                     })
                     .catch((error) => {
                     console.log(error.message);
-                    
                     setRequestResult('Failed!!');
                     })
+                    axios.post('http://localhost:8080/api/auth/createAuthtime', nick)
+                    .then((response) => {
+                      setTime(response.data);
+                    })
+                    .catch((error) => {})
+                      axios.post('http://localhost:8080/api/order/ordercount', nick)
+                    .then((response) => {
+                      setOrderCount(response.data);
+                    })
+                    .catch((error) => {})
 
 },[])
 
@@ -63,33 +69,16 @@ function SellerPage(props) {
         <ArrowBackIcon onClick={() => navigate(-1)} />
           <br />
           <br />
-
-         
         </div>
         <FontAwesomeIcon icon={faShop} size="10x"/>
         <h3>{seller}님의 상점</h3> <br />
-        {SellerData.map(function (SD, k) {
-          if (seller == SD.name) {
-            return (
-              <div className="col-md-6" key={k}>
-                <li>
-                  <b>상점오픈: {SD.opendate}일 전</b>
-                </li>
-                <li>
-                  <b>방문자:{SD.visitor}</b>명<br />
-                </li>
-                <li>
-                  <b>본인인증:{SD.verification}</b>
-                  <br />
-                </li>
-                <li>
-                  <b>거래 수:{SD.deal}회</b>
-                  <br />
-                </li>
-              </div>
-            );
-          }
-        })}
+         <Grid is_flex="true">
+              <b>가입일 : {time && time}일전</b>
+              <br/>
+              
+              <b>거래 수: {ordercount}회</b>
+              <br/>
+              </Grid>
         <Tabs
       defaultActiveKey="profile"
       id="fill-tab-example"
@@ -107,8 +96,6 @@ function SellerPage(props) {
               <img src={product.url} alt="items" position="absolute" width="300px" height="300px" />
               <p>판매자:{product.memberid}</p>
               <p>{product.itemprice}원</p>
-     
-              
               </div>
               )
               
@@ -151,12 +138,7 @@ function SellerPage(props) {
         
      })}
       </Tab>
-      <Tab eventKey="follower" title="팔로워">
       
-      </Tab>
-      <Tab eventKey="following" title="팔로잉">
-      
-      </Tab>
     </Tabs>
       </div>
     </div>

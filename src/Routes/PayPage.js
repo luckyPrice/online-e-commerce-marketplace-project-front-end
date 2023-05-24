@@ -20,7 +20,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 //디테일 페이지에서 상품->결제 페이지로 이동
 var client = null;
 const PayPage =() => {
-    
+    const[select, setSelect] = useState("");
+    const[select2, setSelect2] = useState("");
     const [cookies, setCookies] = useCookies();
     let nickname =""
     const [userData, setUserData] = useState(null);
@@ -60,41 +61,39 @@ const PayPage =() => {
 
     const [itemDetail, setitemDetail] = useState(null);
     useEffect(() => {
-        axios
-            .post("http://localhost:8080/api/load/showDetail", itemId)
-            .then((response) => {
-                console.log("good");
-                console.log(response.data);
-                setitemDetail(response.data);
-                console.log(itemDetail);
-            })
-            .catch((error) => {
-                console.log(error.message);
-            });
-            let nick = {
-                nickname : nickname
-            }
-              axios
-              .post("http://localhost:8080/api/auth/getAuth", nick)
-              .then((response) => {
-                console.log(response.data);
-                setUserData(response.data);
-                setAddress(response.data.address);
-                
-                
-              })
-              .catch((error) => {
-                console.log(error.message);
-              });
+        
               
               start();
 
     }, []);
 
+    const getData = () => {
+        axios
+        .post("http://localhost:8080/api/load/showDetail", itemId)
+        .then((response) => {
+            setitemDetail(response.data);
+        })
+        .catch((error) => {
+            console.log(error.message);
+        });
+        let nick = {
+            nickname : nickname
+        }
+          axios
+          .post("http://localhost:8080/api/auth/getAuth", nick)
+          .then((response) => {
+            setUserData(response.data);
+            setAddress(response.data.address);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+    }
+
 
     $(function () {
 
-        $("#SelectDirect").hide();
+        //$("#SelectDirect").hide();
         $("#Select").change(function () {
             if ($("#Select").val() == "direct") {
                 $("#SelectDirect").show();
@@ -159,8 +158,7 @@ const PayPage =() => {
         let sock = new SockJS('http://localhost:8080/ws')
         client = over(sock);
         client.connect({}, () =>{client.subscribe("/private/message/" + nickname);});
-        console.log("?")
-        
+        getData();
     }
 
     const chatsavedb = () => {
@@ -178,7 +176,6 @@ const PayPage =() => {
     }
 
     const sendMessage = () => {
-        console.log(client);
         if(client){
             let ChatMessage={
                 senduser : nickname,
@@ -187,22 +184,9 @@ const PayPage =() => {
                 message: "거래가 요청되었습니다.",
                 date: ""
             };
-            console.log(ChatMessage);
             client.send('/pub/chat',{}, JSON.stringify(ChatMessage));
             chatsavedb();
-            let orderinfo = {
-                buyer: nickname,
-                seller: itemDetail.memberid,
-                object : itemDetail.title,
-                price : itemDetail.itemprice,
-                url : itemDetail.url,
-                address : address,
-                date : ""
-            }
-            console.log(orderinfo);
-            axios.post("http://localhost:8080/api/order/ordercreate", orderinfo)
-            .then((response) =>{})
-            .catch((error) => {})
+            
             
         }
         else{
@@ -217,6 +201,30 @@ const PayPage =() => {
             setAllCheck(false)
         }
     }, [ServiceCheck, CollectCheck, OfferCheck])
+
+    const onChange = (event) =>{
+        console.log(event.target.value);
+        if(event.target.value == "1"){
+            setSelect("배송 전 연락부탁드립니다");
+            console.log("1");
+            console.log(select);
+        }
+        else if(event.target.value == "2"){
+            setSelect("부재 시 경비실에 맡겨주세요"); 
+            console.log("2");
+            console.log(select);
+        }
+        else if(event.target.value == "default"){
+            setSelect(""); 
+            console.log("3");
+        }
+        else if(event.target.value != "direct"){
+            setSelect(event.target.value);
+            console.log(select);
+        }
+        
+        
+    }
 
 
 
@@ -248,13 +256,23 @@ const PayPage =() => {
                 }
                 axios
                   .post("http://localhost:8080/api/load/changeStatus", changestatus)
-                  .then((response) => {
-                    
-                    
-                  })
+                  .then((response) => {})
                   .catch((error) => {
                     console.log(error.message);
                   });
+                  let orderinfo = {
+                buyer: nickname,
+                seller: itemDetail.memberid,
+                object : itemDetail.title,
+                price : itemDetail.itemprice,
+                url : itemDetail.url,
+                address : address,
+                date : "",
+                request : select
+            }
+            axios.post("http://localhost:8080/api/order/ordercreate", orderinfo)
+            .then((response) =>{})
+            .catch((error) => {})
 
                   sendMessage();
                   setTimeout(2000);
@@ -395,12 +413,13 @@ const PayPage =() => {
                         placeholder="배송요청 사항을 입력하세요"
                         aria-label="배송요청 사항을 입력하세요"
                         aria-describedby="basic-addon2"
+                        onChange = {onChange}
                     />
                     
                 </InputGroup>
-                <Form.Select id="Select" name="Select">
+                <Form.Select id="Select" name="Select" onChange = {onChange}>
 
-                    <option selected>배송요청사항  (선택)</option>
+                    <option selected value="default">배송요청사항  (선택)</option>
                     <option value="1">배송 전 연락부탁드립니다</option>
                     <option value="2">부재 시 경비실에 맡겨주세요</option>
                     <option value="direct">직접입력</option>

@@ -98,6 +98,13 @@ useEffect(() => {
                 alert('다시 확인해주세요');
                 return;
             }
+            const finish = {
+              nickname : itemDetail.maintext
+            }
+            axios.post('http://localhost:8080/api/upload/finish', finish)
+            .then((response) => {})
+            .catch((error) => {})
+
             navigate('/');
         })
         .catch((error) => {

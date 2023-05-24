@@ -6,21 +6,15 @@ import LoginPage from "./Routes/LoginPage";
 import MainPage from "./Routes/MainPage";
 import MyPage from "./Routes/MyPage";
 import SellPage from "./Routes/SellPage";
-import ChatPage from "./Routes/ChatPage";
 import MyChat from "./Routes/MyChat";
 import DetailPage from "./Routes/DetailPage";
-import DetailPurchasePage from "./Routes/DetailPage";
-import DetailDonatePage from "./Routes/DetailPage";
 import Products from "./Routes/data";
-import Layout from './Components/Layout';
-import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import UploadPage from "./Routes/UploadPage";
 import SellerPage from "./Routes/SellerPage";
 import Reviewdata from './Routes/Reviewdata';
 import ReviewPage from'./Routes/ReviewPage';
 import ReviewAdd from './Routes/ReviewAdd';
-import CartPage from './Routes/CartPage';
 import Address from './Routes/Address';
 import CashPage from './Routes/CashPage';
 import PayPage from './Routes/PayPage';
@@ -51,7 +45,6 @@ function App() {
       <Route exact path="/MainPage" element={<MainPage />}></Route>
       <Route exact path="/MyPage" element={<MyPage />}></Route>
       <Route exact path="/SellPage" element={<SellPage />}></Route>
-      <Route exact path="/ChatPage" element={<ChatPage />}></Route>
       <Route exact path="/MyChat" element ={<MyChat />}></Route>
       <Route exact path="/ReviewPage" element ={<ReviewPage Reviewdata ={ Reviewdata }/>}></Route>
       <Route exact path="/ReviewAdd" element ={<ReviewAdd/>}></Route>
@@ -61,7 +54,6 @@ function App() {
       <Route exact path="/UploadPage" element={<UploadPage />}></Route>
       <Route exact path="/SellerPage/:seller" element={<SellerPage/>}></Route>
       <Route exact path="/DetailPayPage" element={<DetailPayPage />}></Route>
-      <Route exact path="/Cart" element={<CartPage />}></Route>
       <Route exact path="/PayPage/:id" element={<PayPage />}></Route>
       <Route exact path="/Address" element={<Address />}></Route>
       <Route exact path="/CashPage" element={<CashPage />}></Route>
