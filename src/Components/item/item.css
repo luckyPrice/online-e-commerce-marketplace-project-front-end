@@ -6,6 +6,7 @@
     display: flex;
     position:relative;
     overflow: hidden;
+    justify-content: flex-start;
     align-items: flex-start;
     gap: 36px;
     width: 20%;

@@ -40,6 +40,7 @@ const ItemList = (props) => {
   const [view, setViews] = useState([])
   const {detailcategory, setDetailcategory} = useStore4();
   useEffect(() => {
+    setViews([...originData].filter(i => i.status == "판매중").filter((i, idx) => (idx < 10)));
     setItems(originData);
     
   }, [originData]);
@@ -80,11 +81,7 @@ const ItemList = (props) => {
             };
           })
         );
-        console.log(originData);
-        //setOriginData(response.data.filter(i => i.itemid <= 10));
-        setViews(response.data.filter(i => i.itemid <= 10));
-        let viewtest = response.data.filter(i => i.itemid <= 10);
-        console.log(viewtest);
+        
         datanum = 1;
       })
       .catch((error) => {
@@ -109,36 +106,23 @@ const ItemList = (props) => {
     switch (type) {
       /* 인기순 */
       case "pop":
-        setItems([...originData.sort((a, b) => b.favor - a.favor)]);
+        setItems([...items.sort((a, b) => b.favor - a.favor)]);
         break;
       /* 가격 낮은순 */
       case "desc":
-        setItems([...originData.sort((a, b) => a.itemprice - b.itemprice)]);
+        setItems([...items.sort((a, b) => a.itemprice - b.itemprice)]);
         break;
       /* 가격 높은순 */
       case "asc":
-        setItems([...originData.sort((a, b) => b.itemprice - a.itemprice)]);
+        setItems([...items.sort((a, b) => b.itemprice - a.itemprice)]);
         break;
-      /*case "category":
-        if (category)
-          setItems(originData.filter((i) => i.category === category));
-        else setItems(originData);
-        break;*/
+      
       default:
         return;
     }
   };
 
-  const fetchData = () => {
-    
-    console.log("input");
-    
-    setItems([...originData].filter(i => i.itemid <= items.length + 10));
-    
-    let viewtest = [...originData].filter(i => i.itemid <= view.length + 10);
-    
-
-  }
+  
   const categories = useMemo(
     () => originData.map((i) => i.category).filter((i) => i),
     [originData]
@@ -159,12 +143,12 @@ const ItemList = (props) => {
       <StyledContainer>
       <Tile />
       
-        <h1  className="text1">인기 상품</h1>
+        <h1 className="text1">인기 상품</h1>
         
         
             
         <StyledWrapper> 
-          {[...items]
+          {[...view]
             .sort((a, b) => b.view - a.view)
             .map((i) => (
               <>
@@ -175,7 +159,77 @@ const ItemList = (props) => {
             ))}
             
             </StyledWrapper>
-        
+            
+            <StyledFlex2>
+
+              
+          <h1>판매상품</h1>
+          <StyledSearchForm onSubmit={(e) => onSetSearched(e)}>
+            <input type="text" ref={inputRef} />
+            <button onClick={onSetSearched}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </StyledSearchForm>
+          <StyledSoltContainer>
+            <StyledSoltWrapper>
+              <input
+                type="radio"
+                name="solt"
+                id="pop"
+                onChange={() => onSetSort("pop")}
+              />
+              <label htmlFor="pop">인기순</label>
+            </StyledSoltWrapper>
+            <StyledSoltWrapper>
+              <input
+                type="radio"
+                name="solt"
+                id="desc"
+                onChange={() => onSetSort("desc")}
+              />
+              <label htmlFor="desc">가격 낮은순</label>
+            </StyledSoltWrapper>
+            <StyledSoltWrapper>
+              <input
+                type="radio"
+                name="solt"
+                id="asc"
+                onChange={() => onSetSort("asc")}
+              />
+              <label htmlFor="asc">가격 높은순</label>
+            </StyledSoltWrapper>
+          </StyledSoltContainer>
+        </StyledFlex2>
+            <StyledWrapper>
+            
+          {searched.length > 0
+            ? items.map((v, idx) => {
+                if (v.itemname.includes(searched)) {
+                  
+                  return (
+                    <>
+                    
+                    <Item
+                      key={idx}
+                      data={v}
+                      searched={searched}
+                      id={v.itemid}
+                    />
+                    </>
+                  );
+                }
+              })
+              
+            : items.map((v) => {
+              
+                return (<>
+                <Item data={v} searched={searched} id={v.itemid} />
+                </>
+                )
+              
+            })}
+            
+            </StyledWrapper>
         
         </StyledContainer>
         
@@ -288,6 +342,20 @@ const StyledFlex = styled.div`
   }
 `;
 
+const StyledFlex2 = styled.div`
+  position: relative;
+  display: flex;
+  top:50px;
+  align-items: center;
+  width: 100%;
+  h1 {
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 26px;
+    font-weight: 500;
+  }
+`;
+
 
 const StyledSearchForm = styled.form`
   position: absolute;
@@ -298,7 +366,7 @@ const StyledSearchForm = styled.form`
   align-items: center;
   width: 600px;
   input {
-    width: 100%;
+    width: 80%;
     padding-left: 12px;
     border: 1px solid lightgrey;
     height: 35px;
@@ -323,7 +391,6 @@ const StyledSoltContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  overflow:none;
 `;
 
 const StyledSoltWrapper = styled.div`
@@ -346,7 +413,6 @@ const StyledContainer = styled.div`
     position: relative;
     top: 50px;
   }
-  overflow: hidden;
 `;
 
 const StyledWrapper = styled.div`
@@ -354,12 +420,12 @@ const StyledWrapper = styled.div`
   top: 60px;
   display: flex;
   flex-wrap: wrap;
-  
+  justify-content: flex-start;
+  text-align : left;
   width: 100%;
   gap: 20px;
   padding-bottom: 20px;
   box-sizing: border-box;
-  overflow: hidden;
 `;
 
 

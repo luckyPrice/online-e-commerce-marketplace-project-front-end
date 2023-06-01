@@ -196,8 +196,9 @@ const [buyerinfo, setBuyerInfo] = useState(null);
     const start = () => { // 샀다는 알림을 보내기 위해
         let sock = new SockJS('http://localhost:8080/ws')
         client = over(sock);
-        client.connect({}, () =>{client.subscribe("/private/message/" + nickname);});
         setTimeout(getData,3000);
+        client.connect({}, () =>{client.subscribe("/private/message/" + nickname);});
+        
         
     }
 

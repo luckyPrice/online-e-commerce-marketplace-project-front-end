@@ -21,10 +21,13 @@ const Item = ({ data, searched , id}) => {
     },[])
 
     const gotoDetail = () => {
-      if(data.status == "판매중" || data.mameberid == nickname){
+      if(data.memberid == nickname){
         navigate('/DetailPage/' + id);
       }
-      else if(data.status == "거래중" && data.mameberid !== nickname){
+      else if(data.status == "판매중"){
+        navigate('/DetailPage/' + id);
+      }
+      else if(data.status == "거래중"){
         alert('해당 물품은 거래가 진행중입니다.');
       }
         
@@ -55,7 +58,7 @@ const Item = ({ data, searched , id}) => {
         <div className='box'>
         <img src={data.url} alt="items"/>
       <div className='write'>
-      
+      <div className='StyledContent'>{data.maintext}</div>
       <div className='StyledWriter1'>{data.memberid}님</div>
       <div className='StyledAddress1'>{data.title}</div>
       <div className='StyledPrice1'>{data.itemprice}원</div>   
