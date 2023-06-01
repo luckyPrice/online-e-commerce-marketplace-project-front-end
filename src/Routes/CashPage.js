@@ -99,7 +99,6 @@ return(
     <>
     <Grid padding="60px 0 0 0" max_width="950px" margin="0 auto">
       <Header />
-      <Navbar />
     {fill && <Alert variant="outlined" severity="success">
         충전 성공!
       </Alert>}

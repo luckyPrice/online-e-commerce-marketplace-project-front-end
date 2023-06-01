@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import {useStore1} from "./Stores/useStore";
+import {useStore1, AuthCreate} from "./Stores/useStore";
 import jwt_decode from "jwt-decode"
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -26,8 +26,9 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [cookies, setCookies] = useCookies();
     const {user, setUser} = useStore1();
+    const {modal, setModal} = AuthCreate();
     const [boxs, setBoxs] = useState();
-    const [modal, setModal] = useState(false);
+    //const [modal, setModal] = useState(false);
 
     const onClickmodal = (event) =>{
       setModal(true)

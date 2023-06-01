@@ -61,9 +61,7 @@ const PayPage =() => {
 
     const [itemDetail, setitemDetail] = useState(null);
     useEffect(() => {
-        
-              
-              start();
+       start();
 
     }, []);
 
@@ -436,8 +434,8 @@ const PayPage =() => {
                 <Box style={{ borderStyle: 'ridge' }}>
                     <br />
                     <p>상품금액:{itemDetail && itemDetail.itemprice}원</p>
-                    <p>배송비:{A}원</p>
-                    <p>총 결제 금액:{B}원</p><br />
+                    <p>내 잔액 : {userData && userData.cash}원</p>
+                    <p>결제 후 잔액:{userData && (itemDetail && (parseInt(userData.cash) - parseInt(itemDetail.itemprice)))}원</p><br />
                 </Box>
             </Grid>
 

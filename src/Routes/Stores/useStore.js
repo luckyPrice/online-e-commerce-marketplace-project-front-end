@@ -24,6 +24,11 @@ export const useStore4 = create(set => ({
     
 }));
 
+export const AuthCreate = create(set =>({
+    modal : false,
+    setModal : (modal) => {set((state) => ({...state, modal}));},
+}));
+
 
 
 

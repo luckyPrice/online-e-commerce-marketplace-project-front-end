@@ -16,6 +16,7 @@ import { Form } from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import CloseIcon from '@mui/icons-material/Close';
+import {AuthCreate} from "./Stores/useStore";
 
 
 export default function AuthCreatePage(props){
@@ -29,6 +30,7 @@ const [phonenumber, setPhonenumber] = useState("");
 const [sex, setSex] = React.useState('female');
 const [address, setAddress] = useState("");
 const navigate = useNavigate();
+const {modal, setModal} = AuthCreate();
 
 
 
@@ -77,7 +79,9 @@ const handleClick = () => {
                 alert('다시 확인해주세요');
                 return;
             }
-            navigate('/LoginPage');
+            setModal(false);
+
+            
         })
         .catch((error) => {
             setRequestResult('Failed!!');
@@ -110,7 +114,7 @@ const handleClick = () => {
               }}
         >
           <div className="closeicon">
-          <CloseIcon onClick={() => navigate('/LoginPage')}></CloseIcon>
+          <CloseIcon onClick={() => setModal(false)}></CloseIcon>
           </div>
             <TextField style = {{width: '70%'}} sx = {{
                 marginTop:  1,

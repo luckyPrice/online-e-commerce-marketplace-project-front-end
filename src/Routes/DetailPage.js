@@ -33,7 +33,7 @@ function DetailPage(props) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   
-
+  let type = ""
   let nickname = ""
   const [Follower, setFollower] = useState(false);
   const [Heart, setHeart] = useState(false);
@@ -88,11 +88,73 @@ function DetailPage(props) {
         setitemDetail(response.data);
         setHeart(response.data.favorcheck);
         console.log(itemDetail);
+
       })
       .catch((error) => {
         console.log(error.message);
       });
   }, []);
+
+
+  const onSetCategory = (category)=>{
+    if (category === "female clothes") {
+      type = "여성의류";
+    } else if (category === "male clothes") {
+      type = "남성의류";
+    }else if (category === "shoes") {
+      type = "신발";
+    } else if (category === "bag") {
+      type = "가방";
+    } else if (category === "jewelry,watch") {
+      type = "시계/쥬얼리";
+    } else if (category === "fashion accessories") {
+      type = "패션 액세서리";
+    } else if (category === "digital, home electronics") {
+      type = "디지털/가전";
+    } else if (category === "sports, leisure") {
+      type = "스포츠/레저";
+    } else if (category === "vehicle, motorcycle") {
+      type = "차량/오토바이";
+    } else if (category === "merchandise") {
+      type = "스타굿즈";
+    } else if (category === "Kidult") {
+      type = "키덜트";
+    } else if (category === "art, collection, rare") {
+      type = "예술/희귀/수집품";
+    } else if (category === "record, album, instrument") {
+      type = "음반/악기";
+    } else if (category === "office supplies, book, ticket") {
+      type = "도서/티켓/문구";
+    } else if (category === "beauty") {
+      type = "뷰티/미용";
+    } else if (category === "furniture, interior design") {
+      type = "가구/인테리어";
+    } else if (category === "daily necessity, Kitchen appliances") {
+      type = "생활/주방용품";
+    } else if (category === "food") {
+      type = "식품";
+    } else if (category === "infant, maternity supplies") {
+      type = "유아동/출산";
+    } else if (category === "tools") {
+      type = "공구/산업용품";
+    } else if (category === "pet equipment") {
+      type = "반려동물용품";
+    } else if (category === "free") {
+      type = "무료나눔";
+    } else if (category === "etc") {
+      type = "기타";
+    } else if (category === "local service") {
+      type = "지역 서비스";
+    } else if (category === "talent") {
+      type = "재능";
+    } else if (category === "roommate") {
+      type = "원룸/함께살아요";
+    } else if (category === "job") {
+      type = "구인구직";
+    }
+    return type;
+  }
+  
 
   const deleteListener = (id, e) => {
   
@@ -132,6 +194,8 @@ function DetailPage(props) {
     .catch((error) => {})
   }
 
+  
+
   const setStatus2 = () => {
     let changestatus = {
       itemid : itemDetail.itemid,
@@ -163,14 +227,17 @@ function DetailPage(props) {
     .catch((error) => {
       console.log(error.message);
     });
+
   }
+
+
+
 
 
   return (
     <Grid padding="0px 40px 40px 40px" max_width="950px" margin="0 auto">
       <Grid padding="0px 40px 40px 40px">
         <Header />
-        <Navbar />
       </Grid>
       <div
         style={{
@@ -295,7 +362,8 @@ function DetailPage(props) {
       </Grid>
       <Grid padding="0px 40px 40px 40px">
         <h5>상품정보</h5>
-        <b>#카테고리 : {itemDetail && itemDetail.category}</b><br />
+        
+        <b>#카테고리 : {onSetCategory(itemDetail &&itemDetail.category)}</b><br />
         
         <br /><br />
       </Grid>
